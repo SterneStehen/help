@@ -6,7 +6,7 @@
 /*   By: smoreron <7353718@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 16:08:16 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/04/19 15:08:36 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/04/19 21:52:36 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,8 @@ int	push_swap_atoi(char input_str[], int *i, int sign)
 			printf("Non-numerical symbol or out of integer limits.\n");
 //			fn_free_ptr(input_str);
 			write(2, "Error\n", 6);
-			exit (EXIT_FAILURE);												// Maybe we should go freeing all allocated memory too?
+			return (1);
+			//exit (EXIT_FAILURE);												// Maybe we should go freeing all allocated memory too?
 //			return (NULL);														// This is not correct way to handle this error - it gives segmentation fault.
 		}
 //			free_exit(stack_a, integer);										// Think how to handle this.
@@ -184,7 +185,11 @@ int	**parse_input(int num_count, char **input_str, int **array)
 //		printf("\nNext number:\n");
 		sign = ascii_sign(input_str[i_nbr][i_char], &i_char);
 //		printf("sign = %d, i_char = %i\n", sign, i_char);
-		nbr = push_swap_atoi(input_str[i_nbr], &i_char, sign);
+		if(!(nbr = push_swap_atoi(input_str[i_nbr], &i_char, sign)))
+			{
+				free_int_array(array);
+				exit (EXIT_FAILURE);
+			}
 //		printf("nbr = %d with %i digits.\n", nbr, i_char);
 //		printf("nbr = %d.\n", nbr);
 // 		if (!nbr)
