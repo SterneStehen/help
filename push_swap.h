@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggeorgie <ggeorgie@student.42heilbronn.de> +#+  +:+       +#+        */
+/*   By: smoreron <7353718@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 03:02:31 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/04/18 16:13:29 by ggeorgie         ###   ########.fr       */
+/*   Updated: 2024/04/19 14:28:07 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@ struct s_element	*create_element(int nbr);
 void				*ft_calloc(size_t count, size_t size);
 struct s_stack		*fill_stack(int num_count, int **array, struct s_stack *stack_a);
 char				*free_element(struct s_element *element);
-char				*fn_free(char *variable);
+//char				*fn_free(char *variable);
+void fn_free(char **variable);
+void free_int_array(int **array);
 char				*fn_free_ptr(char **ptr);
 void				free_stack(struct s_stack *stack);
 int					**index_array(int *num_count, int **array);

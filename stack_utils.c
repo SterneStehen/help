@@ -6,7 +6,7 @@
 /*   By: smoreron <7353718@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 22:23:54 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/04/19 11:21:50 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/04/19 13:22:58 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ void free_stack(struct s_stack *stack) {
         if (current) {
             do {
                 next = current->next;
-                fn_free((char *)current);
+                fn_free((char **)&current);
                 current = next;
             } while (current != stack->head);
         }
-        fn_free((char *)stack);
+        fn_free((char **)&stack);
     }
 }
 
@@ -135,7 +135,7 @@ struct s_stack *initialize_stack(void) {
     struct s_stack *stack = malloc(sizeof(struct s_stack));
     if (!stack) {
         printf("!stack @ initialize_stack\n");
-        fn_free((char *)head);
+        fn_free((char **)&head);
         return NULL;
     }
 

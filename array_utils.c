@@ -3,14 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   array_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggeorgie <ggeorgie@student.42heilbronn.de> +#+  +:+       +#+        */
+/*   By: smoreron <7353718@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 20:04:03 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/04/18 18:11:52 by ggeorgie         ###   ########.fr       */
+/*   Updated: 2024/04/19 14:27:47 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+void free_int_array(int **array) {
+    if (array == NULL) {
+        return;
+    }
+
+    int i = 0;
+    while (array[i] != NULL) { 
+        free(array[i]);
+        array[i] = NULL;
+        i++;
+    }
+
+    free(array);
+    array = NULL;
+}
+
 
 void	print_array(int num_count, int **array, int row)
 {
@@ -64,7 +81,8 @@ int	**initialize_2d_array(int cols)
 			int i = 0;
 			while (i < rows)
 			{
-				fn_free((char *)array[i]);
+				fn_free((char **)&array[i]);
+
 				i++;
 			}
 			free(array);
@@ -155,7 +173,7 @@ int	**index_array(int *num_count, int **array)
 //	print_array(*num_count, &array_copy, 1);
 	array = fill_array1(array, array_copy, num_count);
 //	print_array(array, 1);
-	fn_free((char *)array_copy);
+	fn_free((char **)&array_copy);
 	return (array);
 }
 
@@ -190,7 +208,7 @@ int	**make_index_array(int *num_count, char **argv)
 			int i = 0;
 			while (i < 2)
 			{
-				fn_free((char *)array[i]);
+				fn_free((char **)&array[i]);
 				i++;
 			}
 			free(array);
@@ -206,7 +224,7 @@ int	**make_index_array(int *num_count, char **argv)
 			int i = 0;
 			while (i < 2)
 			{
-				fn_free((char *)array[i]);
+				fn_free((char **)&array[i]);
 				i++;
 			}
 			free(array);
@@ -227,7 +245,7 @@ int	**make_index_array(int *num_count, char **argv)
 			int i = 0;
 			while (i < 2)
 			{
-				fn_free((char *)array[i]);
+				fn_free((char **)&array[i]);
 				i++;
 			}
 			free(array);
@@ -242,7 +260,8 @@ int	**make_index_array(int *num_count, char **argv)
 			int i = 0;
 			while (i < 2)
 			{
-				fn_free((char *)array[i]);
+				fn_free((char **)&array[i]);
+				//fn_free((char **)&array[i]);
 				i++;
 			}
 			free(array);

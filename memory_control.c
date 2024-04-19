@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory_control.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggeorgie <ggeorgie@student.42heilbronn.de> +#+  +:+       +#+        */
+/*   By: smoreron <7353718@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 03:37:03 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/04/12 23:28:52 by ggeorgie         ###   ########.fr       */
+/*   Updated: 2024/04/19 13:08:00 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,15 @@
  * @param	char	*variable : a pointer to heap memory address.
  * @return	NULL.
  */
-char	*fn_free(char *variable)
+void fn_free(char **variable) 
 {
-	if (variable)
+    if (*variable) 
 	{
-//		printf("fn_free = %s\n", variable);
-		free(variable);
-		variable = NULL;
-	}
-//	write(2, "Error\n", 6);
-	return (NULL);
+        free(*variable);
+        *variable = NULL;
+    }
 }
+
 
 /**
  * @brief	Free a double pointer and the pointers it points to.
@@ -45,10 +43,10 @@ char	*fn_free_ptr(char **ptr)
 //		printf("fn_free_ptr: ptr[%d] = %s\n", i, ptr[i]);
 		while (ptr[i])
 		{
-			fn_free(ptr[i]);
+			fn_free(&ptr[i]);
 			i++;
 		}
-		fn_free(*ptr);
+		fn_free(ptr);
 	}
 	return (NULL);
 //	write(2, "Error\n", 6);

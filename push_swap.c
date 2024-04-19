@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggeorgie <ggeorgie@student.42heilbronn.de> +#+  +:+       +#+        */
+/*   By: smoreron <7353718@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 16:08:16 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/04/18 18:01:37 by ggeorgie         ###   ########.fr       */
+/*   Updated: 2024/04/19 15:08:36 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,7 +236,7 @@ int	main(int argc, char **argv)
 			i = 0;
 			while (i < 2)														// Number of rows in the array.
 			{
-				fn_free((char *)array[i]);
+				fn_free((char **)&array[i]);
 				i++;
 			}
 			free(array);
@@ -255,24 +255,24 @@ int	main(int argc, char **argv)
 		}
 		stack_a = fill_stack(num_count, array, stack_a);
 		// printf("(*stack_a).size = %d\n", (*stack_a).size);
+		if(argc == 2)
+			free_int_array(array);
 		while (not_sorted(stack_a))
-//		if (not_sorted(stack_a))
 		{
-			// printf("Not sorted.\n");
 			sort(stack_a);
 		}
-		// print_stack(stack_a);
-		// printf("Sorted.\n");
 		free_stack(stack_a);
 	}
 //	Free each sub-array of array and the array itself
 	i = 0;
 	while (i < 2)																// Number of rows in the array.
 	{
-		fn_free((char *)array[i]);
+		fn_free((char **)&array[i]);
 		i++;
 	}
-	free(array);
-//	fn_free_ptr((char **)array);												// Causes 'pointer being freed was not allocated' error.
+	//free_int_array(array);
+	//fn_free((char**)&array);
+//	fn_free_ptr((char **)array);
+	free(array);											// Causes 'pointer being freed was not allocated' error.
 	return (EXIT_SUCCESS);
 }

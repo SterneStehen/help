@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggeorgie <ggeorgie@student.42heilbronn.de> +#+  +:+       +#+        */
+/*   By: smoreron <7353718@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:44:21 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/04/17 22:49:26 by ggeorgie         ###   ########.fr       */
+/*   Updated: 2024/04/19 13:08:40 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ char	**ft_split(char const *s, char c, int *i_p)
 		str = c_to_0(s, str, int_var, c);
 	else
 	{
-		fn_free(str);
+		fn_free(&str);
 		return (NULL);
 	}
 	(*i_p) = (*i_p) + sub_string_count(str, int_var, i_p);
@@ -184,7 +184,7 @@ char	**ft_split(char const *s, char c, int *i_p)
 	else
 		fn_free_ptr(pointers);
 //		fn_free(*pointers);
-	fn_free(str);
+	fn_free(&str);
 //	fn_free_ptr(pointers);														// This doesn't look like a good idea, but how to prevent leaks?
 	int	i = 0;
 	while (i < int_var[3])

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sorting.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggeorgie <ggeorgie@student.42heilbronn.de> +#+  +:+       +#+        */
+/*   By: smoreron <7353718@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 19:03:08 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/04/17 23:20:08 by ggeorgie         ###   ########.fr       */
+/*   Updated: 2024/04/19 14:01:37 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,4 +262,6 @@ void	sort(struct s_stack *stack_a)
 		// print_stack(stack_a);
 		write(1, "pa\n", 3);
 	}
+	//fn_free((char**)&stack_b);
+	free_stack(stack_b);
 }
