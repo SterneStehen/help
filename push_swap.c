@@ -6,7 +6,7 @@
 /*   By: smoreron <7353718@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 16:08:16 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/04/19 21:52:36 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/04/20 10:01:36 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,7 +244,7 @@ int	main(int argc, char **argv)
 				fn_free((char **)&array[i]);
 				i++;
 			}
-			free(array);
+			free_int_array(array);
 //			fn_free_ptr((char **)array);										// Causes 'pointer being freed was not allocated' error.
 			return (write(2, "Error\n", 6), EXIT_FAILURE);
 		}
@@ -260,8 +260,8 @@ int	main(int argc, char **argv)
 		}
 		stack_a = fill_stack(num_count, array, stack_a);
 		// printf("(*stack_a).size = %d\n", (*stack_a).size);
-		if(argc == 2)
-			free_int_array(array);
+		// if(argc == 2)
+		// 	free_int_array(array);
 		while (not_sorted(stack_a))
 		{
 			sort(stack_a);
@@ -269,15 +269,16 @@ int	main(int argc, char **argv)
 		free_stack(stack_a);
 	}
 //	Free each sub-array of array and the array itself
-	i = 0;
-	while (i < 2)																// Number of rows in the array.
-	{
-		fn_free((char **)&array[i]);
-		i++;
-	}
+	// i = 0;
+	// while (i < 2)																// Number of rows in the array.
+	// {
+	// 	fn_free((char **)&array[i]);
+	// 	i++;
+	// }
 	//free_int_array(array);
 	//fn_free((char**)&array);
 //	fn_free_ptr((char **)array);
-	free(array);											// Causes 'pointer being freed was not allocated' error.
+	//free(array);
+	free_int_array(array);											// Causes 'pointer being freed was not allocated' error.
 	return (EXIT_SUCCESS);
 }

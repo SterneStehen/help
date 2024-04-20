@@ -6,11 +6,31 @@
 /*   By: smoreron <7353718@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 20:04:03 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/04/19 21:45:50 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/04/20 09:58:32 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+void free_string_array(char **array)
+{
+    if (array == NULL)
+	{
+        return;
+    }
+
+    int i = 0;
+    while (array[i] != NULL)
+	{
+        free(array[i]);
+        array[i] = NULL;
+        i++;
+    }
+
+    free(array);
+    array = NULL;
+}
+
 
 void free_int_array(int **array) {
     if (array == NULL) {
@@ -217,7 +237,8 @@ int	**make_index_array(int *num_count, char **argv)
 			printf("initialize_2d_array in quotation marks\n");
 			return (write(2, "Error\n", 6), (int **)EXIT_FAILURE);
 		}
-		array = parse_input(*num_count + 1, input_str, array);					// 'num_count + 1', so that it reads the last number.
+		array = parse_input(*num_count + 1, input_str, array);
+		free_string_array(input_str);				
 		if (!array)
 		{
 //	Free each sub-array of array and the array itself							// This doesn't seem to make any difference.

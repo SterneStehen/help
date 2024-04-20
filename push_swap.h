@@ -6,7 +6,7 @@
 /*   By: smoreron <7353718@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 03:02:31 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/04/19 14:28:07 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/04/20 09:47:42 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ char				*free_element(struct s_element *element);
 //char				*fn_free(char *variable);
 void fn_free(char **variable);
 void free_int_array(int **array);
+void free_string_array(char **array);
 char				*fn_free_ptr(char **ptr);
 void				free_stack(struct s_stack *stack);
 int					**index_array(int *num_count, int **array);

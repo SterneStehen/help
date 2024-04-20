@@ -6,7 +6,7 @@
 #    By: smoreron <7353718@gmail.com>               +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/10 23:14:27 by ggeorgie          #+#    #+#              #
-#    Updated: 2024/04/19 15:13:58 by smoreron         ###   ########.fr        #
+#    Updated: 2024/04/19 22:01:24 by smoreron         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,7 @@ parse:
 #	./push_swap 0 02 -0 +0002													# Stack with duplicates
 #	./push_swap -1 2f s3 +4														# Stack with non-numerical values
 #	./push_swap 0 -2147483649 2147483648 1										# Stack with too high and too low values
-	./push_swap 6 5 4 3 2 1														# Reverse sorted stack
+#	./push_swap 6 5 4 3 2 1														# Reverse sorted stack
 #	./push_swap 1 2 3 4 -00 5 -69  +9    -9 -1234567890 | ./checker_original 1 2 3 4 -00 5 -69  +9    -9 -1234567890
 #	./push_swap ' 1 2 3 4 -00 5 -69  +9    -9 -1234567890 ' | ./checker_original '1 2 3 4 -00 5 -69  +9    -9 -1234567890 '
 #	./push_swap 10 61 44 54 68 
