@@ -6,7 +6,7 @@
 /*   By: smoreron <7353718@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 20:04:03 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/04/20 09:58:32 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/04/26 03:56:17 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,44 +77,30 @@ void	print_array(int num_count, int **array, int row)
  *			- 1-st - the index of the elements in the stack after sorting.
  * @return	int	**array : A double pointer to the array.
  */
-int	**initialize_2d_array(int cols)
-{
-	int	**array;
-	int	rows;
-	int	i;
+int **initialize_2d_array(int cols) {
+    int rows = 2; // Количество строк
+    int **array = malloc((rows + 1) * sizeof(int*)); // +1 для NULL в конце
 
-	rows = 2;
-	array = malloc(rows * sizeof(int));
-	if (!array)
-	{
-		printf("Memory allocation for array failed.\n");
-//		return (write(2, "Error\n", 6), (int **)EXIT_FAILURE);
-		return ((int **)EXIT_FAILURE);
-	}
-	i = 0;
-	while (i < rows)
-	{
-		array[i] = malloc(cols * sizeof(int));									// 'cols + 1' doesn't seem to make any difference regarding 'Invalid write of size 8'.
-		if (!array[i])
-		{
-//	Free each sub-array of array and the array itself							// This doesn't seem to make any difference.
-			int i = 0;
-			while (i < rows)
-			{
-				fn_free((char **)&array[i]);
+    if (!array) {
+        printf("Failed to allocate memory for array.\n");
+        return NULL;
+    }
 
-				i++;
-			}
-			free(array);
-//			fn_free_ptr((char **)array);										// This doesn't seem to make any difference.
-			printf("Memory allocation for *array failed.\n");
-//			return (write(2, "Error\n", 6), (int **)EXIT_FAILURE);
-			return ((int **)EXIT_FAILURE);
-		}
-		i++;
-	}
-	return (array);
+    for (int i = 0; i < rows; i++) {
+        array[i] = malloc(cols * sizeof(int));
+        if (!array[i]) {
+            for (int j = 0; j < i; j++) {
+                free(array[j]);
+            }
+            free(array);
+            printf("Failed to allocate memory for array[%d].\n", i);
+            return NULL;
+        }
+    }
+    array[rows] = NULL; // NULL-terminated array of pointers
+    return array;
 }
+
 
 int	**fill_array1(int **array, int *array_copy, int *num_count)
 {
@@ -170,31 +156,27 @@ int	*bubble_sort(int *array_copy, int *num_count)
 	}
 	return (array_copy);
 }
+int **index_array(int *num_count, int **array) {
+    if (!array || !array[0]) { // Проверка на валидность входного массива
+        printf("Input array is NULL\n");
+        return NULL;
+    }
 
-int	**index_array(int *num_count, int **array)
-{
-	int	*array_copy;
-	int	i;
+    int *array_copy = malloc(*num_count * sizeof(int));
+    if (!array_copy) {
+        printf("Memory allocation for array_copy failed.\n");
+        return NULL;
+    }
 
-	array_copy = malloc(*num_count * sizeof(int));
-	if (!array_copy)
-	{
-		printf("Memory allocation for array_copy\n");
-		return (write(2, "Error\n", 6), (int **)EXIT_FAILURE);
-	}
-	i = 0;
-	while (i < *num_count)
-	{
-		array_copy[i] = array[0][i];
-		i++;
-	}
-	array_copy = bubble_sort(array_copy, num_count);
-//	printf("array_copy\n");
-//	print_array(*num_count, &array_copy, 1);
-	array = fill_array1(array, array_copy, num_count);
-//	print_array(array, 1);
-	fn_free((char **)&array_copy);
-	return (array);
+    for (int i = 0; i < *num_count; i++) {
+        array_copy[i] = array[0][i]; // Копирование значений
+    }
+    array_copy = bubble_sort(array_copy, num_count); // Сортировка
+
+    array = fill_array1(array, array_copy, num_count); // Заполнение array[1]
+
+    free(array_copy); // Освобождение памяти
+    return array;
 }
 
 /**
@@ -214,7 +196,7 @@ int	**make_index_array(int *num_count, char **argv)
 	if (*num_count == 2)
 	{
 		*num_count = *num_count - 2;
-		input_str = ft_split(argv[1], ' ', num_count);
+		input_str = ft_split(argv[1], ' ');
 		if (!input_str)
 		{
 			fn_free_ptr(input_str);												// This doesn't seem to make any difference.

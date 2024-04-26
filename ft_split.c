@@ -1,196 +1,144 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: smoreron <7353718@gmail.com>               +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/06 15:44:21 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/04/19 13:08:40 by smoreron         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-/* int_var[2] may be removed and all other variables shifted */
 
 #include "push_swap.h"
 
-/**
- * @brief	Counts the number of characters in 'str' string.
- * @return	The number of characters in 'str'.
- */
-size_t	ft_strlen(const char *str)												// To be moved to another file, because there are too many functions on this one.
+size_t	ft_strlen(const char *str)
 {
 	size_t	i;
 
 	i = 0;
-	if (!str)
-		return (0);
 	while (str[i] != '\0')
+	{
+		i++;
+	}
+	return (i);
+}
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char	*substr;
+	size_t	i;
+
+	i = 0;
+	if (!s)
+		return (NULL);
+	if (start >= ft_strlen(s))
+	{
+		substr = (char *)malloc(1);
+		if (substr)
+			substr[0] = '\0';
+		return (substr);
+	}
+	if (len > ft_strlen(s) - start)
+		len = ft_strlen(s) - start;
+	substr = (char *) malloc (len + 1);
+	if (!substr)
+		return (NULL);
+	while (i < len && s[start + i])
+	{
+		substr[i] = s[start + i];
+		i++;
+	}
+	substr[i] = '\0';
+	return (substr);
+}
+
+int	ft_word_count(char const *str, char c)
+{
+	int	count;
+	int	in_word;
+
+	count = 0;
+	in_word = 0;
+	while (*str)
+	{
+		if (*str == c)
+		{
+			in_word = 0;
+		}
+		else if (!in_word)
+		{
+			in_word = 1;
+			count++;
+		}
+		str++;
+	}
+	return (count);
+}
+
+static int	find_start(const char *s, char c, int i)
+{
+	while (s[i] == c && s[i] != '\0')
 		i++;
 	return (i);
 }
 
-/**
- * @brief	Replaces the delimiter ’c’ with '\0'.
- * @param	char	*s : the string being split.
- * @param	char	*str : a copy of 's'.
- * @param	int		int_var[0] : length of 's' and 'str'.
- * @param	char	c : delimiter character.
- * @return	A pointer to 'str' - the amended version of 's'. 
- */
-char	*c_to_0(char const *s, char *str, int *int_var, char c)
+static int	find_end(const char *s, char c, int i)
 {
-	int	i;
-
-	i = 0;
-	while (i < int_var[0])
-	{
-		if (s[i] == c)
-			str[i] = '\0';
-		else
-			str[i] = s[i];
+	while (s[i] != c && s[i] != '\0')
 		i++;
-	}
-	str[i] = '\0';
-	return (str);
+	return (i);
 }
 
-/**
- * @brief	Count the number of newly appeared sub-strings.
- * @param	char	*str : a copy of 's' string being split.
- * @param	int		int_var[0] : length of 's' and 'str'.
-// * @param	int		int_var[2] : total number of sub-strings.
- * @return	The number of sub-strings/words. 
- */
-int	sub_string_count(char *str, int *int_var, int *i_p)
+static void	ft_clean(char ***arr, int index)
 {
-	int	i;
-
-	i = 0;
-//	int_var[2] = 0;
-	while (i < int_var[0])
-	{
-//		printf("sub_string [%i]: i_p = %c\n", *i_p, str[i]);
-		if (str[i] != '\0' && str[i + 1] == '\0')
-			(*i_p)++;
-		i++;
-	}
-//	(*i_p)--;																	// No need to account for the last increment, because i_p = 0 gets omitted.
-	return (*i_p);
+	while (index > 0)
+		free((*arr)[--index]);
+	free(*arr);
+	*arr = NULL;
 }
 
-/**
- * @brief	Saves sub-strings into words, one at a time.
- * @param	char	*str : a copy of 's' string being split.
- * @param	int		int_var[1] : length of sub-string.
- * @param	int		int_var[3] : index of sub-string.
- * @param	int		int_var[4] : position within sub-string.
- * @param	int		int_var[5] : position within 'str'.
- * @param	char	**pointers : string of pointers to sub-strings.
- * @return	A pointer to the new sub-string/word. If unsuccessful at any point,
- * 			free all previously allocated spaces.
- */
-char	*fill_word(char *str, int *int_var, char **pointers)
+char	**ft_split(char const *s, char c)
 {
-	char	*word;
+	int		arr[4];
+	char	**result;
 
-	int_var[4] = 0;
-//	printf("fill_word[%i]: str = '%s', int_var[1] = %i\n", int_var[3], str, int_var[1]);
-	word = malloc(sizeof(char) * (int_var[1] + 1));
-	if (word == NULL)
-		fn_free_ptr(pointers);
-	while (int_var[4] < int_var[1])
-	{
-		word[int_var[4]] = str[int_var[5] + int_var[4]];
-		int_var[4]++;
-	}
-	word[int_var[4]] = '\0';
-	return (word);
-}
-
-/**
- * @brief	Assembles the '*pointers' string of pointers.
- * @param	char	*str : a copy of 's' string being split.
- * @param	int		int_var[1] : length of sub-string.
-// * @param	int		int_var[2] : total number of sub-strings.
- * @param	int		int_var[3] : index of sub-string.
- * @param	int		int_var[5] : position within 'str'.
- * @param	char	**pointers : string of pointers to sub-strings.
- * @return	A string of pointers to the new strings resulting from the split.
- * 			If an allocation fails, free 'pointers' and return NULL.
- */
-char	**fill_pointers(char *str, int *int_var, char **pointers, int *i_p)
-{
-	char	*word;
-
-	int_var[3] = 0;
-	int_var[5] = 0;
-	int_var[1] = 1;
-	word = fill_word(" ", int_var, pointers);									// To account for argv[0] = file_name.
-	pointers[0] = word;
-	int_var[3]++;
-	while (int_var[3] <= *i_p)
-	{
-		while (str[int_var[5]] == '\0')
-			int_var[5]++;
-		int_var[1] = ft_strlen(&str[int_var[5]]);
-		word = fill_word(str, int_var, pointers);
-		if (word == NULL)
-			fn_free_ptr(pointers);
-		pointers[int_var[3]] = word;
-		int_var[5] = int_var[5] + int_var[1];
-		int_var[3]++;
-	}
-//	printf("fill_pointers: pointers[%d] = %s\n", int_var[3], pointers[int_var[3]]);
-//	pointers[int_var[3]] = NULL;
-//	pointers[int_var[3]] = (char *)'\0';
-	return (pointers);
-}
-
-/**
- * @brief	Splits string ’s’ into an array of sub-strings using ’c’ delimiter.
- * @param	char	*s : string to be split.
- * @param	char	c : delimiter character.
- * @param	int		i_p : pointer to number of 'sub-strings'/'pointers'.
- * @param	int		int_var : array for 6 counters.
- * @param	int		int_var[0] : length of 's' and 'str'.
-// * @param	int		int_var[2] : total number of sub-strings.
- * @return	A string of pointers to the new strings resulting from the split.
- * 			If an allocation fails, free 'str'/'pointers' and return NULL.
- */
-char	**ft_split(char const *s, char c, int *i_p)
-{
-	char	*str;
-	char	**pointers;
-	int		int_var[6];
-
-	if (s == NULL)
+	arr[0] = 0;
+	arr[3] = 0;
+	result = malloc(sizeof(char *) * (ft_word_count(s, c) + 1));
+	if (!result || !s)
 		return (NULL);
-	int_var[0] = ft_strlen(s);
-//	printf("string length = %d, number of 'sub-strings'/'pointers' = %i\n", int_var[0], *i_p);
-	str = malloc(sizeof(char) * (int_var[0] + 1));
-	if (str != NULL)
-		str = c_to_0(s, str, int_var, c);
-	else
+	while (s[arr[0]])
 	{
-		fn_free(&str);
-		return (NULL);
+		arr[1] = find_start(s, c, arr[0]);
+		arr[2] = find_end(s, c, arr[1]);
+		if (arr[2] > arr[1])
+		{
+			result[arr[3]] = ft_substr(s, arr[1], arr[2] - arr[1]);
+			if (result[arr[3]] == NULL)
+				return (ft_clean(&result, arr[3]), NULL);
+			arr[3]++;
+		}
+		arr[0] = arr[2];
 	}
-	(*i_p) = (*i_p) + sub_string_count(str, int_var, i_p);
-//	printf("string length = %d, number of 'sub-strings'/'pointers' = %i\n", int_var[0], *i_p);
-	pointers = malloc(sizeof(char *) * ((*i_p) + 1));							// +1 for the NULL pointer at the end.
-	if (pointers != NULL)
-		pointers = fill_pointers(str, int_var, pointers, i_p);
-	else
-		fn_free_ptr(pointers);
-//		fn_free(*pointers);
-	fn_free(&str);
-//	fn_free_ptr(pointers);														// This doesn't look like a good idea, but how to prevent leaks?
-	int	i = 0;
-	while (i < int_var[3])
-//	{
-//		printf("ft_split: pointer[%d] = %s\n", i, pointers[i]);
-		i++;
-//	}
-	return (pointers);
+	result[arr[3]] = NULL;
+	return (result);
 }
+
+// arr[0] = i, arr[1] = start, arr[2] = end, arr[3] = j
+// char **ft_split(char const *s, char c) {
+// 	int i;
+// 	int j; 
+// 	int start;
+// 	int end;
+// 	char **result;
+//     i = 0;
+// 	j = 0;
+// 	result = malloc(sizeof(char *) * (ft_word_count(s, c) + 1));
+//     if (!result || !s) return NULL;
+//     while (s[i]) {
+//         start = find_start(s, c, i);
+//         end = find_end(s, c, start);
+//         if (end > start) {
+//             result[j] = ft_substr(s, start, end - start);
+//             if (result[j] == NULL) {
+//                 while (j > 0) free(result[--j]);
+//                 free(result);
+//                 return NULL;
+//             }
+//             j++;
+//         }
+//         i = end;
+//     }
+//     result[j] = NULL;
+//     return result;
+// }

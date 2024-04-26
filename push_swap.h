@@ -6,7 +6,7 @@
 /*   By: smoreron <7353718@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 03:02:31 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/04/20 09:47:42 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/04/26 03:34:55 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ char				*free_element(struct s_element *element);
 void fn_free(char **variable);
 void free_int_array(int **array);
 void free_string_array(char **array);
+char	**ft_split(char const *s, char c);
 char				*fn_free_ptr(char **ptr);
 void				free_stack(struct s_stack *stack);
 int					**index_array(int *num_count, int **array);
@@ -58,7 +59,7 @@ int					**parse_input(int num_count, char **input_str, int **array);
 void				print_array(int num_count, int **array, int z);
 void 				print_stack(struct s_stack *stack_a);
 void				sort(struct s_stack *stack_a);
-char				**ft_split(char const *s, char c, int *i_p);
+//char				**ft_split(char const *s, char c, int *i_p);
 #endif
 
 //struct s_element	*fill_stack_a(int nbr);
