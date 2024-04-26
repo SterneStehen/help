@@ -6,7 +6,7 @@
 /*   By: smoreron <7353718@gmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 20:04:03 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/04/26 03:56:17 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/04/26 04:05:31 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,10 +155,9 @@ int	*bubble_sort(int *array_copy, int *num_count)
 		j++;
 	}
 	return (array_copy);
-}
-int **index_array(int *num_count, int **array) {
-    if (!array || !array[0]) { // Проверка на валидность входного массива
-        printf("Input array is NULL\n");
+}int **index_array(int *num_count, int **array) {
+    if (!array || !*array) {
+        printf("Input array is NULL or not properly allocated.\n");
         return NULL;
     }
 
@@ -169,15 +168,14 @@ int **index_array(int *num_count, int **array) {
     }
 
     for (int i = 0; i < *num_count; i++) {
-        array_copy[i] = array[0][i]; // Копирование значений
+        array_copy[i] = array[0][i];
     }
-    array_copy = bubble_sort(array_copy, num_count); // Сортировка
-
-    array = fill_array1(array, array_copy, num_count); // Заполнение array[1]
-
-    free(array_copy); // Освобождение памяти
+    array_copy = bubble_sort(array_copy, num_count);
+    array = fill_array1(array, array_copy, num_count);
+    free(array_copy);
     return array;
 }
+
 
 /**
  * Takes the user input, parses it, and fills the array with the values.
@@ -188,90 +186,51 @@ int **index_array(int *num_count, int **array) {
  * 					which was provided in quotation marks.
  * @return	int	**array : double pointer to the array.
  */
-int	**make_index_array(int *num_count, char **argv)
-{
-	int		**array;
-	char	**input_str;
+int **make_index_array(int *num_count, char **argv) {
+    int **array = NULL;
+    char **input_str;
 
-	if (*num_count == 2)
-	{
-		*num_count = *num_count - 2;
-		input_str = ft_split(argv[1], ' ');
-		if (!input_str)
-		{
-			fn_free_ptr(input_str);												// This doesn't seem to make any difference.
-			printf("No output from split\n");
-			return ((int **)EXIT_FAILURE);
-		}
-		array = initialize_2d_array(*num_count);
-		if (!array)
-		{
-//	Free each sub-array of array and the array itself							// This doesn't seem to make any difference.
-			int i = 0;
-			while (i < 2)
-			{
-				fn_free((char **)&array[i]);
-				i++;
-			}
-			free(array);
-			// fn_free_ptr((char **)array);										// This doesn't seem to make any difference.
-			fn_free_ptr(input_str);												// This doesn't seem to make any difference.
-			printf("initialize_2d_array in quotation marks\n");
-			return (write(2, "Error\n", 6), (int **)EXIT_FAILURE);
-		}
-		array = parse_input(*num_count + 1, input_str, array);
-		free_string_array(input_str);				
-		if (!array)
-		{
-//	Free each sub-array of array and the array itself							// This doesn't seem to make any difference.
-			int i = 0;
-			while (i < 2)
-			{
-				fn_free((char **)&array[i]);
-				i++;
-			}
-			free(array);
-//			fn_free_ptr((char **)array);										// This doesn't seem to make any difference.
-			fn_free_ptr(input_str);												// This doesn't seem to make any difference.
-			printf("parse_input in quotation marks\n");
-			return (write(2, "Error\n", 6), (int **)EXIT_FAILURE);
-//			return ((int **)EXIT_FAILURE);										// Why is this different from argc != 2?
-		}
-		*num_count = *num_count + 1;
-	}
-	else
-	{
-		array = initialize_2d_array(*num_count);								// Why was there a +/-1 here?
-		if (!array)
-		{
-//	Free each sub-array of array and the array itself							// This doesn't seem to make any difference.
-			int i = 0;
-			while (i < 2)
-			{
-				fn_free((char **)&array[i]);
-				i++;
-			}
-			free(array);
-//			fn_free_ptr((char **)array);										// This doesn't seem to make any difference.
-			printf("initialize_2d_array from argv\n");
-			return (write(2, "Error\n", 6), (int **)EXIT_FAILURE);
-		}
-		array = parse_input(*num_count, argv, array);
-		if (!array)
-		{
-//	Free each sub-array of array and the array itself							// This doesn't seem to make any difference.
-			int i = 0;
-			while (i < 2)
-			{
-				fn_free((char **)&array[i]);
-				//fn_free((char **)&array[i]);
-				i++;
-			}
-			free(array);
-//			fn_free_ptr((char **)array);										// This doesn't seem to make any difference.
-			printf("parse_input from argv\n");
-			return (write(2, "Error\n", 6), (int **)EXIT_FAILURE);
-		}
-	}
-	return (array);
+    if (*num_count == 2) {
+        input_str = ft_split(argv[1], ' ');  // Assuming ft_split properly null-terminates the array
+        if (!input_str) {
+            printf("Error: No output from split.\n");
+            return (int **)EXIT_FAILURE;
+        }
+
+        // Count the number of non-null entries in input_str
+        int count = 0;
+        for (char **temp = input_str; *temp != NULL; temp++) {
+            count++;
+        }
+
+        array = initialize_2d_array(count);
+        if (!array) {
+            printf("Error: Failed to initialize 2D array.\n");
+            free_string_array(input_str);  // Properly freeing input_str
+            return (int **)EXIT_FAILURE;
+        }
+
+        array = parse_input(count, input_str, array);
+        free_string_array(input_str);  // Freeing after using the data
+
+        if (!array) {
+            printf("Error: Failed to parse input.\n");
+            return (int **)EXIT_FAILURE;
+        }
+        *num_count = count;  // Set num_count to the actual number of items processed
+    } else {
+        array = initialize_2d_array(*num_count);
+        if (!array) {
+            printf("Error: Failed to initialize 2D array from argv.\n");
+            return (int **)EXIT_FAILURE;
+        }
+
+        array = parse_input(*num_count, argv, array);
+        if (!array) {
+            printf("Error: Failed to parse input from argv.\n");
+            return (int **)EXIT_FAILURE;
+        }
+    }
+
+    return array;
 }
