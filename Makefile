@@ -1,69 +1,55 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: smoreron <7353718@gmail.com>               +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/03/10 23:14:27 by ggeorgie          #+#    #+#              #
-#    Updated: 2024/04/19 22:01:24 by smoreron         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME = minishell
 
-NAME = push_swap
-CC = cc
-#CFLAGS = -Wall -Wextra -Werror													# To be uncommented before submission
-#CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address							# To be removed/commented out before submission
-CFLAGS = -Wall -Wextra -Werror -g												# To be removed/commented out before submission
+# Компилятор и флаги компиляции
+CC = gcc
+CFLAGS = -Wall 
+#  -Wextra -Werror
 
-SOURCES = push_swap.c \
-		array_utils.c \
-		memory_control.c \
-		sorting.c \
-		ft_split.c \
-		stack_utils.c
+# Директории
+SRCDIR = src
+INCDIR = include
+LIBFTDIR = $(INCDIR)/libft
+BUILDDIR = build
 
-OBJECTS = $(SOURCES:.c=.o)
+# Поиск всех файлов .c в директории src и её подпапках
+SRC = $(shell find $(SRCDIR) -type f -name "*.c")
 
+# Объектные файлы
+OBJ = $(SRC:$(SRCDIR)/%.c=$(BUILDDIR)/%.o)
+
+# Заголовочные файлы
+INC = -I$(INCDIR) -I$(LIBFTDIR)
+
+# Библиотеки
+LIBFT = $(LIBFTDIR)/libft.a
+
+# Цель по умолчанию
 all: $(NAME)
 
-$(NAME): $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -o $(NAME)
+# Сборка исполняемого файла
+$(NAME): $(OBJ) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJ) -L$(LIBFTDIR) -lft -lreadline -o $(NAME)
 
+# Сборка объектных файлов
+$(BUILDDIR)/%.o: $(SRCDIR)/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+
+# Сборка библиотеки libft
+$(LIBFT):
+	make -C $(LIBFTDIR)
+
+# Очистка объектных файлов и исполняемого файла
 clean:
-	rm -f $(OBJECTS)
+	rm -rf $(BUILDDIR)
+	make -C $(LIBFTDIR) clean
 
 fclean: clean
 	rm -f $(NAME)
+	make -C $(LIBFTDIR) fclean
 
+# Пересборка
 re: fclean all
 
+# Не является файлом
 .PHONY: all clean fclean re
-
-test: fclean all
-#test: 
-#	Replace the number after '-r' with the desired number of random numbers to generate
-	$(eval ARG = $(shell jot -r 5 -2147483648 2147483647 | tr '\n' ' '))
-	valgrind --leak-check=full ./push_swap $(ARG) | ./checker_original $(ARG)
-#	valgrind --leak-check=full ./push_swap '$(ARG)' | ./checker_original '$(ARG)'
-#	valgrind --leak-check=full ./push_swap "$(ARG)" | ./checker_original "$(ARG)"
-#	./push_swap $(ARG) 															# In case there's additional printing for debugging
-	@echo "Instructions:"
-	@./push_swap $(ARG) | wc -l
-# <https://manpages.ubuntu.com/manpages/noble/en/man1/jot.1.html>
-
-#parse: fclean all
-parse: 
-#	./push_swap 1 2 3 4 5 6														# Already sorted stack
-#	./push_swap 0 02 -0 +0002													# Stack with duplicates
-#	./push_swap -1 2f s3 +4														# Stack with non-numerical values
-#	./push_swap 0 -2147483649 2147483648 1										# Stack with too high and too low values
-#	./push_swap 6 5 4 3 2 1														# Reverse sorted stack
-#	./push_swap 1 2 3 4 -00 5 -69  +9    -9 -1234567890 | ./checker_original 1 2 3 4 -00 5 -69  +9    -9 -1234567890
-#	./push_swap ' 1 2 3 4 -00 5 -69  +9    -9 -1234567890 ' | ./checker_original '1 2 3 4 -00 5 -69  +9    -9 -1234567890 '
-#	./push_swap 10 61 44 54 68 
-#	valgrind --leak-check=full ./push_swap  1 2 3 4 -00 5 -69  +9    -9 -1234567890
-#	valgrind --leak-check=full --track-origins=yes ./push_swap  1 2 3 4 5  6 -1234567890 7 8 9  9
-#	valgrind --leak-check=full ./push_swap ' 1 2 3 4 5 6 -1234567890 7 8 9   '
-#	@echo "Instructions:"
-#	@./push_swap  1 2 3 4 -00 5 -69  +9    -9 -1234567890  | wc -l
