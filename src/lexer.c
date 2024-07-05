@@ -6,39 +6,11 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:23:50 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/04 10:36:33 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/05 07:17:16 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-/* Duplicates a substring from the source string from the given start to finish indices.
-   Returns the duplicated string or NULL if memory allocation fails or indices are invalid. */
-char	*duplicate_string_range(const char *source, int begin, int finish)
-{
-	int		length;
-	char	*duplicate;
-	int		i;
-
-	if (begin > finish || begin < 0 || finish < 0 || source == NULL)
-	{
-		return (NULL);
-	}
-	length = finish - begin;
-	duplicate = (char *)malloc(sizeof(char) * (length + 1));
-	if (!duplicate)
-	{
-		return (NULL);
-	}
-	i = 0;
-	while (i < length)
-	{
-		duplicate[i] = source[begin + i];
-		i++;
-	}
-	duplicate[length] = '\0';
-	return (duplicate);
-}
 
 /* Checks if the character at the given index in the input string is surrounded by double quotes.
    Returns 1 if the character is inside double quotes, otherwise 0. */

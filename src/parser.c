@@ -14,7 +14,6 @@
 
 #include "../include/minishell.h"
 
-
 /* Determines the type of redirection based on the substring from start to end
    in str.
    Returns the corresponding t_class value representing the redirection type. */
@@ -626,7 +625,7 @@ char	*process_token_segment(char *str, int start, int end)
 	char	*trimmed;
 
 	tmp = duplicate_string_range(str, start, end);
-	trimmed = trim_string(tmp, SPACES);
+	trimmed = trim_string(tmp, SIMBOL);
 	free(tmp);
 	return (trimmed);
 }

@@ -6,86 +6,153 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 21:25:23 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/04 11:11:27 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/05 07:48:23 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../include/minishell.h"
 
-/* Checks the number of single and double quotes up to index `i` in string `s`.
-   Updates `single_quote` and `double_quote` accordingly.
-   Returns the updated index `i`. */
-int	validate_quotes(char *s, int i, int *single_quote, int *double_quote)
+
+
+char	*ft_get_join(char const *s1, char const *s2)
 {
-	while (i >= 0)
+	char	*str;
+	size_t	z;
+	size_t	s;
+
+	if (!s1 || !s2)
+		return (NULL);
+	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!str)
+		return (NULL);
+	z = 0;
+	s = 0;
+	while (s1[z])
 	{
-		if (s[i] == '\'' && count_escaped_chars(s, i) % 2 == 0)
-			(*single_quote)++;
-		if (s[i] == '\"' && count_escaped_chars(s, i) % 2 == 0)
-			(*double_quote)++;
-		i--;
+		str[s++] = s1[z];
+		z++;
 	}
-	return (i);
+	z = 0;
+	while (s2[z])
+	{
+		str[s++] = s2[z];
+		z++;
+	}
+	str[s] = '\0';
+	return (str);
 }
 
-/* Determines if expansion should fail based on the context around `pos` in `input_str`.
-   `sq` is the count of single quotes, `dq` is the count of double quotes.
-   Returns TRUE if expansion should fail, otherwise returns FALSE. */
-int	fail_res_expand(char *input_str, int pos, int sq, int dq)
+/* Checks if a count is odd.
+   Returns 1 if odd, 0 otherwise. */
+int	is_odd(int count)
 {
-	//int	idx;
-	int	initial_pos;
-
-	//idx = pos;
-	initial_pos = pos;
-	pos = validate_quotes(input_str, pos, &sq, &dq);
-	if (sq == 1 && dq == 0)
-		return (TRUE);
-	else if (sq == 1 && dq == 1 && input_str[initial_pos - 1] == '\"')
-		return (TRUE);
-	else if (sq == 2 && dq == 1)
-		return (FALSE);
-	else if (sq == 1 && dq == 2 && input_str[initial_pos - 1] == '\'')
-		return (TRUE);
-	else if (sq == 2 && dq == 2 && input_str[initial_pos - 1] == '\''
-		&& input_str[initial_pos - 3] == '\'')
-		return (TRUE);
-	else if (sq == 4 && dq == 3)
-		return (TRUE);
-	return (FALSE);
+	return (count % 2);
 }
 
-/* Determines if expansion should be skipped based on the context around `pos` in `input_str`.
-   Returns TRUE if expansion should be skipped, otherwise returns FALSE. */
-int	skip_expans(char *input_str, int pos)
-{
-	int	temp_pos;
-	int	single_quotes;
-	int	double_quotes;
-	int	need_backtrack;
+/* Counts the number of occurrences of the specified quote character
+   in the string `str` up to position `pos`.
+   Returns the count of quote characters. */
 
-	single_quotes = 0;
-	double_quotes = 0;
-	need_backtrack = FALSE;
-	if (pos == 0)
-		return (FALSE);
-	temp_pos = pos;
-	if (pos > 0 && (input_str[pos + 1] == '\"' || input_str[pos + 1] == '\''))
-		return (TRUE);
-	while (temp_pos != 0)
+int	count_quotes(char *str, int pos, char quote_char)
+{
+	int	count;
+
+	count = 0;
+	while (pos >= 0)
 	{
-		if (input_str[temp_pos] == '\'' || input_str[temp_pos] == '\"')
-			need_backtrack = FALSE;
-		temp_pos--;
+		if (str[pos] == quote_char)
+		{
+			count++;
+		}
+		pos--;
 	}
-	if (need_backtrack == FALSE)
+	return (count);
+}
+
+/* Checks conditions based on the counts of single and double quotes,
+   the initial position, and the input string.
+   Returns 1 if conditions are met for processing, 0 otherwise. */
+int	check_conditions(int sq_count, int dq_count, int initial_position,
+		char *input_str)
+{
+	if (is_odd(sq_count) && !is_odd(dq_count))
 	{
-		if (fail_res_expand(input_str, pos, double_quotes,
-				single_quotes) == TRUE)
-			return (TRUE);
+		return (1);
 	}
-	return (FALSE);
+	else if (is_odd(sq_count) && is_odd(dq_count) && input_str[initial_position
+		- 1] == '"')
+	{
+		return (1);
+	}
+	else if (!is_odd(sq_count) && is_odd(dq_count))
+	{
+		return (0);
+	}
+	else if (is_odd(sq_count) && dq_count % 4 == 2 && input_str[initial_position
+		- 1] == '\'')
+	{
+		return (1);
+	}
+	else if (!is_odd(sq_count) && dq_count % 4 == 2
+		&& input_str[initial_position - 1] == '\'' && input_str[initial_position
+		- 3] == '\'')
+	{
+		return (1);
+	}
+	else if (sq_count % 4 == 0 && dq_count % 4 == 3)
+	{
+		return (1);
+	}
+	return (0);
+}
+
+/* Determines if expansion should be skipped based on the input string
+   and position.
+   Returns 1 if expansion should be skipped, 0 otherwise. */
+int	bypass_expansion(char *input_str, int position)
+{
+	int	sq_count;
+	int	dq_count;
+	int	initial_position;
+	int	backtrack_needed;
+	int	temp_position;
+
+	sq_count = 0;
+	dq_count = 0;
+	initial_position = position;
+	backtrack_needed = 0;
+	if (position == 0)
+	{
+		return (0);
+	}
+	if (position > 0 && (input_str[position + 1] == '"' || input_str[position
+			+ 1] == '\''))
+	{
+		return (1);
+	}
+	sq_count = count_quotes(input_str, position, '\'');
+	dq_count = count_quotes(input_str, position, '"');
+	if (check_conditions(sq_count, dq_count, initial_position, input_str))
+	{
+		return (1);
+	}
+	temp_position = initial_position;
+	while (temp_position != 0)
+	{
+		if (input_str[temp_position] == '\'' || input_str[temp_position] == '"')
+		{
+			backtrack_needed = 0;
+		}
+		temp_position--;
+	}
+	if (!backtrack_needed)
+	{
+		if (check_conditions(sq_count, dq_count, initial_position, input_str))
+		{
+			return (1);
+		}
+	}
+	return (0);
 }
 
 /* Checks if the string `str` contains a dollar sign '$' that should trigger variable expansion.
@@ -93,136 +160,197 @@ int	skip_expans(char *input_str, int pos)
    Returns TRUE if a valid dollar sign expansion is found,
 	otherwise returns FALSE. */
 
-bool	has_dollar_sign(char *str, t_tools *shell)
+int	is_space_after_dollar(const char *str, int i)
 {
-	int			i;
-	const char	*spaces = " \t\n\v\r\f";
-	int			j;
-	bool		found_space;
+	const char	*spaces = SIMBOL;
+	int			k;
 
-	i = -1;
-	while (str[++i] != '\0')
+	k = 0;
+	while (spaces[k] != '\0')
 	{
-		if (str[0] == '$' && str[i + 1] != ' ' && str[i + 1] != '\0')
-			return (true);
-		else if (str[i] == '$' && str[i + 1] == '\0')
-			break ;
-		else if ((str[i] == '$' && count_escaped_characters(str, i) % 2 != 0)
-			|| (str[i] == '$' && skip_expans(str, i) == true))
-			i++;
-		else if (str[i] == '$')
+		if (spaces[k] == str[i + 1])
 		{
-			j = 0;
-			found_space = false;
-			while (spaces[j] != '\0')
-			{
-				if (spaces[j] == str[i + 1])
-				{
-					found_space = true;
-					break ;
-				}
-				j++;
-			}
-			if (found_space)
-			{
-				shell->flag_execution_completed = false;
-				return (false);
-			}
-			else
-				return (true);
+			return (1);
+		}
+		k++;
+	}
+	return (0);
+}
+
+/* Handles conditions related to dollar signs ('$') in the input string
+   based on the position and updates the context as needed.
+   Returns 1 to continue the loop, -1 to stop with false, -2 to stop with true,
+   or 0 if no special condition is met. */
+int	process_dollar_conditions(char *input, t_tools *context, int pos)
+{
+	if ((input[pos] == '$' && count_escaped_chars(input, pos) % 2 != 0)
+		|| (input[pos] == '$' && bypass_expansion(input, pos)))
+	{
+		return 1; // Continue loop
+	}
+	else if (input[pos] == '$')
+	{
+		if (is_space_after_dollar(input, pos))
+		{
+			context->flag_execution_completed = 0;
+			return -1; // Stop loop with false
+		}
+		else
+		{
+			return -2; // Stop loop with true
 		}
 	}
-	return (false);
+	return 0; // No special condition
+}
+
+/* Checks if the input string contains a dollar sign ('$') that
+   should trigger variable expansion, updating the context as needed.
+   Returns 1 if a valid dollar sign is found, 0 otherwise. */
+int	detect_dollar_usa(char *input, t_tools *context)
+{
+	int	pos;
+	int	result;
+
+	pos = 0;
+	while (input[pos] != '\0')
+	{
+		if (input[0] == '$' && input[pos + 1] != ' ' && input[pos + 1] != '\0')
+		{
+			return 1;
+		}
+		else if (input[pos] == '$' && input[pos + 1] == '\0')
+		{
+			break ;
+		}
+		else
+		{
+			result = process_dollar_conditions(input, context, pos);
+			if (result == 1)
+			{
+				pos++;
+				continue ;
+			}
+			else if (result == -1)
+			{
+				return 0;
+			}
+			else if (result == -2)
+			{
+				return 1;
+			}
+		}
+		pos++;
+	}
+	return 0;
 }
 
 /* Duplicates the substring of `s` starting from index `index` where a dollar sign ('$') is found.
    Handles different delimiters and expands the dollar sign segment before copying.
    Modifies `dst` to contain the duplicated substring. */
-void	duplicate_dollar_segment(char **dst, char **s, int index)
+void	copy_doll_usa(char **segment, char **source, int idx)
 {
-	char	delimeter;
-	int		i;
-	int		doll;
+	char	delim;
+	int		start_pos;
+	int		current_pos;
 
-	if (s[0][index + 1] == '?')
-		dst[0] = duplicate_string_range(s[0], index, index + 2);
-	else
+	if (source[0][idx + 1] == '?')
 	{
-		i = index;
-		doll = index + 1;
-		delimeter = ' ';
-		if (s[0][index + 1] == '(')
-			delimeter = ')';
-		if (index > 0 && s[0][index - 1] == '\'')
-			delimeter = '\'';
-		if (index > 0 && s[0][index - 1] == '\"')
-			delimeter = '\"';
-		while (s[0][i] != '\0' && s[0][i] != delimeter && ((s[0][doll] >= 48
-					&& 57 >= s[0][doll]) || (s[0][doll] >= 65
-					&& 122 >= s[0][doll])))
-		{
-			i++;
-			doll++;
-		}
-		dst[0] = duplicate_string_range(s[0], index, i + 1);
+		segment[0] = duplicate_string_range(source[0], idx, idx + 2);
+		return ;
 	}
+	start_pos = idx;
+	current_pos = idx + 1;
+	delim = ' ';
+	if (source[0][idx + 1] == '(')
+		delim = ')';
+	if (idx > 0 && source[0][idx - 1] == '\'')
+		delim = '\'';
+	if (idx > 0 && source[0][idx - 1] == '\"')
+		delim = '\"';
+	while (source[0][start_pos] != '\0' && source[0][start_pos] != delim
+		&& ((source[0][current_pos] >= '0' && source[0][current_pos] <= '9')
+			|| (source[0][current_pos] >= 'A'
+				&& source[0][current_pos] <= 'z')))
+	{
+		start_pos++;
+		current_pos++;
+	}
+	segment[0] = duplicate_string_range(source[0], idx, start_pos + 1);
 }
 
 /* Isolates the segment of `s` containing the dollar sign ('$') for expansion.
    Splits `s` into `bef_doll` (portion before the dollar sign segment) and `rest` (portion after).
    Expands the dollar sign segment and updates `s` to reflect the expanded result. */
-void isolate_dollar_segment(char **s, t_tools *sh, char **bef_doll, char **rest) {
-    int i;
-    char *doll;
-    char *val;
-
-    // Проверка на успешное выделение памяти
-    if (!s || !*s) return;
-    
-    doll = malloc(sizeof(char) * 256); // Предполагаем, что максимальная длина переменной 256 символов
-    if (!doll) {
-        printf("Error: Memory allocation failed for doll.\n");
-        return;
-    }
-
-    i = -1;
-    while ((*s)[++i] != '\0') {
-        if ((*s)[i] == '$' && count_escaped_characters(*s, i) % 2 == 0 && skip_expans(*s, i) != 1) {
-            bef_doll[0] = duplicate_string_range(*s, 0, i);
-            duplicate_dollar_segment(&doll, s, i);
-            val = expand_dollar_signs(doll, sh);
-            rest[0] = duplicate_string_range(*s, i + strlen(doll), strlen(*s));
-            free(doll);
-            doll = ft_strjoin(bef_doll[0], val);
-            char *tmp = ft_strjoin(doll, rest[0]);
-            free(bef_doll[0]);
-            bef_doll[0] = tmp;
-            free(doll);
-            free(s[0]);
-            *s = bef_doll[0];
-            return;
-        }
-    }
-    free(doll); // Освобождение памяти, если $ не найден
-}
-
-/* Copies the content of `content` into a newly allocated string `var_content`.
-   Returns the pointer to the newly allocated string. */
-char	*copy_variable_content(char *content)
+int	extract_dollar_part(char **str, t_tools *tools, char **before_dollar,
+		char **remaining)
 {
-	int		i;
-	int		content_len;
-	char	*var_content;
+	int		idx;
+	char	**dollar_seg;
+	char	*expanded_val;
 
-	i = -1;
-	content_len = ft_strlen(content) + 1;
-	var_content = malloc(sizeof(char) * content_len);
-	while (content[++i] != '\0')
-		var_content[i] = content[i];
-	var_content[i] = '\0';
-	return (var_content);
+	dollar_seg = smalloc(sizeof(char *));
+	if (!dollar_seg)
+		return -1;
+	idx = 0;
+	while (str[0][idx] != '\0')
+	{
+		if (str[0][idx] == '$' && count_escaped_characters(str[0], idx) % 2 == 0
+			&& bypass_expansion(str[0], idx) != TRUE)
+		{
+			before_dollar[0] = duplicate_string_range(str[0], 0, idx);
+			copy_doll_usa(dollar_seg, str, idx);
+			expanded_val = expand_dollar_signs(dollar_seg[0], tools);
+			remaining[0] = duplicate_string_range(str[0], idx
+					+ strlen(*dollar_seg), strlen(str[0]));
+			free(dollar_seg[0]);
+			*dollar_seg = ft_strjoin(before_dollar[0], expanded_val);
+			before_dollar[0] = ft_get_join(dollar_seg[0], remaining[0]);
+			free(dollar_seg);
+			free(str[0]);
+			*str = *before_dollar;
+			return 0;
+		}
+		idx++;
+	}
+	free(dollar_seg);
+	return 0;
 }
 
+/* Calculates the length of the string `str`.
+   Returns the length of the string. */
+int	calculate_length(char *str)
+{
+	int	length;
+
+	length = 0;
+	while (str[length] != '\0')
+	{
+		length++;
+	}
+	return length;
+}
+
+/* Copies the content of the variable `content` into a newly allocated string.
+   Returns the copied content on success, or NULL on error. */
+char	*duplicate_data(char *content)
+{
+	int		len;
+	char	*copied_content;
+	int		index;
+
+	len = calculate_length(content) + 1;
+	copied_content = smalloc(sizeof(char) * len);
+	if (!copied_content)
+		return NULL;
+	index = 0;
+	while (content[index] != '\0')
+	{
+		copied_content[index] = content[index];
+		index++;
+	}
+	copied_content[index] = '\0';
+	return copied_content;
+}
 
 /* Allocates memory of the specified size and returns a pointer to it.
    Prints an error message and returns NULL if allocation fails. */
@@ -246,37 +374,17 @@ int	expand_variables(char **input, t_tools *context)
 	char	**segment1;
 	char	**segment2;
 
-	while (has_dollar_sign(*input, context))
+	while (detect_dollar_usa(*input, context))
 	{
         segment1 = (char **)allocate_memory(sizeof(char *));
         segment2 = (char **)allocate_memory(sizeof(char *));
-		isolate_dollar_segment(input, context, segment1, segment2);
+		extract_dollar_part(input, context, segment1, segment2);
 		free(segment2[0]);
 		free(segment1);
 		free(segment2);
 	}
 	return (1);
 }
-
-
-bool	strcmp_2(char *str1, char *str2)
-{
-	int		i;
-
-	i = 0;
-	if (str1 == NULL || str2 == NULL)
-		return (FALSE);
-	if (ft_strlen(str1) != ft_strlen(str2))
-		return (FALSE);
-	while (str1[i] != '\0' || str2[i] != '\0')
-	{
-		if (str1[i] != str2[i])
-			return (FALSE);
-		i++;
-	}
-	return (TRUE);
-}
-
 
 /* Processes a command string by expanding variables and converting to lowercase.
    Returns 1 if the command matches "awk", otherwise returns 0. */
@@ -298,7 +406,7 @@ int	run_process_command(char *cmd, t_tools *context)
 			temp_str[j] = tolower(temp_str[j]);
 			j++;
 		}
-		return (strcmp_2(temp_str, "awk") == 0 ? 1 : 0);
+		return (are_strings_equal(temp_str, "awk") == 0 ? 1 : 0);
 	}
 	return (0);
 }
@@ -370,7 +478,7 @@ char	*handle_parentheses(char *trimmed_input, t_tools *context)
 	if (trimmed_input[index - 1] == ')')
 	{
 		trimmed_var = trim_string(trimmed_input, "( )");
-		env_var = find_env_var(context->envair, trimmed_var);
+		env_var = ft_find(context->envair, trimmed_var);
 		free(trimmed_var);
 		if (!env_var)
 		{
@@ -406,7 +514,7 @@ char	*run_dollar_expansion(char *trimmed_input, t_tools *context)
 	char			*empty_str;
 
 	trimmed_var = trim_string(trimmed_input, "( )");
-	env_var = find_env_var(context->envair, trimmed_var);
+	env_var = ft_find(context->envair, trimmed_var);
 	free(trimmed_var);
 	if (!env_var)
 	{

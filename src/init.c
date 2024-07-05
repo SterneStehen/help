@@ -13,7 +13,6 @@
 #include "../include/minishell.h"
 
 
-
 /* Allocates memory of the specified size.
    Prints an error message and returns NULL if the allocation fails. */
 void	*smalloc(size_t size) {
@@ -231,15 +230,14 @@ t_node	*process_tokens_run(t_simple_cmds *cmd, t_node *tokens) {
 t_simple_cmds	*create_command_table(t_simple_cmds *command_tables,
                                     t_node *token_list) {
   t_simple_cmds *new_command;
-  //t_node *current;
+  t_node *current;
 
   if (token_list == NULL)
     return (command_tables);
   new_command = create_empty_structure();
   if (new_command == NULL)
     return (command_tables);
-  //current = 
-  process_tokens_run(new_command, token_list);
+  current = process_tokens_run(new_command, token_list);
   command_tables = extend_command_list(command_tables, new_command);
   return (command_tables);
 }

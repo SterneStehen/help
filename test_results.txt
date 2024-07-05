@@ -47,31 +47,31 @@ Result: ✅ Match
 
 Running test 4: arguments_ls
 Minishell output:
-total 96
+total 120
 -rw-r--r-- 1 sergii sergii  1323 Jul  4 11:16 Makefile
-drwxr-xr-x 2 sergii sergii  4096 Jul  4 11:16 build
+drwxr-xr-x 2 sergii sergii  4096 Jul  5 08:04 build
 drwxr-xr-x 3 sergii sergii  4096 Jul  4 11:16 include
--rwxr-xr-x 1 sergii sergii 68344 Jul  4 11:16 minishell
+-rwxr-xr-x 1 sergii sergii 91744 Jul  5 08:04 minishell
 -rwxr-xr-x 1 sergii sergii  6382 Jul  4 11:16 run_comprehensive_tests copy.sh
-drwxr-xr-x 2 sergii sergii  4096 Jul  4 11:16 src
--rw-r--r-- 1 sergii sergii     0 Jul  4 11:17 test_result_count
--rw-r--r-- 1 sergii sergii   658 Jul  4 11:17 test_results.txt
+drwxr-xr-x 2 sergii sergii  4096 Jul  5 08:00 src
+-rw-r--r-- 1 sergii sergii     0 Jul  5 08:04 test_result_count
+-rw-r--r-- 1 sergii sergii   658 Jul  5 08:04 test_results.txt
 Bash output:
-total 96
+total 120
 -rw-r--r-- 1 sergii sergii  1323 Jul  4 11:16 Makefile
-drwxr-xr-x 2 sergii sergii  4096 Jul  4 11:16 build
+drwxr-xr-x 2 sergii sergii  4096 Jul  5 08:04 build
 drwxr-xr-x 3 sergii sergii  4096 Jul  4 11:16 include
--rwxr-xr-x 1 sergii sergii 68344 Jul  4 11:16 minishell
+-rwxr-xr-x 1 sergii sergii 91744 Jul  5 08:04 minishell
 -rwxr-xr-x 1 sergii sergii  6382 Jul  4 11:16 run_comprehensive_tests copy.sh
-drwxr-xr-x 2 sergii sergii  4096 Jul  4 11:16 src
--rw-r--r-- 1 sergii sergii     0 Jul  4 11:17 test_result_count
--rw-r--r-- 1 sergii sergii  1157 Jul  4 11:17 test_results.txt
+drwxr-xr-x 2 sergii sergii  4096 Jul  5 08:00 src
+-rw-r--r-- 1 sergii sergii     0 Jul  5 08:04 test_result_count
+-rw-r--r-- 1 sergii sergii  1158 Jul  5 08:04 test_results.txt
 Result: ❌ Mismatch
 Difference:
 9c9
-< -rw-r--r-- 1 sergii sergii   658 Jul  4 11:17 test_results.txt
+< -rw-r--r-- 1 sergii sergii   658 Jul  5 08:04 test_results.txt
 ---
-> -rw-r--r-- 1 sergii sergii  1157 Jul  4 11:17 test_results.txt
+> -rw-r--r-- 1 sergii sergii  1158 Jul  5 08:04 test_results.txt
 
 -----------------------
 
@@ -201,85 +201,55 @@ Result: ✅ Match
 
 Running test 16: double_quotes
 Minishell output:
-"This is a test"
+This is a test
 Bash output:
 This is a test
-Result: ❌ Mismatch
-Difference:
-1c1
-< "This is a test"
----
-> This is a test
+Result: ✅ Match
 
 -----------------------
 
 Running test 17: double_quotes_with_var
 Minishell output:
-
+Hello sergii
 Bash output:
 Hello sergii
-Result: ❌ Mismatch
-Difference:
-1c1
-< 
----
-> Hello sergii
+Result: ✅ Match
 
 -----------------------
 
 Running test 18: double_quotes_empty
 Minishell output:
-""
+
 Bash output:
 
-Result: ❌ Mismatch
-Difference:
-1c1
-< ""
----
-> 
+Result: ✅ Match
 
 -----------------------
 
 Running test 19: single_quotes
 Minishell output:
-'This is a test'
+This is a test
 Bash output:
 This is a test
-Result: ❌ Mismatch
-Difference:
-1c1
-< 'This is a test'
----
-> This is a test
+Result: ✅ Match
 
 -----------------------
 
 Running test 20: single_quotes_with_var
 Minishell output:
-'$USER'
+$USER
 Bash output:
 $USER
-Result: ❌ Mismatch
-Difference:
-1c1
-< '$USER'
----
-> $USER
+Result: ✅ Match
 
 -----------------------
 
 Running test 21: single_quotes_empty
 Minishell output:
-''
+
 Bash output:
 
-Result: ❌ Mismatch
-Difference:
-1c1
-< ''
----
-> 
+Result: ✅ Match
 
 -----------------------
 
@@ -291,16 +261,17 @@ WSL2_GUI_APPS_ENABLED=1
 TERM_PROGRAM_VERSION=1.91.0
 WSL_DISTRO_NAME=Ubuntu
 NAME=SamsungPC
-PWD=/home/sergii/workspace/mini/help
+PWD=/home/sergii/workspace/mini/shelp
 LOGNAME=sergii
 VSCODE_GIT_ASKPASS_NODE=/home/sergii/.vscode-server/bin/ea1445cc7016315d0f5728f8e8b12a45dc0a7286/node
+MOTD_SHOWN=update-motd
 HOME=/home/sergii
 LANG=C.UTF-8
-WSL_INTEROP=/run/WSL/1913_interop
+WSL_INTEROP=/run/WSL/395_interop
 LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
 WAYLAND_DISPLAY=wayland-0
 GIT_ASKPASS=/home/sergii/.vscode-server/bin/ea1445cc7016315d0f5728f8e8b12a45dc0a7286/extensions/git/dist/askpass.sh
-VSCODE_GIT_ASKPASS_EXTRA_ARGS= 
+VSCODE_GIT_ASKPASS_EXTRA_ARGS=
 LESSCLOSE=/usr/bin/lesspipe %s %s
 TERM=xterm-256color
 LESSOPEN=| /usr/bin/lesspipe %s
@@ -316,9 +287,9 @@ PATH=/home/sergii/.vscode-server/bin/ea1445cc7016315d0f5728f8e8b12a45dc0a7286/bi
 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
 HOSTTYPE=x86_64
 PULSE_SERVER=unix:/mnt/wslg/PulseServer
-OLDPWD=/home/sergii/workspace/mini/help/build
+OLDPWD=/home/sergii/workspace/mini/shelp/src
 TERM_PROGRAM=vscode
-VSCODE_IPC_HOOK_CLI=/run/user/1000/vscode-ipc-001921b3-9f9b-4472-8778-af7078dd4533.sock
+VSCODE_IPC_HOOK_CLI=/run/user/1000/vscode-ipc-47b1db14-c114-4d65-a2b6-aeb517188efe.sock
 _=./minishell
 Bash output:
 SHELL=/bin/bash
@@ -327,13 +298,14 @@ WSL2_GUI_APPS_ENABLED=1
 TERM_PROGRAM_VERSION=1.91.0
 WSL_DISTRO_NAME=Ubuntu
 NAME=SamsungPC
-PWD=/home/sergii/workspace/mini/help
+PWD=/home/sergii/workspace/mini/shelp
 LOGNAME=sergii
 _=/usr/bin/env
 VSCODE_GIT_ASKPASS_NODE=/home/sergii/.vscode-server/bin/ea1445cc7016315d0f5728f8e8b12a45dc0a7286/node
+MOTD_SHOWN=update-motd
 HOME=/home/sergii
 LANG=C.UTF-8
-WSL_INTEROP=/run/WSL/1913_interop
+WSL_INTEROP=/run/WSL/395_interop
 LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
 WAYLAND_DISPLAY=wayland-0
 GIT_ASKPASS=/home/sergii/.vscode-server/bin/ea1445cc7016315d0f5728f8e8b12a45dc0a7286/extensions/git/dist/askpass.sh
@@ -353,22 +325,18 @@ PATH=/home/sergii/.vscode-server/bin/ea1445cc7016315d0f5728f8e8b12a45dc0a7286/bi
 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
 HOSTTYPE=x86_64
 PULSE_SERVER=unix:/mnt/wslg/PulseServer
-OLDPWD=/home/sergii/workspace/mini/help/build
+OLDPWD=/home/sergii/workspace/mini/shelp/src
 TERM_PROGRAM=vscode
-VSCODE_IPC_HOOK_CLI=/run/user/1000/vscode-ipc-001921b3-9f9b-4472-8778-af7078dd4533.sock
+VSCODE_IPC_HOOK_CLI=/run/user/1000/vscode-ipc-47b1db14-c114-4d65-a2b6-aeb517188efe.sock
 Result: ❌ Mismatch
 Difference:
 8a9
 > _=/usr/bin/env
-16c17
-< VSCODE_GIT_ASKPASS_EXTRA_ARGS= 
----
-> VSCODE_GIT_ASKPASS_EXTRA_ARGS=
-23c24
+24c25
 < SHLVL=1
 ---
 > SHLVL=2
-35d35
+36d36
 < _=./minishell
 
 -----------------------
@@ -393,43 +361,28 @@ Result: ✅ Match
 
 Running test 25: export_new_var
 Minishell output:
-
+TEST_VAR=Hello
 Bash output:
 TEST_VAR=Hello
-Result: ❌ Mismatch
-Difference:
-1c1
-< 
----
-> TEST_VAR=Hello
+Result: ✅ Match
 
 -----------------------
 
 Running test 26: export_override_var
 Minishell output:
-
+World
 Bash output:
 World
-Result: ❌ Mismatch
-Difference:
-1c1
-< 
----
-> World
+Result: ✅ Match
 
 -----------------------
 
 Running test 27: export_empty_var
 Minishell output:
-
+EMPTY_VAR=
 Bash output:
 EMPTY_VAR=
-Result: ❌ Mismatch
-Difference:
-1c1
-< 
----
-> EMPTY_VAR=
+Result: ✅ Match
 
 -----------------------
 
@@ -462,27 +415,22 @@ Result: ✅ Match
 
 Running test 31: cd
 Minishell output:
-/home/sergii/workspace/mini/help
+/tmp
 Bash output:
 /tmp
-Result: ❌ Mismatch
-Difference:
-1c1
-< /home/sergii/workspace/mini/help
----
-> /tmp
+Result: ✅ Match
 
 -----------------------
 
 Running test 32: cd_invalid
 Minishell output:
-
+minishell: cd: non_existing_dir: No such file or directory
 Bash output:
 cd: non_existing_dir: No such file or directory
 Result: ❌ Mismatch
 Difference:
 1c1
-< 
+< minishell: cd: non_existing_dir: No such file or directory
 ---
 > cd: non_existing_dir: No such file or directory
 
@@ -490,51 +438,37 @@ Difference:
 
 Running test 33: cd_home
 Minishell output:
-/home/sergii/workspace/mini/help
+/home/sergii
 Bash output:
 /home/sergii
-Result: ❌ Mismatch
-Difference:
-1c1
-< /home/sergii/workspace/mini/help
----
-> /home/sergii
+Result: ✅ Match
 
 -----------------------
 
 Running test 34: pwd
 Minishell output:
-/home/sergii/workspace/mini/help
+/home/sergii/workspace/mini/shelp
 Bash output:
-/home/sergii/workspace/mini/help
+/home/sergii/workspace/mini/shelp
 Result: ✅ Match
 
 -----------------------
 
 Running test 35: pwd_with_argument
 Minishell output:
-pwd: ignoring non-option arguments
-/home/sergii/workspace/mini/help
+/home/sergii/workspace/mini/shelp
 Bash output:
-/home/sergii/workspace/mini/help
-Result: ❌ Mismatch
-Difference:
-1d0
-< pwd: ignoring non-option arguments
+/home/sergii/workspace/mini/shelp
+Result: ✅ Match
 
 -----------------------
 
 Running test 36: pwd_after_cd
 Minishell output:
-/home/sergii/workspace/mini/help
+/tmp
 Bash output:
 /tmp
-Result: ❌ Mismatch
-Difference:
-1c1
-< /home/sergii/workspace/mini/help
----
-> /tmp
+Result: ✅ Match
 
 -----------------------
 
@@ -542,38 +476,43 @@ Running test 37: relative_path
 Minishell output:
 
 Bash output:
-45242 Segmentation fault      ./minishell
+143037 Segmentation fault      ./minishell
 Result: ❌ Mismatch
 Difference:
 1c1
 < 
 ---
-> 45242 Segmentation fault      ./minishell
+> 143037 Segmentation fault      ./minishell
 
 -----------------------
 
 Running test 38: relative_path_cd
 Minishell output:
-/home/sergii/workspace/mini/help
+minishell: cd: ./minishell: Not a directory
+/home/sergii/workspace/mini/shelp
 Bash output:
 cd: ./minishell: Not a directory
-/home/sergii/workspace/mini/help
+/home/sergii/workspace/mini/shelp
 Result: ❌ Mismatch
 Difference:
-0a1
+1c1
+< minishell: cd: ./minishell: Not a directory
+---
 > cd: ./minishell: Not a directory
 
 -----------------------
 
 Running test 39: relative_path_invalid
 Minishell output:
-
+$./non_existing_path: No such file or directory
+minishell: No such file or directory
 Bash output:
 ./non_existing_path: No such file or directory
 Result: ❌ Mismatch
 Difference:
-1c1
-< 
+1,2c1
+< $./non_existing_path: No such file or directory
+< minishell: No such file or directory
 ---
 > ./non_existing_path: No such file or directory
 
@@ -655,13 +594,13 @@ Result: ✅ Match
 
 Running test 43: redirection_output
 Minishell output:
-'Hello'
+Hello
 Bash output:
 
 Result: ❌ Mismatch
 Difference:
 1c1
-< 'Hello'
+< Hello
 ---
 > 
 
@@ -670,14 +609,14 @@ Difference:
 Running test 44: redirection_append
 Minishell output:
 Hello
-'World'
+World
 Bash output:
 
 Result: ❌ Mismatch
 Difference:
 1,2c1
 < Hello
-< 'World'
+< World
 ---
 > 
 
@@ -685,15 +624,10 @@ Difference:
 
 Running test 45: redirection_input
 Minishell output:
-'Hello World'
+Hello World
 Bash output:
 Hello World
-Result: ❌ Mismatch
-Difference:
-1c1
-< 'Hello World'
----
-> Hello World
+Result: ✅ Match
 
 -----------------------
 
@@ -708,15 +642,10 @@ Result: ✅ Match
 
 Running test 47: heredoc_variable
 Minishell output:
-
+Hello sergii
 Bash output:
 Hello sergii
-Result: ❌ Mismatch
-Difference:
-1c1
-< 
----
-> Hello sergii
+Result: ✅ Match
 
 -----------------------
 
@@ -758,13 +687,17 @@ Result: ✅ Match
 
 Running test 52: crazy_command
 Minishell output:
-
+$dsbksdgbksdghsd: No such file or directory
+$dsbksdgbksdghsd: No such file or directory
+minishell: Command not found
 Bash output:
 dsbksdgbksdghsd: command not found
 Result: ❌ Mismatch
 Difference:
-1c1
-< 
+1,3c1
+< $dsbksdgbksdghsd: No such file or directory
+< $dsbksdgbksdghsd: No such file or directory
+< minishell: Command not found
 ---
 > dsbksdgbksdghsd: command not found
 
@@ -795,43 +728,28 @@ Difference:
 
 Running test 55: env_variable_echo
 Minishell output:
-
+sergii
 Bash output:
 sergii
-Result: ❌ Mismatch
-Difference:
-1c1
-< 
----
-> sergii
+Result: ✅ Match
 
 -----------------------
 
 Running test 56: env_variable_double_quotes
 Minishell output:
-
+sergii
 Bash output:
 sergii
-Result: ❌ Mismatch
-Difference:
-1c1
-< 
----
-> sergii
+Result: ✅ Match
 
 -----------------------
 
 Running test 57: env_variable_export
 Minishell output:
-
+Test
 Bash output:
 Test
-Result: ❌ Mismatch
-Difference:
-1c1
-< 
----
-> Test
+Result: ✅ Match
 
 -----------------------
 
@@ -846,29 +764,19 @@ Result: ✅ Match
 
 Running test 59: echo_hello_world_quotes
 Minishell output:
-"hello world"
+hello world
 Bash output:
 hello world
-Result: ❌ Mismatch
-Difference:
-1c1
-< "hello world"
----
-> hello world
+Result: ✅ Match
 
 -----------------------
 
 Running test 60: echo_hello_world_single_quotes
 Minishell output:
-'hello world'
+hello world
 Bash output:
 hello world
-Result: ❌ Mismatch
-Difference:
-1c1
-< 'hello world'
----
-> hello world
+Result: ✅ Match
 
 -----------------------
 
@@ -876,5 +784,5 @@ Difference:
 -----------------------
 
 Final results:
-Correct results: 28
-Incorrect results: 32
+Correct results: 48
+Incorrect results: 12

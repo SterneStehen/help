@@ -6,12 +6,11 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:43:01 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/03 22:24:09 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/05 07:17:33 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
 
 void	loop_minishell(t_tools *tools) {
   char *line;

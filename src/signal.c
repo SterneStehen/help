@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 22:50:00 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/03 21:21:37 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/05 07:30:39 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 int		glob_c = 0;
 
 void	signals_child(struct termios *mirror_termios);
-void	signal_ctrl_backslash_child(void);
+void	signal_c_back_child(void);
 
 void	signals_parent(void)
 {
-	signal_ctrl_c_parent();
+	signal_c_c_par();
 	signal_ctrl_backslash();
 }
 
@@ -35,7 +35,7 @@ void	handle_sigint_parent(int sig_num)
 	}
 }
 
-void	signal_ctrl_c_parent(void)
+void	signal_c_c_par(void)
 {
 	struct sigaction	ctrl_c;
 
@@ -49,10 +49,10 @@ void	signals_child(struct termios *mirror_termios)
 {
 	tcsetattr(1, TCSAFLUSH, mirror_termios);
 	signal_ctrl_backslash();
-	signal_ctrl_c_child();
+	signal_c_c_chil();
 }
 
-void	signal_ctrl_c_child(void)
+void	signal_c_c_chil(void)
 {
 	struct sigaction	ctrl_c;
 
@@ -62,7 +62,7 @@ void	signal_ctrl_c_child(void)
 	sigaction(SIGINT, &ctrl_c, NULL);
 }
 
-void	signal_ctrl_backslash_child(void)
+void	signal_c_back_child(void)
 {
 	struct sigaction	ctrl_back_slash;
 
@@ -75,12 +75,12 @@ void	signal_ctrl_backslash_child(void)
 void	signals(struct termios *mirror_termios)
 {
 	glob_c = 0;
-	save_settings_and_remove_c(mirror_termios);
+	save(mirror_termios);
 	signal_ctrl_backslash();
 	signal_ctrl_c();
 }
 
-void	save_settings_and_remove_c(struct termios *mirror_termios)
+void	save(struct termios *mirror_termios)
 {
 	struct termios	termios_settings;
 
@@ -119,5 +119,5 @@ void	handle_sigint(int sig_num)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-	}
-}
+ 	}
+ }

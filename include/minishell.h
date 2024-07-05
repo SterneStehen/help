@@ -6,44 +6,65 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 21:08:44 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/04 11:10:42 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/05 08:03:50 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../include/libft/libft.h"
-# include <errno.h>
-# include <fcntl.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <signal.h>
-# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include <sys/stat.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <errno.h>
+# include <limits.h>
 # include <sys/wait.h>
 # include <termios.h>
-# include <unistd.h>
+# include <dirent.h>
+# include <signal.h>
+#	include <stdbool.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include "../libft/libft.h"
 
-// # include "../libft/includes/libft.h"
-// # include "defines.h"
-// # include "structs.h"
-// # include <dirent.h>
-// # include <errno.h>
-// # include <fcntl.h>
-// # include <limits.h>
-// # include <readline/history.h>
-// # include <readline/readline.h>
-// # include <signal.h>
-// # include <stdio.h>
-// # include <stdlib.h>
-// # include <string.h>
-// # include <sys/wait.h>
-// # include <termios.h>
-// # include <unistd.h>
+
+# include <termios.h>
+
+# define TRUE 1
+# define FALSE 0
+# define FAIL 999
+#define IS_DIGIT 1
+#define IS_ALPHA 2
+#define IS_ALNUM 4
+#define IS_PRINTABLE 8
+#define FLAG '-'
+#define SPACE ' '
+#define MALLOC_FAIL "memory allocation failed"
+#define CMD_NOT_FND "command not found"
+#define FORK_ERR_MSG "Fork error"
+#define REDIR_ERR_CODE 258
+# define SHELL "minishell: "
+#define DQ '"'
+#define SQ '\''
+# define SQUOTE 39
+# define DQUOTE 34
+# define PIPE 124
+# define OPERATORS "|><"
+# define REDIRECTIONS "><"
+# define SIMBOL " \t\n\v\r\f"
+# define GIVE_PERM_WTH_RW 0644
+# define SYNTAX_ERROR_NEWLINE "syntax error near unexpected token `newline'"
+ # define FORK_ERROR "fork error"
+ # define NAR "numeric argument required"
+# define VAL "invalid identifier"
+#define PWNED "pwned"
+#define HOMELESS "homeless"
+# define TMA "error arguments"
+# define ISDIR "is a directory"
+# define C_D "/usr/bin/cd"
+
 
 /* Enumeration for token types.
    This enumeration contains various token types used in the program. */
@@ -186,306 +207,336 @@ typedef struct s_tools
 	t_environment			*envair;
 }							t_tools;
 
-
-# define TRUE 1
-# define FALSE 0
-# define FAIL 999
-# define IS_DIGIT 1
-# define IS_ALPHA 2
-# define IS_ALNUM 4
-# define IS_PRINTABLE 8
-# define FLAG '-'
-# define SPACE ' '
-# define SPACES " \t\n\v\r\f"
-# define MALLOC_FAIL "memory allocation failed"
-# define CMD_NOT_FND "command not found"
-# define FORK_ERR_MSG "Fork error"
-# define SHELL "minishell: "
-# define SQUOTE 39
-# define DQUOTE 34
-# define PIPE 124
-# define OPERATORS "|><"
-# define REDIRECTIONS "><"
-# define GIVE_PERM_WTH_RW 0644
-# define FORK_ERROR "fork error"
-# define PIPE_ER "wrong pipe"
-# define ISDIR "is a directory"
-
-
-extern int					glob_c;
+extern int		glob_c;
 
 // envair
-char						*get_current_directory(t_tools *tools);
-t_environment				*create_envairm(char *environment);
-void						append_env_node(t_environment *head,
-								t_environment *new);
-int							setup_environment(t_tools *tools,
-								char **environment);
-void						display_env(t_tools *tools, char **arg_list);
-char						**convert_env_list_to_array(t_environment *environment);
-void						refresh_environment(t_tools *tools);
+char			*get_current_directory(t_tools *tools);
+t_environment	*create_envairm(char *environment);
+void			append_env_node(t_environment *head, t_environment *new);
+int				setup_environment(t_tools *tools, char **environment);
+void			display_env(t_tools *tools, char **arg_list);
+char			**convert_env_list_to_array(t_environment *environment);
+void			refresh_environment(t_tools *tools);
 
 // init
-void						*smalloc(size_t size);
-void						initialize_tools(t_tools *tools);
-t_simple_cmds				*create_empty_structure(void);
-t_node						*dublicate_list(t_node *original_token);
-t_node						*append_token(t_node *token_list,
-								t_node *new_token);
-t_node						*process_redirection(t_simple_cmds *cmd_tbl,
-								t_node *token, t_node *new_token);
-t_node						*install_redirection(t_simple_cmds *cmd_tbl,
-								t_node *token);
-t_node						*handle_new_token(t_simple_cmds *cmd_table,
-								t_node *tok);
-int							check_token_validity(t_simple_cmds *cmd_table,
-								t_node *tok);
-t_node						*set_arg_to_command(t_simple_cmds *cmd_tbl,
-								t_node *token);
-t_simple_cmds				*extend_command_list(t_simple_cmds *command_list,
-								t_simple_cmds *new_command);
-int							validate_command(t_simple_cmds *cmd_table,
-								t_node *tok);
-t_node						*set_command(t_simple_cmds *cmd_table, t_node *tok);
-t_node						*set_commands(t_simple_cmds *cmd_tbl,
-								t_node *token);
-t_node						*process_tokens_run(t_simple_cmds *cmd,
-								t_node *tokens);
-t_simple_cmds				*create_command_table(t_simple_cmds *command_tables,
-								t_node *token_list);
-void						loop_minishell(t_tools *tools);
+void			*smalloc(size_t size);
+void			initialize_tools(t_tools *tools);
+t_simple_cmds	*create_empty_structure(void);
+t_node			*dublicate_list(t_node *original_token);
+t_node			*append_token(t_node *token_list, t_node *new_token);
+t_node			*process_redirection(t_simple_cmds *cmd_tbl, t_node *token,
+					t_node *new_token);
+t_node			*install_redirection(t_simple_cmds *cmd_tbl, t_node *token);
+t_node			*handle_new_token(t_simple_cmds *cmd_table, t_node *tok);
+int				check_token_validity(t_simple_cmds *cmd_table, t_node *tok);
+t_node			*set_arg_to_command(t_simple_cmds *cmd_tbl, t_node *token);
+t_simple_cmds	*extend_command_list(t_simple_cmds *command_list,
+					t_simple_cmds *new_command);
+int				validate_command(t_simple_cmds *cmd_table, t_node *tok);
+t_node			*set_command(t_simple_cmds *cmd_table, t_node *tok);
+t_node			*set_commands(t_simple_cmds *cmd_tbl, t_node *token);
+t_node			*process_tokens_run(t_simple_cmds *cmd, t_node *tokens);
+t_simple_cmds	*create_command_table(t_simple_cmds *command_tables,
+					t_node *token_list);
+
 // lexer
 
-char						*duplicate_string_range(const char *source,
-								int begin, int finish);
-int							inside_double_quotes(const char *input, int index);
-int							contains_quote(const char *input);
-int							find_error_sint(char c);
-int							find_error_sing_newline(void);
-int							is_character_symbol(char c);
-int							check_redir(const char *str);
-int							count_escaped_chars(const char *str, int pos);
-int							is_previous_char_redirection(const char *str,
-								int index);
-int							has_invalid_pipe(const char *str);
-int							audit_simbol_bad(const char *str);
-int							run_lexer(t_tools *tools);
+char			*duplicate_string_range(const char *source, int begin,
+					int finish);
+int				inside_double_quotes(const char *input, int index);
+int				contains_quote(const char *input);
+int				find_error_sint(char c);
+int				find_error_sing_newline(void);
+int				is_character_symbol(char c);
+int				check_redir(const char *str);
+int				count_escaped_chars(const char *str, int pos);
+
+int				is_previous_char_redirection(const char *str, int index);
+int				has_invalid_pipe(const char *str);
+int				audit_simbol_bad(const char *str);
+int				run_lexer(t_tools *tools);
 
 // util
-void						*smalloc(size_t size);
-int							audit_intput(t_tools *tols);
-int							find_character_type(int c);
-int							validate_and_advance(char *str, int *index);
-int							are_strings_equal(const char *s1, const char *s2);
-void						optimize_commands(t_simple_cmds *tbl);
-int							advance_past_whitespace(const char *s, int idx);
-int							check_space(char ch);
-int							is_uppercase(char ch);
-int							convert_to_lowercase(char *s, int limit);
-int							safe_mall(char ***ptr, size_t size);
-int							count_strings(char **array);
-char						*duplicate_string(const char *str);
-char						**arr_dabl(char **array);
-char						*trim_string(char const *s1, char const *set);
-int							is_only_space(char *str);
-int							run_strncmp(t_tools *tools, char *str, int s);
+void			*smalloc(size_t size);
+// char			*duplicate_string_range(const char *source, int begin,
+// 					int finish);
+int				audit_intput(t_tools *tols);
+int				find_character_type(int c);
+int				validate_and_advance(char *str, int *index);
+int				are_strings_equal(const char *s1, const char *s2);
+void			optimize_commands(t_simple_cmds *tbl);
+int				advance_past_whitespace(const char *s, int idx);
+int				check_space(char ch);
+int				is_uppercase(char ch);
+int				convert_to_lowercase(char *s, int limit);
+int				safe_mall(char ***ptr, size_t size);
+int				count_strings(char **array);
+char			*duplicate_string(const char *str);
+char			**arr_dabl(char **array);
+char			*trim_string(char const *s1, char const *set);
+int				is_only_space(char *str);
+int				run_strncmp(t_tools *tools, char *str, int s);
 
 // parser
-t_class						identify_redirection_type(char *str, int start,
-								int end);
-int							is_redirection_token(t_node *tkn);
-void						free_single_token(t_node *tkn);
-void						clear_token_list(t_node *tkn);
-int							strings_equal(char *str1, char *str2);
-char						*delite_quotes(char *input);
-void						manage_process_tokens(t_node *tokens);
-void						handle_command_table(t_simple_cmds *table,
-								t_tools *tools);
-void						delit_quotes_command(t_simple_cmds *table,
-								t_tools *tools);
-void						delite_quotes_tables(t_simple_cmds *tables,
-								t_tools *tools);
-int							calculate_token_size(t_node *token);
-int							count_token_stack(t_node *token);
-int							is_special_ascii(char c);
-int							is_visible_char(char c);
-t_node						*create_token(char *content, t_class type);
-t_node						*create_new_token(char *str, t_class type);
-t_node						*insert_token(t_node *head, char *str,
-								t_class type);
-void						raise_error(char *msg);
-char						**allocate_cmd_args(char *cmd, t_node *token,
-								int *size);
-char						**extract_cmd_args(char *cmd, t_node *token);
-void						init_commands(t_simple_cmds *tables);
-t_node						*split_to_tokens(char *str, t_node *token);
-int							count_escaped_characters(const char *str,
-								int last_index);
-t_node						*plus_quote(char *input_str, int *current_index,
-								int *previous_index, t_node *token);
-char						*duplicate_range(char *str, int start, int end);
-t_node						*plus_string(char *str, int *current_index,
-								int *previous_index, t_node *token);
-int							find_char_in_str(const char *src, int character);
-t_class						determine_redirection_type(char *input, int begin,
-								int finish);
-t_node						*plus_redire(char *input_str, int *current_index,
-								int *previous_index, t_node *token_list);
-t_node						*process_flag_token(char *str, int *idx,
-								int *prev_idx, t_node *token_list);
-t_node						*plus_token_f(char *input_str, int *current_index,
-								int *previous_index, t_node *token_list);
-int							parse_shell_input(t_tools *tools);
-int							audit_command(t_simple_cmds *tables);
-char						*process_token_segment(char *str, int start,
-								int end);
-char						**split_pipe_segments(char *str, int start, int end,
-								int index);
-int							skip_quoted_sections(char *str, int index);
-int							count_pipe_segment(char *str);
+t_class			identify_redirection_type(char *str, int start, int end);
+int				is_redirection_token(t_node *tkn);
+void			free_single_token(t_node *tkn);
+void			clear_token_list(t_node *tkn);
+int				strings_equal(char *str1, char *str2);
+char			*delite_quotes(char *input);
+void			manage_process_tokens(t_node *tokens);
+void			handle_command_table(t_simple_cmds *table, t_tools *tools);
+void			delit_quotes_command(t_simple_cmds *table, t_tools *tools);
+void			delite_quotes_tables(t_simple_cmds *tables, t_tools *tools);
+int				calculate_token_size(t_node *token);
+int				count_token_stack(t_node *token);
+int				is_special_ascii(char c);
+int				is_visible_char(char c);
+t_node			*create_token(char *content, t_class type);
+t_node			*create_new_token(char *str, t_class type);
+t_node			*insert_token(t_node *head, char *str, t_class type);
+void			raise_error(char *msg);
+char			**allocate_cmd_args(char *cmd, t_node *token, int *size);
+char			**extract_cmd_args(char *cmd, t_node *token);
+void			init_commands(t_simple_cmds *tables);
+t_node			*split_to_tokens(char *str, t_node *token);
+int				count_escaped_characters(const char *str, int last_index);
+t_node			*plus_quote(char *input_str, int *current_index,
+					int *previous_index, t_node *token);
+char			*duplicate_range(char *str, int start, int end);
+t_node			*plus_string(char *str, int *current_index, int *previous_index,
+					t_node *token);
+int				find_char_in_str(const char *src, int character);
+t_class			determine_redirection_type(char *input, int begin, int finish);
+t_node			*plus_redire(char *input_str, int *current_index,
+					int *previous_index, t_node *token_list);
+t_node			*process_flag_token(char *str, int *idx, int *prev_idx,
+					t_node *token_list);
+t_node			*plus_token_f(char *input_str, int *current_index,
+					int *previous_index, t_node *token_list);
+int				parse_shell_input(t_tools *tools);
+int				audit_command(t_simple_cmds *tables);
+char			*process_token_segment(char *str, int start, int end);
+char			**split_pipe_segments(char *str, int start, int end, int index);
+int				skip_quoted_sections(char *str, int index);
+int				count_pipe_segment(char *str);
 
 // expander
-char						*allocate_memory(size_t size);
-int							expand_variables(char **input, t_tools *context);
-int							run_process_command(char *cmd, t_tools *context);
-void						process_tokens(struct s_node *tokens,
-								t_tools *context);
-int							multiple_tables_expand(struct s_simple_cmds *commands,
-								t_tools *context);
-char						*copy_variable(const char *var_val);
-char						*handle_parentheses(char *trimmed_input,
-								t_tools *context);
-char						*run_dollar_expansion(char *trimmed_input,
-								t_tools *context);
-char						*handle_special_var(char *input, t_tools *context);
-char						*finalize_expansion(char *expanded_var);
-char						*expand_dollar_signs(char *input, t_tools *context);
-int							validate_quotes(char *s, int i, int *single_quote,
-								int *double_quote);
-int							fail_res_expand(char *input_str, int pos, int sq,
-								int dq);
-int							skip_expans(char *input_str, int pos);
-bool						has_dollar_sign(char *str, t_tools *tools);
-void						duplicate_dollar_segment(char **dst, char **s,
-								int index);
-void						isolate_dollar_segment(char **s, t_tools *tools,
-								char **bef_doll, char **rest);
-char						*copy_variable_content(char *content);
+char			*allocate_memory(size_t size);
+int				expand_variables(char **input, t_tools *context);
+int				run_process_command(char *cmd, t_tools *context);
+void			process_tokens(struct s_node *tokens, t_tools *context);
+int				multiple_tables_expand(struct s_simple_cmds *commands,
+					t_tools *context);
+char			*copy_variable(const char *var_val);
+char			*handle_parentheses(char *trimmed_input, t_tools *context);
+char			*run_dollar_expansion(char *trimmed_input, t_tools *context);
+char			*handle_special_var(char *input, t_tools *context);
+char			*finalize_expansion(char *expanded_var);
+char			*expand_dollar_signs(char *input, t_tools *context);
+int				validate_quotes(char *s, int i, int *single_quote,
+					int *double_quote);
+int				fail_res_expand(char *input_str, int pos, int sq, int dq);
+int				bypass_expansion(char *input_str, int pos);
+int				is_odd(int count);
+int				count_quotes(char *str, int pos, char quote_char);
+int				check_conditions(int sq_count, int dq_count,
+					int initial_position, char *input_str);
+int				bypass_expansion(char *input_str, int position);
+int				is_space_after_dollar(const char *str, int i);
+int				process_dollar_conditions(char *input, t_tools *context,
+					int pos);
+int				detect_dollar_usa(char *input, t_tools *context);
+void			copy_doll_usa(char **segment, char **source, int idx);
+int				extract_dollar_part(char **s, t_tools *sh, char **before_dollar,
+					char **remaining);
+int				calculate_length(char *str);
+char			*duplicate_data(char *content);
 
 // executor
-int							check_invalid_redirection(t_simple_cmds *command);
-void						run_heredoc_commands(t_simple_cmds *first,
-								t_simple_cmds *last, t_tools *tools);
-int							check_commands_for_invalid_redir(t_simple_cmds *commands,
-								t_tools *tools);
-void						execute_pipeline_commands(t_simple_cmds *commands,
-								t_tools *tools);
-int							initialize_pipe(int *descriptor_fd, t_tools *tools);
-int							create_child_process(t_tools *tools,
-								int *descriptor_fd);
-void						execute_parent_process(t_simple_cmds *commands,
-								t_tools *tools, int *descriptor_fd);
-int							run_pipeline_child(t_simple_cmds *commands,
-								t_tools *tools);
-int							validate_redirections(t_simple_cmds *commands);
-void						spawn_and_execute(t_simple_cmds *commands,
-								t_tools *tools, int *is_redirect);
-int							finalize_pipeline_execution(t_simple_cmds *commands,
-								t_tools *tools);
-int							reset_file_descriptors(t_tools *tools);
-int							run_builtin_and_close(t_simple_cmds *commands,
-								t_tools *tools);
-int							handle_execution(t_simple_cmds *commands,
-								t_tools *tools);
-int							simple_execute(t_simple_cmds *commands,
-								t_tools *tools);
-void						error_exit(t_tools *tools, const char *msg);
-void						handle_directory_command(char *cmd, t_tools *tools);
-void						execute_final_command(char *command_path,
-								t_simple_cmds *commands, t_tools *tools);
-int							finalize_command_path(char *command_path,
-								t_simple_cmds *table, t_tools *tools);
-int							execute_command(t_simple_cmds *commands,
-								t_tools *tools);
-void						handle_redirect(t_tools *tools,
-								t_simple_cmds *commands);
-void						process_heredocs_run(t_tools *tools,
-								t_simple_cmds *commands);
-void						run_command_execution(t_tools *tools,
-								t_simple_cmds *commands);
-void						cleanup(t_tools *tools);
-void						run_exec_steps(t_tools *tools,
-								t_simple_cmds *commands);
-int							find_invalid_redirection(t_node *start);
-int							invalid_redirection(t_tools *tools, t_node *token,
-								t_simple_cmds *table);
-void						perform_only_hd(t_tools *tools, t_simple_cmds *tabl,
-								t_node *end);
-int							check_valid_redirection(t_node *curr);
-void						handle_redirection_error(t_tools *tools);
-int							manage_redirections(t_tools *tools,
-								t_simple_cmds *table);
-int							duplicate_and_close(int first_descriptor_fd,
-								int second_descriptor_fd);
-void						report_error(t_tools *tools);
-int							process_heredoc_input(int descriptor_fd);
-int							redirect_io(t_class type, int descriptor_fd,
-								t_tools *tools);
-t_node						*locate_heredoc_token(t_node *redirs_list);
-int							restore_standard_input(t_tools *tools);
-int							create_heredoc_file(t_simple_cmds *table,
-								t_tools *tools, t_node *token);
-int							open_file_for_reading(char *file_name);
-int							open_file_for_writing(char *file_name, int flags);
-int							handle_file_open_error(char *file_name,
-								t_tools *tools);
-int							descriptor_open_file(t_class type, char *file_name,
-								t_tools *tools);
-char						*trim_quotes(char *str);
-int							validate_expansion(char *str, t_tools *tools);
-char						*get_break_string(char *str, t_tools *tools);
-int							execute_heredocs(t_simple_cmds *cmd_tbl,
-								t_tools *tools);
-int							clean_filename(char *filename);
-char						*concatenate_strings(char *str1, char *str2);
-char						*generate_temp_filename(t_simple_cmds *table);
-int							write_to_file(int descriptor_fd, char *stop_word,
-								t_tools *tools);
-char						*generate_temp_heredoc(t_simple_cmds *cmd_tbl,
-								char *stop_word, t_tools *tools);
-char						*build_path(const char *base, const char *cmd);
-int							report_error_and_exit(t_tools *tools,
-								const char *cmd, const char *msg, int code);
-char						*find_command_path(t_tools *tools, const char *cmd);
-int							check_file_access(char *path, t_tools *tools);
-int							audit_comand_path(char *path, t_tools *tools);
+int				check_invalid_redirection(t_simple_cmds *command);
+void			run_heredoc_commands(t_simple_cmds *first, t_simple_cmds *last,
+					t_tools *tools);
+int				check_commands_for_invalid_redir(t_simple_cmds *commands,
+					t_tools *tools);
+void			execute_pipeline_commands(t_simple_cmds *commands,
+					t_tools *tools);
+int				initialize_pipe(int *descriptor_fd, t_tools *tools);
+int				create_child_process(t_tools *tools, int *descriptor_fd);
+void			execute_parent_process(t_simple_cmds *commands, t_tools *tools,
+					int *descriptor_fd);
+int				run_pipeline_child(t_simple_cmds *commands, t_tools *tools);
+int				validate_redirections(t_simple_cmds *commands);
+void			spawn_and_execute(t_simple_cmds *commands, t_tools *tools,
+					int *is_redirect);
+int				finalize_pipeline_execution(t_simple_cmds *commands,
+					t_tools *tools);
+int				reset_file_descriptors(t_tools *tools);
+int				run_builtin_and_close(t_simple_cmds *commands, t_tools *tools);
+int				handle_execution(t_simple_cmds *commands, t_tools *tools);
+int				simple_execute(t_simple_cmds *commands, t_tools *tools);
+void			error_exit(t_tools *tools, const char *msg);
+void			handle_directory_command(char *cmd, t_tools *tools);
+void			execute_final_command(char *command_path,
+					t_simple_cmds *commands, t_tools *tools);
+int				finalize_command_path(char *command_path, t_simple_cmds *table,
+					t_tools *tools);
+int				execute_command(t_simple_cmds *commands, t_tools *tools);
+void			handle_redirect(t_tools *tools, t_simple_cmds *commands);
+void			process_heredocs_run(t_tools *tools, t_simple_cmds *commands);
+void			run_command_execution(t_tools *tools, t_simple_cmds *commands);
+void			cleanup(t_tools *tools);
+void			run_exec_steps(t_tools *tools, t_simple_cmds *commands);
+int				find_invalid_redirection(t_node *start);
+int				invalid_redirection(t_tools *tools, t_node *token,
+					t_simple_cmds *table);
+void			perform_only_hd(t_tools *tools, t_simple_cmds *tabl,
+					t_node *end);
+int				check_valid_redirection(t_node *curr);
+void			handle_redirection_error(t_tools *tools);
+int				manage_redirections(t_tools *tools, t_simple_cmds *table);
+int				duplicate_and_close(int first_descriptor_fd,
+					int second_descriptor_fd);
+void			report_error(t_tools *tools);
+int				process_heredoc_input(int descriptor_fd);
+int				redirect_io(t_class type, int descriptor_fd, t_tools *tools);
+t_node			*locate_heredoc_token(t_node *redirs_list);
+int				restore_standard_input(t_tools *tools);
+int				create_heredoc_file(t_simple_cmds *table, t_tools *tools,
+					t_node *token);
+int				open_file_for_reading(char *file_name);
+int				open_file_for_writing(char *file_name, int flags);
+int				handle_file_open_error(char *file_name, t_tools *tools);
+int				descriptor_open_file(t_class type, char *file_name,
+					t_tools *tools);
+char			*trim_quotes(char *str);
+int				validate_expansion(char *str, t_tools *tools);
+char			*get_break_string(char *str, t_tools *tools);
+int				execute_heredocs(t_simple_cmds *cmd_tbl, t_tools *tools);
+int				clean_filename(char *filename);
+char			*concatenate_strings(char *str1, char *str2);
+char			*generate_temp_filename(t_simple_cmds *table);
+int				write_to_file(int descriptor_fd, char *stop_word,
+					t_tools *tools);
+char			*generate_temp_heredoc(t_simple_cmds *cmd_tbl, char *stop_word,
+					t_tools *tools);
+char			*build_path(const char *base, const char *cmd);
+int				report_error_and_exit(t_tools *tools, const char *cmd,
+					const char *msg, int code);
+char			*find_command_path(t_tools *tools, const char *cmd);
+int				check_file_access(char *path, t_tools *tools);
+int				audit_comand_path(char *path, t_tools *tools);
 
 // free
 
-void						free_string_array(char **array);
-void						release_env_list(t_environment *environment_list);
-void						cleanup_command_tables(t_simple_cmds *cmd_tables);
-void						free_resources(t_tools *tools);
-void						cleanup_before_exit(t_tools *tools);
-void						cleanup_child_proc(t_tools *tools);
-void						release_builtin_resources(t_tools *tools);
-void						child_process_finish(t_tools *tools);
+void			free_string_array(char **array);
+void			release_env_list(t_environment *environment_list);
+void			cleanup_command_tables(t_simple_cmds *cmd_tables);
+void			free_resources(t_tools *tools);
+void			cleanup_before_exit(t_tools *tools);
+void			cleanup_child_proc(t_tools *tools);
+void			release_builtin_resources(t_tools *tools);
+void			child_process_finish(t_tools *tools);
 
 // BUILTINS
-int						run_builtin(t_tools *tools, char *cmd,
-								char **arg_list);
+int				execute_builtin_commands(t_tools *shell, char *cmd,
+					char **args);
+
+// BUILTIN ENV
+char			*get_path(char **environment);
+int				setup_environment(t_tools *tools, char **env);
+t_environment	*create_envairm(char *str);
+char			*get_full_env(t_environment *env);
+void			refresh_environment(t_tools *tools);
+int				print_env_vars(t_tools *tools);
+// void			print_env_vars(t_environment *head);
+char			**convert_env_list_to_array(t_environment *env);
+int				get_env_list_size(t_environment *head);
+void			display_env(t_tools *tools, char **args);
+void			append_env_node(t_environment *head, t_environment *new);
+
+// BUILTIN EXPORT
+char			*get_variable(char *messsag);
+void			print_export(t_tools *tools);
+int				count_equal_sign(t_tools *tools);
+char			*empty_content_allocate(char *content);
+void			insert_new_variable(t_tools *tools, char *str);
+char			*extract_env_data(char *full, char *var_name);
+int				export(t_tools *tools, char *command, char **args);
+// void			export(t_tools *tools, char *cmd, char **args);
+void			export_new_variables(t_tools *tools, char **args);
+void			do_not_export(t_tools *tools, char **args, int i);
+bool			is_valid_export(t_tools *tools, char *args, int i);
+int				alter_var_content(t_tools *toolkit, char *input_str,
+					char *variable);
+// void			replace_var_content(t_tools *tools, char *str, char *var);
+
+// BUILTIN UNSET
+bool			has_plus(char *str);
+void			free_env_var(t_environment *env);
+int				check_invalid_chars(char *string);
+// bool			check_invalid_chars(char *str);
+int				remove_env_var(t_environment *start, t_environment *target);
+// void			remove_env_var(t_environment *head, t_environment *del);
+bool			unset_special(t_tools *tools, char **args);
+t_environment	*ft_find(t_environment *env, const char *name);
+// t_environment	*ft_find(t_environment *head, char *var_name);
+void			unset_all_vars(t_tools *tools, char **args);
+int				unset(t_tools *tools, char *command, char **args);
+// void			unset(t_tools *tools, char *cmd, char **args);
+
+// BUILTIN PWD
+int				pwd(t_tools *tools);
+
+// BUILTIN EXIT
+void			simple_exit(t_tools *tools);
+void			exit_tma(t_tools *tools, char *cmd);
+void			exit_code(t_tools *tools, char **args);
+void			exit_code_on_pipe(t_tools *tools, char **args);
+bool			is_exit_code_correct(t_tools *tools, char *args, int i);
+int				exit_shell(t_tools *tools, char *command, char **args);
+// void			exit_shell(t_tools *tools, char *cmd, char **args);
+void			err_exit(t_tools *tools, char *cmd, char *arg, int option);
+
+// BUILTIN CD
+int				change_directory(t_tools *shell, char *cmd, char **args);
+// void			cd_home(t_tools *tools);
+// void			cd_oldpwd(t_tools *tools);
+// bool			strcmp_2(char *str1, char *str2);
+// void			add_oldpwd_to_env(t_tools *tools);
+// int				nb_delimited_words(char *s, char c);
+// void			cd_slash_is_first_cmd(t_tools *tools);
+// void			change_directory(t_tools *tools, char *cmd, char **args);
+// void			cd_tilde(t_tools *tools, char *folder_path);
+// void			cd_forward(t_tools *tools, char *folder_path);
+// void			update_pwd_and_oldpwd(t_tools *tools, char *old_pwd);
+// void			cd_back(t_tools *tools, char *dotdot, char *folder_path);
+
+// BUILTIN ECHO
+int				inside_double_quotes(const char *input, int index);
+int				is_flag_valid(char *arg);
+int				handle_n_flag(char **args);
+bool			space_filled_token(char *str);
+int				contains_quote(const char *input);
+int				echo_n_flag_validator(char **args);
+void			simple_echo(t_tools *tools, char **args);
+int				echo(t_tools *shell, char *cmd, char **args);
+// void			echo(t_tools *tools, char *cmd, char **args);
+int				write_escapes(char *str, int escp_nb, int i);
+int				print_without_quotes(char *string);
+// void			print_without_quotes(char *str, int i, int k, int dq);
 
 // SIGNALS
-void						signals(struct termios *mirror_termios);
-void						signal_ctrl_c(void);
-void						signals_parent(void);
-void						signal_ctrl_c_child(void);
-void						signal_ctrl_c_parent(void);
-void						signal_ctrl_backslash(void);
-void						handle_sigint(int sig_num);
-void						signal_ctrl_backslash_child(void);
-void						signals(struct termios *terminal_sign);
-void						signals_child(struct termios *mirror_termios);
-void						save_settings_and_remove_c(struct termios *mirror_termios);
+void			signals(struct termios *mirror_termios);
+void			signal_ctrl_c(void);
+void			signals_parent(void);
+void			signal_c_c_chil(void);
+void			signal_c_c_par(void);
+void			signal_ctrl_backslash(void);
+void			handle_sigint(int sig_num);
+void			signal_c_back_child(void);
+void			signals(struct termios *terminal_sign);
+void			signals_child(struct termios *mirror_termios);
+void			save(struct termios *mirror_termios);
 
 #endif
