@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 21:08:44 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/05 08:03:50 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/06 13:47:45 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
+//# include "../libft/includes/libft.h"
+
+
 
 
 # include <termios.h>

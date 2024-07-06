@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:10:56 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/05 07:58:16 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/06 13:20:58 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ t_environment *ft_find(t_environment *env, const char *name)
 {
     while (env != NULL)
     {
-        if (ft_strncmp(env->title, name, strlen(name)) == 0)
+        if (strncmp(env->title, name, strlen(name)) == 0)
             return env;
         env = env->next;
     }

@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 21:17:37 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/05 07:16:40 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/06 13:22:34 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*get_current_directory(t_tools *shell) {
 
   i = 0;
   pwd = ft_find(shell->envair, "PWD");
-  if (ft_strcmp(pwd->data, "/") == TRUE)
+  if (strcmp(pwd->data, "/") == TRUE)
     directory = ft_strdup("/");
   else {
     split = ft_split(pwd->data, '/');
