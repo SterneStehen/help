@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:07:20 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/05 08:03:03 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/07 17:25:30 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,5 +185,12 @@ int echo(t_tools *shell, char *cmd, char **args) {
             handle_args(args);
         }
     }
+    return 0;
+}
+
+int call_echo(t_tools *shell, char *cmd, char **args) {
+    echo(shell, cmd, args);
+    if (shell->last_status != 127)
+        shell->last_status = 0;
     return 0;
 }

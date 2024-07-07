@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:08:56 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/07 01:44:22 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/07 17:33:25 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ int print_env_vars(t_tools *tools) {
 int process_args_run(t_tools *tools, char **args) {
     int i = 1;
     while (args[i] != NULL) {
-        if (args[0] == '=' || strlen(args[i]) == 0) {
+        if (args[0][0] == '=' || strlen(args[i]) == 0) {
             tools->last_status = 1;
             if (tools->flag_log == TRUE) {
                 handle_error(tools, args[0], args[i]);

@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:13:43 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/05 07:19:29 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/07 17:24:40 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,6 +251,7 @@ int	write_to_file(int fd, char *stop_word, t_tools *shell)
 		write(fd, input, ft_strlen(input));
 		free(input);
 	}
+	return 0;
 }
 
 /* Generates a heredoc file and writes input to it.

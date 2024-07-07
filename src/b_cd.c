@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:06:03 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/05 07:40:49 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/07 03:42:25 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	execute_cd_tilde(t_tools *shell, char *argument)
 	if (shell->flag_envair == 0)
 	{
 		home = ft_find(shell->envair, "HOME");
-		tilde_trimmed = trim_string(argument, "~");
+		tilde_trimmed = del_string(argument, "~");
 		path = smalloc(strlen(home->data) + strlen(tilde_trimmed) + 1);
 		sprintf(path, "%s%s", home->data, tilde_trimmed);
 	}

@@ -75,7 +75,7 @@ t_simple_cmds	*create_empty_structure(void) {
 /* Creates a copy of the given token.
    Allocates memory for the new token and copies data from the original token.
  */
-t_node	*dublicate_list(t_node *original_token) {
+t_node	*copy_list(t_node *original_token) {
   t_node *new_token;
 
   new_token = smalloc(sizeof(t_node));
@@ -108,7 +108,7 @@ t_node	*append_token(t_node *token_list, t_node *new_token) {
    table's redirections list. Returns the next token in the list. */
 t_node	*process_redirection(t_simple_cmds *cmd_tbl, t_node *token,
                             t_node *new_token) {
-  new_token = dublicate_list(token);
+  new_token = copy_list(token);
   cmd_tbl->redirections = append_token(cmd_tbl->redirections, new_token);
   return (token->next);
 }
@@ -133,7 +133,7 @@ t_node	*install_redirection(t_simple_cmds *cmd_tbl, t_node *token) {
 t_node	*handle_new_token(t_simple_cmds *cmd_table, t_node *tok) {
   t_node *new_tok;
 
-  new_tok = dublicate_list(tok);
+  new_tok = copy_list(tok);
   cmd_table->token_arg = append_token(cmd_table->token_arg, new_tok);
   return (tok->next);
 }
@@ -230,14 +230,14 @@ t_node	*process_tokens_run(t_simple_cmds *cmd, t_node *tokens) {
 t_simple_cmds	*create_command_table(t_simple_cmds *command_tables,
                                     t_node *token_list) {
   t_simple_cmds *new_command;
-  t_node *current;
+
 
   if (token_list == NULL)
     return (command_tables);
   new_command = create_empty_structure();
   if (new_command == NULL)
     return (command_tables);
-  current = process_tokens_run(new_command, token_list);
+  process_tokens_run(new_command, token_list);
   command_tables = extend_command_list(command_tables, new_command);
   return (command_tables);
 }

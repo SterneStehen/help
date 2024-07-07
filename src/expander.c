@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 21:25:23 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/05 07:48:23 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/07 15:57:40 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,6 @@
 
 
 
-char	*ft_get_join(char const *s1, char const *s2)
-{
-	char	*str;
-	size_t	z;
-	size_t	s;
-
-	if (!s1 || !s2)
-		return (NULL);
-	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (!str)
-		return (NULL);
-	z = 0;
-	s = 0;
-	while (s1[z])
-	{
-		str[s++] = s1[z];
-		z++;
-	}
-	z = 0;
-	while (s2[z])
-	{
-		str[s++] = s2[z];
-		z++;
-	}
-	str[s] = '\0';
-	return (str);
-}
 
 /* Checks if a count is odd.
    Returns 1 if odd, 0 otherwise. */
@@ -278,6 +251,53 @@ void	copy_doll_usa(char **segment, char **source, int idx)
 	segment[0] = duplicate_string_range(source[0], idx, start_pos + 1);
 }
 
+
+size_t get_length(const char *str) {
+    size_t length = 0;
+    while (str[length])
+        length++;
+    return length;
+}
+
+int combine_strings(char *dest, const char *src1, const char *src2) {
+    size_t i = 0;
+    size_t j = 0;
+    while (src1[i]) {
+        dest[j++] = src1[i++];
+    }
+    i = 0;
+    while (src2[i]) {
+        dest[j++] = src2[i++];
+    }
+    dest[j] = '\0';
+    return 0;
+}
+
+char *savmalloc(size_t size) {
+    char *ptr = malloc(size);
+    if (!ptr) {
+        printf("Memory allocation failed\n");
+        return NULL;
+    }
+    return ptr;
+}
+
+char *join_strings(const char *a, const char *b) {
+    if (!a || !b) {
+        printf("Invalid input\n");
+        return NULL;
+    }
+    size_t len1 = get_length(a);
+    size_t len2 = get_length(b);
+    char *result = savmalloc(len1 + len2 + 1);
+    if (!result) {
+        return NULL;
+    }
+    combine_strings(result, a, b);
+    return result;
+}
+
+
 /* Isolates the segment of `s` containing the dollar sign ('$') for expansion.
    Splits `s` into `bef_doll` (portion before the dollar sign segment) and `rest` (portion after).
    Expands the dollar sign segment and updates `s` to reflect the expanded result. */
@@ -294,7 +314,7 @@ int	extract_dollar_part(char **str, t_tools *tools, char **before_dollar,
 	idx = 0;
 	while (str[0][idx] != '\0')
 	{
-		if (str[0][idx] == '$' && count_escaped_characters(str[0], idx) % 2 == 0
+		if (str[0][idx] == '$' && calcul_escaped_charact(str[0], idx) % 2 == 0
 			&& bypass_expansion(str[0], idx) != TRUE)
 		{
 			before_dollar[0] = duplicate_string_range(str[0], 0, idx);
@@ -304,7 +324,7 @@ int	extract_dollar_part(char **str, t_tools *tools, char **before_dollar,
 					+ strlen(*dollar_seg), strlen(str[0]));
 			free(dollar_seg[0]);
 			*dollar_seg = ft_strjoin(before_dollar[0], expanded_val);
-			before_dollar[0] = ft_get_join(dollar_seg[0], remaining[0]);
+			before_dollar[0] = join_strings(dollar_seg[0], remaining[0]);
 			free(dollar_seg);
 			free(str[0]);
 			*str = *before_dollar;
@@ -332,7 +352,7 @@ int	calculate_length(char *str)
 
 /* Copies the content of the variable `content` into a newly allocated string.
    Returns the copied content on success, or NULL on error. */
-char	*duplicate_data(char *content)
+char	*copy_data(char *content)
 {
 	int		len;
 	char	*copied_content;
@@ -406,7 +426,15 @@ int	run_process_command(char *cmd, t_tools *context)
 			temp_str[j] = tolower(temp_str[j]);
 			j++;
 		}
-		return (are_strings_equal(temp_str, "awk") == 0 ? 1 : 0);
+		if (are_strings_equal(temp_str, "awk") == 0) 
+		{
+			free(temp_str);
+   			return 1;
+} 		else 
+		{
+			free(temp_str);
+    		return 0;
+		}
 	}
 	return (0);
 }
@@ -477,7 +505,7 @@ char	*handle_parentheses(char *trimmed_input, t_tools *context)
 	}
 	if (trimmed_input[index - 1] == ')')
 	{
-		trimmed_var = trim_string(trimmed_input, "( )");
+		trimmed_var = del_string(trimmed_input, "( )");
 		env_var = ft_find(context->envair, trimmed_var);
 		free(trimmed_var);
 		if (!env_var)
@@ -513,7 +541,7 @@ char	*run_dollar_expansion(char *trimmed_input, t_tools *context)
 	t_environment	*env_var;
 	char			*empty_str;
 
-	trimmed_var = trim_string(trimmed_input, "( )");
+	trimmed_var = del_string(trimmed_input, "( )");
 	env_var = ft_find(context->envair, trimmed_var);
 	free(trimmed_var);
 	if (!env_var)
@@ -583,7 +611,7 @@ char	*expand_dollar_signs(char *input, t_tools *context)
 	}
 	else
 	{
-		trimmed_input = trim_string(input, "$");
+		trimmed_input = del_string(input, "$");
 		if (trimmed_input[0] == '(')
 		{
 			expanded_var = handle_parentheses(trimmed_input, context);

@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 22:07:32 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/05 07:17:52 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/07 03:42:25 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ int	check_space(char ch)
 
 /* Checks if the given character is an uppercase letter.
    Returns 1 if the character is uppercase, otherwise returns 0. */
-int	is_uppercase(char ch)
+int	is_capital_letter(char ch)
 {
 	return (ch >= 'A' && ch <= 'Z');
 }
@@ -163,7 +163,7 @@ int	convert_to_lowercase(char *s, int limit)
 	len = strlen(s);
 	while (i < len && i < limit)
 	{
-		if (is_uppercase(s[i]))
+		if (is_capital_letter(s[i]))
 			s[i] = tolower(s[i]);
 		i++;
 	}
@@ -242,7 +242,7 @@ char	**arr_dabl(char **array)
 
 /* Trims characters from the set at the beginning and end of the string s1.
    Returns the trimmed string or NULL if memory allocation fails. */
-char	*trim_string(char const *s1, char const *set)
+char	*del_string(char const *s1, char const *set)
 {
 	char	*result;
 	size_t	i;
