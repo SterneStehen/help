@@ -12,7 +12,6 @@
 
 #include "../include/minishell.h"
 
-
 /* Checks for incorrect redirection in command. */
 int	check_invalid_redirection(t_simple_cmds *command)
 {
@@ -110,55 +109,49 @@ void	execute_pipeline_commands(t_simple_cmds *table, t_tools *shell)
 }
 
 /* Creates a pipe and handles errors. */
-int	initialize_pipe(int *fd, t_tools *shell)
+int initialize_pipe(int *fd, t_tools *shell)
 {
-	if (pipe(fd) == -1)
-	{
-		if (shell->flag_log == 1)
-		{
-			printf("pipe failed\n");
-		}
-		return (0);
-	}
-	return (1);
+    if (pipe(fd) == -1)
+    {
+        error_exit(shell, "pipe failed");
+        return (0);
+    }
+    return (1);
 }
 
 /* Forks and sets up child process for execution. */
-int	create_child_process(t_tools *shell, int *fd)
+int create_child_process(t_tools *shell, int *fd)
 {
-	pid_t	pid;
+    pid_t pid;
 
-	pid = fork();
-	shell->flag_ready_to_execute = 1;
-	if (pid <= -1)
-	{
-		if (shell->flag_log == 1)
-		{
-			printf("%s%s\n", SHELL, FORK_ERROR);
-		}
-		return (0);
-	}
-	else if (pid == 0)
-	{
-		signals_child(&shell->terminal_setting);
-		shell->flag_log = 1;
-		close(fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[1]);
-		return (1);
-	}
-	return (2);
+    pid = fork();
+    shell->flag_ready_to_execute = 1;
+    if (pid <= -1)
+    {
+        error_exit(shell, FORK_ERROR);
+        return (0);
+    }
+    else if (pid == 0)
+    {
+        signals_child(&shell->terminal_setting);
+        shell->flag_log = 1; // Установка флага логирования
+        close(fd[0]);
+        dup2(fd[1], STDOUT_FILENO);
+        close(fd[1]);
+        return (1);
+    }
+    return (2);
 }
 
 /* Executes commands in the parent process. */
-void	execute_parent_process(t_simple_cmds *table, t_tools *shell, int *fd)
+void execute_parent_process(t_simple_cmds *table, t_tools *shell, int *fd)
 {
-	shell->flag_log = 0;
-	if (table->command != NULL)
-		execute_builtin_commands(shell, table->command, table->arguments);
-	close(fd[1]);
-	dup2(fd[0], STDIN_FILENO);
-	close(fd[0]);
+    shell->flag_log = 0; // Сброс флага логирования перед выполнением команд
+    if (table->command != NULL)
+        execute_builtin_commands(shell, table->command, table->arguments);
+    close(fd[1]);
+    dup2(fd[0], STDIN_FILENO);
+    close(fd[0]);
 }
 
 /* Handles child process execution for a pipeline. */
@@ -205,36 +198,36 @@ int	validate_redirections(t_simple_cmds *table)
 }
 
 /* Forks and executes a command, handling redirections. */
-void	spawn_and_execute(t_simple_cmds *table, t_tools *shell, int *has_redir)
+void spawn_and_execute(t_simple_cmds *table, t_tools *shell, int *has_redir)
 {
-	pid_t	pid;
-	int		status;
-	int		fd[2];
+    pid_t pid;
+    int status;
+    int fd[2];
 
-	pid = fork();
-	shell->flag_ready_to_execute = 1;
-	if (pid == -1)
-	{
-		if (shell->flag_log == 1)
-			printf("%s%s\n", SHELL, FORK_ERROR);
-		return ;
-	}
-	else if (pid == 0)
-	{
-		signals_child(&shell->terminal_setting);
-		shell->flag_log = 1;
-		*has_redir = validate_redirections(table);
-		if (*has_redir == 0)
-			dup2(shell->standard_output_fd, STDOUT_FILENO);
-		manage_redirections(shell, table);
-		execute_command(table, shell);
-		exit(0);
-	}
-	signals_parent();
-	shell->flag_log = FALSE;
-	waitpid(pid, &status, 0);
-	shell->last_status = WEXITSTATUS(status);
+    pid = fork();
+    shell->flag_ready_to_execute = 1;
+    if (pid == -1)
+    {
+        error_exit(shell, FORK_ERROR);
+        return;
+    }
+    else if (pid == 0)
+    {
+        signals_child(&shell->terminal_setting);
+        shell->flag_log = 1; // Установка флага логирования
+        *has_redir = validate_redirections(table);
+        if (*has_redir == 0)
+            dup2(shell->standard_output_fd, STDOUT_FILENO);
+        manage_redirections(shell, table);
+        execute_command(table, shell);
+        exit(0);
+    }
+    signals_parent();
+    shell->flag_log = 0; // Сброс флага логирования после завершения процесса
+    waitpid(pid, &status, 0);
+    shell->last_status = WEXITSTATUS(status);
 }
+
 
 /* Executes the final command in a pipeline. */
 int	finalize_pipeline_execution(t_simple_cmds *table, t_tools *shell)
@@ -290,109 +283,106 @@ int	run_builtin_and_close(t_simple_cmds *cmd_table, t_tools *sh)
 }
 
 /* Handles execution of a command table. */
-int	handle_execution(t_simple_cmds *cmd_table, t_tools *sh)
+int handle_execution(t_simple_cmds *cmd_table, t_tools *sh)
 {
-	char	**cmd_args_copy;
-	char	**env_copy;
-	int		exit_status;
+    char **cmd_args_copy;
+    char **env_copy;
+    int exit_status;
 
-	signals_child(&sh->terminal_setting);
-	if (!invalid_redirection(sh, cmd_table->redirections, cmd_table))
-	{
-		sh->flag_log = 1;
-		manage_redirections(sh, cmd_table);
-		execute_command(cmd_table, sh);
-	}
-	exit_status = sh->last_status;
-	cmd_args_copy = arr_dabl(cmd_table->arguments);
-	env_copy = arr_dabl(sh->envp);
-	if (execve(cmd_table->command, cmd_args_copy, env_copy) == -1)
-	{
-		if (sh->flag_log)
-		{
-			printf("%s%s\n", SHELL, strerror(errno));
-		}
-		free_string_array(cmd_args_copy);
-		free_string_array(env_copy);
-		return (exit_status);
-	}
-	return (exit_status);
+    signals_child(&sh->terminal_setting);
+    if (!invalid_redirection(sh, cmd_table->redirections, cmd_table))
+    {
+        sh->flag_log = 1; // Установка флага логирования
+        manage_redirections(sh, cmd_table);
+        execute_command(cmd_table, sh);
+    }
+    exit_status = sh->last_status;
+    cmd_args_copy = arr_dabl(cmd_table->arguments);
+    env_copy = arr_dabl(sh->envp);
+    if (execve(cmd_table->command, cmd_args_copy, env_copy) == -1)
+    {
+        //error_exit(sh, strerror(errno));
+        free_string_array(cmd_args_copy);
+        free_string_array(env_copy);
+        return exit_status;
+    }
+    return exit_status;
 }
 
 /* Executes a single command. */
-int	simple_execute(t_simple_cmds *cmd_table, t_tools *sh)
+int simple_execute(t_simple_cmds *cmd_table, t_tools *sh)
 {
-	int		exec_status;
-	pid_t	child_pid;
-	int		wait_status;
+    int exec_status;
+    pid_t child_pid;
+    int wait_status;
 
-	sh->flag_pipe = 0;
-	sh->flag_ready_to_execute = 1;
-	child_pid = fork();
-	if (child_pid == 0)
-	{
-		exec_status = handle_execution(cmd_table, sh);
-		child_process_finish(sh);
-	}
-	else if (child_pid == -1)
-	{
-		if (sh->flag_log)
-		{
-			printf("%s\n", FORK_ERR_MSG);
-		}
-		return (-1);
-	}
-	else
-	{
-		signals_parent();
-		sh->flag_log = 0;
-		waitpid(child_pid, &wait_status, 0);
-		sh->last_status = WEXITSTATUS(wait_status);
-		run_builtin_and_close(cmd_table, sh);
-	}
-	return (0);
+    sh->flag_pipe = 0;
+    sh->flag_ready_to_execute = 1;
+    child_pid = fork();
+    if (child_pid == 0)
+    {
+        exec_status = handle_execution(cmd_table, sh);
+        child_process_finish(sh);
+    }
+    else if (child_pid == -1)
+    {
+        error_exit(sh, FORK_ERR_MSG);
+        return (-1);
+    }
+    else
+    {
+        signals_parent();
+        sh->flag_log = 0;
+        waitpid(child_pid, &wait_status, 0);
+        sh->last_status = WEXITSTATUS(wait_status);
+        run_builtin_and_close(cmd_table, sh);
+    }
+    return (0);
 }
+
 
 /* Exits the program with an error message. */
-void	error_exit(t_tools *shell, const char *msg)
+void error_exit(t_tools *shell, const char *msg)
 {
-	if (shell->flag_log == TRUE)
-	{
-		printf("%s%s\n", SHELL, msg);
-	}
-	exit(shell->last_status);
+    if (shell->flag_log == 1)
+    {
+        printf("%s: %s:  %s\n", "minishell: ", shell->message, msg);
+        shell->flag_log = 0; // Сброс флага логирования после вывода ошибки
+    }
+    exit(shell->last_status);
 }
+
 
 /* Handles directory errors in command execution. */
 void	handle_directory_command(char *cmd, t_tools *shell)
 {
-	if (shell->flag_log == TRUE)
+	if (shell->flag_log == 1)
 	{
 		printf("%s%s: %s\n", SHELL, cmd, ISDIR);
+		shell->flag_log = 0;
 	}
 	shell->last_status = 126;
 	cleanup_child_proc(shell);
 	exit(shell->last_status);
 }
 
+
 /* Executes the final command in a command table. */
-void	execute_final_command(char *command_path, t_simple_cmds *table,
-		t_tools *shell)
+void execute_final_command(char *command_path, t_simple_cmds *table, t_tools *shell)
 {
-	char	**cmd_args_copy;
-	char	**env_copy;
-	int		exec_result;
+    char **cmd_args_copy;
+    char **env_copy;
+    int exec_result;
 
-	shell->flag_execution_completed = 1;
-	cmd_args_copy = arr_dabl(table->arguments);
-	env_copy = arr_dabl(shell->envp);
-	exec_result = execve(command_path, cmd_args_copy, env_copy);
-	if (exec_result == -1)
-	{
-		error_exit(shell, strerror(errno));
-	}
+    shell->flag_execution_completed = 1;
+    cmd_args_copy = arr_dabl(table->arguments);
+    env_copy = arr_dabl(shell->envp);
+    exec_result = execve(command_path, cmd_args_copy, env_copy);
+    if (exec_result == -1)
+    {
+        error_exit(shell, strerror(errno));
+    }
 }
-
 /* Finalizes the execution of a command. */
 int	finalize_command_path(char *command_path, t_simple_cmds *table,
 		t_tools *shell)
@@ -409,35 +399,35 @@ int	finalize_command_path(char *command_path, t_simple_cmds *table,
 }
 
 /* Executes a command. */
-int	execute_command(t_simple_cmds *table, t_tools *shell)
+int execute_command(t_simple_cmds *table, t_tools *shell)
 {
-	char	*command_path;
+    char *command_path;
 
-	if (table->command == NULL)
-	{
-		exit(shell->last_status);
-	}
-	if (execute_builtin_commands(shell, table->command, table->arguments))
-	{
-		exit(shell->last_status);
-	}
-	else if (audit_comand_path(table->command, shell))
-	{
-		finalize_command_path(table->command, table, shell);
-	}
-	else if (table->command[0] != '.' && table->command[0] != '/')
-	{
-		command_path = find_command_path(shell, table->command);
-		if (command_path == NULL)
-		{
-			error_exit(shell, "Command not found");
-		}
-		else if (access(command_path, X_OK) == 0)
-		{
-			finalize_command_path(command_path, table, shell);
-		}
-	}
-	return (0);
+    if (table->command == NULL)
+    {
+        exit(shell->last_status);
+    }
+    if (execute_builtin_commands(shell, table->command, table->arguments))
+    {
+        exit(shell->last_status);
+    }
+    else if (audit_comand_path(table->command, shell))
+    {
+        finalize_command_path(table->command, table, shell);
+    }
+    else if (table->command[0] != '.' && table->command[0] != '/')
+    {
+        command_path = find_command_path(shell, table->command);
+        if (command_path == NULL)
+        {
+            error_exit(shell, "Command not found");
+        }
+        else if (access(command_path, X_OK) == 0)
+        {
+            finalize_command_path(command_path, table, shell);
+        }
+    }
+    return (0);
 }
 
 /* Handles redirections in commands. */
@@ -478,25 +468,25 @@ void	process_heredocs_run(t_tools *sh, t_simple_cmds *tbl)
 /* Performs the execution of command tables. */
 void	run_command_execution(t_tools *sh, t_simple_cmds *tbl)
 {
-	int				tbl_size;
+	int				table_size;
 	t_simple_cmds	*temp_tbl;
 	int				g_ctrl_c;
 
 	g_ctrl_c = 0;
-	tbl_size = 0;
+	table_size = 0;
 	temp_tbl = tbl;
 	while (temp_tbl != NULL)
 	{
-		tbl_size++;
+		table_size++;
 		temp_tbl = temp_tbl->next;
 	}
-	if (tbl_size == 1)
+	if (table_size == 1)
 	{
 		simple_execute(tbl, sh);
 	}
 	else
 	{
-		sh->flag_pipe = TRUE;
+		sh->flag_pipe = 1;
 		execute_pipeline_commands(tbl, sh);
 	}
 }
@@ -508,18 +498,18 @@ void	cleanup(t_tools *sh)
 	sh->commands = NULL;
 }
 
-/* Runs the execution of commands. */
-void	run_exec_steps(t_tools *sh, t_simple_cmds *tbl)
+/* Main function to execute commands. */
+void run_exec_steps(t_tools *sh, t_simple_cmds *tbl)
 {
-	int	redir_status;
-	int	heredoc_status;
+    int redir_status;
+    int heredoc_status;
 
-	redir_status = 0;
-	heredoc_status = 0;
-	handle_redirect(sh, tbl);
-	if (sh->commands == NULL)
-		return ;
-	process_heredocs_run(sh, tbl);
-	run_command_execution(sh, tbl);
-	cleanup(sh);
+    redir_status = 0;
+    heredoc_status = 0;
+    handle_redirect(sh, tbl);
+    if (sh->commands == NULL)
+        return;
+    process_heredocs_run(sh, tbl);
+    run_command_execution(sh, tbl);
+    cleanup(sh);
 }

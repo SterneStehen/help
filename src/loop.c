@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:43:01 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/05 07:17:33 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/07 00:30:22 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,16 @@ void	loop_minishell(t_tools *tools) {
     tools->flag_ready_to_execute = FALSE;
     if (isatty(fileno(stdin)))
       tools->message = readline("minishell$ ");
-    else {
+    else 
+    {
       line = get_next_line(fileno(stdin));
       tools->message = trim_string(line, "\n");
       free(line);
+    }
+    if (tools->message == NULL) 
+    {  
+      printf("exit\n");
+      break;
     }
     tools->shell_string = trim_string(tools->message, " ");
     refresh_environment(tools);

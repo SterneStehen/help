@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 08:00:44 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/05 08:01:13 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/07 00:36:32 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,7 @@ int	find_invalid_redirection(t_node *start)
 			possible_wrong = possible_wrong->next;
 			continue ;
 		}
-		if (!(is_redirection_token(possible_wrong)
-				&& possible_wrong->next != NULL
-				&& !is_redirection_token(possible_wrong->next)))
+		if (!(is_redirection_token(possible_wrong) && possible_wrong->next != NULL && !is_redirection_token(possible_wrong->next)))
 		{
 			break ;
 		}

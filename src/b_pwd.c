@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:10:05 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/05 07:10:28 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/06 23:31:10 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ int find_pwd(t_environment *env) {
     return 1;
 }
 
-void log_message(t_tools *tools, char *message) {
-    if (tools->flag_log) {
-        printf("%s\n", message);
-    }
-}
+// void log_message(t_tools *tools, char *message) {
+//     if (tools->flag_log) {
+//         printf("%s\n", message);
+//     }
+// }
 
 int check_env(t_tools *tools) {
     t_environment *current = tools->envair;

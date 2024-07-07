@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:08:17 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/05 07:08:38 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/06 23:58:31 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@ int parse_exit_code(char *arg, int *sign) {
 
     while (arg[i] != '\0') {
         if (arg[i] < '0' || arg[i] > '9') {
-            log_error(arg, "Numeric argument required");
-            return 255;
+            return -1; // возвращаем -1 в случае ошибки, чтобы обработать ее вне этой функции
         }
         result = (result * 10) + (arg[i] - '0');
         if (result > 255) {
@@ -51,6 +50,10 @@ int parse_exit_code(char *arg, int *sign) {
 int process_exit_code(t_tools *tools, char **args) {
     int sign = 0;
     int result = parse_exit_code(args[1], &sign);
+    if (result == -1) {
+        log_error(args[1], "Numeric argument required");
+        result = 255;
+    }
     tools->last_status = result;
     cleanup_before_exit(tools);
     exit(tools->last_status);

@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 21:08:44 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/06 13:47:45 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/06 23:26:05 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@
 # define SIMBOL " \t\n\v\r\f"
 # define GIVE_PERM_WTH_RW 0644
 # define SYNTAX_ERROR_NEWLINE "syntax error near unexpected token `newline'"
- # define FORK_ERROR "fork error"
- # define NAR "numeric argument required"
+# define FORK_ERROR "fork error"
+# define NAR "numeric argument required"
 # define VAL "invalid identifier"
 #define PWNED "pwned"
 #define HOMELESS "homeless"
@@ -536,7 +536,7 @@ void			signals_parent(void);
 void			signal_c_c_chil(void);
 void			signal_c_c_par(void);
 void			signal_ctrl_backslash(void);
-void			handle_sigint(int sig_num);
+void			parent_sig_handler(int sig_num);
 void			signal_c_back_child(void);
 void			signals(struct termios *terminal_sign);
 void			signals_child(struct termios *mirror_termios);

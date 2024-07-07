@@ -20,6 +20,6 @@ int	main(int argc, char **argv, char **envp) {
   setup_environment(&tools, envp);
   initialize_tools(&tools);
   loop_minishell(&tools);
-  cleanup_before_exit(&tools);
+  free_resources(&tools);
   exit(tools.last_status);
 }

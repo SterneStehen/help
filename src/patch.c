@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:14:56 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/05 07:15:18 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/07 02:31:11 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,11 @@ char	*build_path(const char *base, const char *cmd)
 int	report_error_and_exit(t_tools *sh, const char *cmd, const char *msg,
 		int code)
 {
-	if (sh->flag_log)
+	if (sh->flag_log == 1)
+	{
 		printf("%c%s: %s\n", '$', cmd, msg);
+		sh->flag_log = 0;
+	}
 	sh->last_status = code;
 	return (0);
 }
@@ -73,8 +76,9 @@ int	check_file_access(char *path, t_tools *sh)
 	else
 	{
 		sh->last_status = -1;
-		if (sh->flag_log)
+		if (sh->flag_log == 1)
 			printf("%c%s: %s\n", '$', path, strerror(ENOENT));
+			sh->flag_log = 0;
 		return (0);
 	}
 }
@@ -94,7 +98,7 @@ int	audit_comand_path(char *path, t_tools *sh)
 		if (path[0] == '.' && path[1] == '/' && len == 2)
 		{
 			sh->last_status = 127;
-			if (sh->flag_log)
+			if (sh->flag_log == 1)
 				printf("%c%s: %s\n", '$', sh->shell_string, strerror(ENOENT));
 			return (0);
 		}
@@ -103,7 +107,7 @@ int	audit_comand_path(char *path, t_tools *sh)
 			if (path[0] == '.' && path[1] != '/')
 			{
 				sh->last_status = 127;
-				if (sh->flag_log)
+				if (sh->flag_log == 1)
 					printf("%c%s: %s\n", '$', path, strerror(ENOENT));
 				return (0);
 			}
@@ -112,8 +116,11 @@ int	audit_comand_path(char *path, t_tools *sh)
 			else if (sh->flag_envair)
 			{
 				sh->last_status = 127;
-				if (sh->flag_log)
+				if (sh->flag_log == 1)
+				{
 					printf("%c%s: %s\n", '$', path, strerror(ENOENT));
+					sh->flag_log = 0;
+				}
 				return (0);
 			}
 		}

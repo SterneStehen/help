@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:11:47 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/05 07:12:07 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/07 01:14:53 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,11 @@ int call_echo(t_tools *shell, char *cmd, char **args) {
 }
 
 int execute_builtin_commands(t_tools *shell, char *cmd, char **args) {
-    if (shell->flag_envair) shell->last_status = 127;
+    if (shell->flag_envair) 
+        shell->last_status = 127;
 
-    if (compare_commands(shell, cmd, args)) return 1;
+    if (compare_commands(shell, cmd, args)) 
+    return 1;
 
     return 0;
 }

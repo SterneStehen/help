@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:08:56 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/05 07:09:43 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/07 01:44:22 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,13 +200,20 @@ int process_args_run(t_tools *tools, char **args) {
 
 // Main export function
 int export(t_tools *tools, char *command, char **args) {
-    if (args[1] == NULL && tools->flag_log == TRUE) {
+    if (args[1] == NULL && tools->flag_log == TRUE) 
+    {
         return print_env_vars(tools);
-    } else if (args[1] != NULL && tools->flag_pipe == FALSE) {
+    } 
+    else if (args[1] != NULL && tools->flag_pipe == FALSE) 
+    {
         return process_args_run(tools, args);
-    } else {
+    } 
+    else
+    {
         tools->last_status = 1;
-        printf("%s: wrong arguments\n", SHELL);
+        if(tools->flag_log == 1)
+            printf("%s: wrong arguments\n", SHELL);
         return 1;
     }
+    return 0;
 }
