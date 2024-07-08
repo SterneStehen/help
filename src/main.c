@@ -17,7 +17,7 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_tools tools;
+	t_tools	tools;
 
 	if (argc < 1)
 		return (0);

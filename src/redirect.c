@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 08:00:44 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/08 05:26:25 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/08 17:54:39 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,10 +183,6 @@ int	process_input(int fd, t_tools *shell)
 
 /* Redirects stdin and stdout based on the redirection type.
 //    Handles different redirection types and processes heredocs. */
-int	process_output(int fd)
-{
-	return (duplicate_and_close(fd, STDOUT_FILENO));
-}
 
 int	redirect_io(t_class type, int fd, t_tools *shell)
 {
@@ -203,7 +199,7 @@ int	redirect_io(t_class type, int fd, t_tools *shell)
 	}
 	else if (type == GREAT || type == GREAT_GREAT)
 	{
-		result = process_output(fd);
+		result = duplicate_and_close(fd, STDOUT_FILENO);
 	}
 	if (result == -1)
 	{
@@ -213,43 +209,3 @@ int	redirect_io(t_class type, int fd, t_tools *shell)
 	}
 	return (1);
 }
-// int	redirect_io(t_class type, int fd, t_tools *shell)
-// {
-// 	int	result;
-
-// 	result = 0;
-// 	while (1)
-// 	{
-// 		if (type == LESS_LESS)
-// 		{
-// 			result = process_heredoc_input(fd);
-// 			break ;
-// 		}
-// 		if (type == LESS)
-// 		{
-// 			if (fd == -1)
-// 				return (0);
-// 			result = duplicate_and_close(fd, STDIN_FILENO);
-// 			break ;
-// 		}
-// 		if (type == GREAT || type == GREAT_GREAT)
-// 		{
-// 			result = duplicate_and_close(fd, STDOUT_FILENO);
-// 			break ;
-// 		}
-// 		break ;
-// 	}
-// 	if (result == -1)
-// 	{
-// 		report_error(shell);
-// 		return (0);
-// 	}
-// 	return (1);
-// }
-//
-/* Handles errors by setting the last status and printing an error message. */
-// void	report_error(t_tools *shell)
-// {
-// 	shell->last_status = errno;
-// 	printf("Error: %s\n", strerror(errno));
-// }

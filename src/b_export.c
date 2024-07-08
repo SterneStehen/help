@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:08:56 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/08 04:59:51 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/08 18:31:03 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,32 @@ void	copy_content(char *src, char *dest, int start_idx)
 }
 
 // Main function to get environment content
+char	*allocate_empty_content(void)
+{
+	char	*result_content;
+
+	result_content = smalloc(sizeof(char) * 2);
+	if (result_content == NULL)
+	{
+		return (NULL);
+	}
+	result_content[0] = ' ';
+	result_content[1] = '\0';
+	return (result_content);
+}
+
+char	*allocate_full_content(int content_size)
+{
+	char	*result_content;
+
+	result_content = smalloc(sizeof(char) * (content_size + 1));
+	if (result_content == NULL)
+	{
+		return (NULL);
+	}
+	return (result_content);
+}
+
 char	*extract_env_data(char *input_str, char *separator)
 {
 	char	*result_content;
@@ -40,28 +66,16 @@ char	*extract_env_data(char *input_str, char *separator)
 
 	sep_len = strlen(separator);
 	if (sep_len == strlen(input_str) - 1)
-	{
-		result_content = smalloc(sizeof(char) * 2);
-		if (result_content == NULL)
-		{
-			return (NULL);
-		}
-		result_content[0] = ' ';
-		result_content[1] = '\0';
-	}
+		result_content = allocate_empty_content();
 	else if (sep_len == strlen(input_str))
-	{
 		result_content = NULL;
-	}
 	else
 	{
 		len_diff = calc_lengths(input_str, separator);
 		content_size = len_diff - 1;
-		result_content = smalloc(sizeof(char) * (content_size + 1));
+		result_content = allocate_full_content(content_size);
 		if (result_content == NULL)
-		{
 			return (NULL);
-		}
 		copy_content(input_str, result_content, sep_len + 1);
 	}
 	return (result_content);
@@ -183,71 +197,124 @@ int	print_env_vars(t_tools *tools)
 }
 
 // Function to validate and process arguments
-int	process_args_run(t_tools *tools, char **args)
+
+int	check_errors(t_tools *tools, char **args, int idx)
 {
-	int		i;
-	int		plus;
-	int		j;
+	if (args[0][0] == '=' || ft_strlen(args[idx]) == 0)
+	{
+		tools->last_status = 1;
+		if (tools->flag_log == TRUE)
+		{
+			printf("Error: %s %s\n", args[0], args[idx]);
+		}
+		return (1);
+	}
+	return (0);
+}
+
+// Проверка на недопустимые символы и знаки
+int	check_invalid_and_special_chars(char *arg)
+{
+	int	plus;
+	int	idx;
+
+	plus = FALSE;
+	idx = 0;
+	while (arg[idx] != '\0')
+	{
+		if (arg[idx] == '+')
+		{
+			if (arg[idx + 1] == '=')
+			{
+				plus = FALSE;
+				break ;
+			}
+			plus = TRUE;
+			break ;
+		}
+		idx++;
+	}
+	if (isdigit(arg[0]) || strchr(arg, '\\') || check_invalid_chars(arg) == TRUE
+		|| plus)
+	{
+		return (1);
+	}
+	return (0);
+}
+
+int	handle_equal_argument(t_tools *tools, char *arg)
+{
 	char	**split_var;
 
-	i = 1;
-	while (args[i] != NULL)
+	split_var = ft_split(arg, '=');
+	if (!split_var)
 	{
-		if (args[0][0] == '=' || ft_strlen(args[i]) == 0)
+		return (1);
+	}
+	if (ft_find(tools->envair, split_var[0]) == NULL)
+	{
+		insert_new_variable(tools, arg);
+	}
+	else
+	{
+		alter_var_content(tools, arg, split_var[0]);
+	}
+	free_string_array(split_var);
+	return (0);
+}
+
+int	handle_error_conditions(t_tools *tools, char **args, int idx)
+{
+	if (check_errors(tools, args, idx))
+	{
+		return (1);
+	}
+	if (args[idx][0] == '-')
+	{
+		tools->last_status = 2;
+		return (1);
+	}
+	return (0);
+}
+
+int	process_single_argument(t_tools *tools, char **args, int idx)
+{
+	int	result;
+
+	if (check_invalid_and_special_chars(args[idx]))
+	{
+		tools->last_status = 1;
+		if (tools->flag_log == TRUE)
 		{
+			printf("Error: %s %s\n", args[0], args[idx]);
+		}
+	}
+	else if (strchr(args[idx], '=') != NULL)
+	{
+		result = handle_equal_argument(tools, args[idx]);
+		if (result != 0)
+		{
+			printf("Error processing argument: %s\n", args[idx]);
 			tools->last_status = 1;
-			if (tools->flag_log == TRUE)
-			{
-				handle_error(tools, args[0], args[i]);
-			}
+		}
+	}
+	return (0);
+}
+
+int	process_args_run(t_tools *tools, char **args)
+{
+	int	idx;
+
+	idx = 1;
+	while (args[idx] != NULL)
+	{
+		if (handle_error_conditions(tools, args, idx))
+		{
+			idx++;
 			continue ;
 		}
-		if (args[i][0] == '-')
-		{
-			tools->last_status = 2;
-		}
-		else
-		{
-			plus = FALSE;
-			j = 0;
-			while (args[i][j] != '\0')
-			{
-				if (args[i][j] == '+')
-				{
-					if (args[i][j + 1] == '=')
-					{
-						plus = FALSE;
-						break ;
-					}
-					plus = TRUE;
-					break ;
-				}
-				j++;
-			}
-			if (isdigit(args[i][0]) || strchr(args[i], '\\')
-				|| check_invalid_chars(args[i]) == TRUE || plus)
-			{
-				tools->last_status = 1;
-				if (tools->flag_log == TRUE)
-				{
-					handle_error(tools, args[0], args[i]);
-				}
-			}
-			else if (strchr(args[i], '=') != NULL)
-			{
-				split_var = ft_split(args[i], '=');
-				if (ft_find(tools->envair, split_var[0]) == NULL)
-				{
-					insert_new_variable(tools, args[i]);
-				}
-				else
-				{
-					alter_var_content(tools, args[i], split_var[0]);
-				}
-				free_string_array(split_var);
-			}
-		}
-		i++;
+		process_single_argument(tools, args, idx);
+		idx++;
 	}
 	return (0);
 }

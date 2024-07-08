@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 21:08:44 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/08 16:20:04 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/08 17:16:05 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,6 +214,7 @@ typedef struct s_tools {
   t_simple_cmds *commands;
   t_environment *envair;
 }				t_tools;
+
 
 extern int		g_global_flag;
 

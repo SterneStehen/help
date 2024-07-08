@@ -6,13 +6,14 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:14:56 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/08 03:58:00 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/08 16:26:25 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-/* Constructs the full path for a given command by combining the base path and the command.
+/* Constructs the full path for a given command by combining
+the base path and the command.
    Allocates memory for the full path, which needs to be freed by the caller. */
 char	*build_path(const char *base, const char *cmd)
 {
@@ -29,8 +30,8 @@ char	*build_path(const char *base, const char *cmd)
 	return (full_path);
 }
 
-
-/* Finds the full path of a command by searching through the directories in the PATH environment variable.
+/* Finds the full path of a command by searching through 
+the directories in the PATH environment variable.
    Returns the full path if the command is found and executable,
 	otherwise logs an error and returns NULL. */
 char	*find_command_path(t_tools *sh, const char *cmd)
@@ -70,66 +71,90 @@ char	*find_command_path(t_tools *sh, const char *cmd)
 // 		}
 // 		return (0);
 // 	}
-// 	return 0;
+// 	return (0);
 // }
 
-
-
-int log_command(t_tools *params, char *cmd, int err_flag) {
-    if (params->flag_log == 1) {
-        if (err_flag) {
-            printf("%s%s: %s\n", MINI, cmd, strerror(ENOENT));
-        } else {
-            printf("%s%s: %s\n", MINI, cmd, "command not found");
-        }
-    }
-    params->last_status = 127;
-    return 0;
+int	log_command(t_tools *params, char *cmd, int err_flag)
+{
+	if (params->flag_log == 1)
+	{
+		if (err_flag)
+		{
+			printf("%s%s: %s\n", MINI, cmd, strerror(ENOENT));
+		}
+		else
+		{
+			printf("%s%s: %s\n", MINI, cmd, "command not found");
+		}
+	}
+	params->last_status = 127;
+	return (0);
 }
 
-int check_dot_slash(char *route, t_tools *params) {
-    if (route[0] == '.' && route[1] == '/' && strlen(route) == 2) {
-        return log_command(params, params->shell_string, 1);
-    }
-    return -1;
+int	check_dot_slash(char *route, t_tools *params)
+{
+	if (route[0] == '.' && route[1] == '/' && strlen(route) == 2)
+	{
+		return (log_command(params, params->shell_string, 1));
+	}
+	return (-1);
 }
 
-int check_double_dot(char *route, t_tools *params) {
-    if (route[0] == '.' && route[1] == '.' && route[2] == '/') {
-        if (access(route, X_OK) == 0) {
-            return 1;
-        } else {
-            return log_command(params, route, 1);
-        }
-    }
-    return -1;
+int	check_double_dot(char *route, t_tools *params)
+{
+	if (route[0] == '.' && route[1] == '.' && route[2] == '/')
+	{
+		if (access(route, X_OK) == 0)
+		{
+			return (1);
+		}
+		else
+		{
+			return (log_command(params, route, 1));
+		}
+	}
+	return (-1);
 }
 
-int check_paths(char *route, t_tools *params) {
-    if (route[0] == '.' || route[0] == '/' || route) {
-        if (route[0] == '.' && route[1] != '/') {
-            return log_command(params, route, 0);
-        } else if (route[0] == '.' && access(route, X_OK) == 0) {
-            return 1;
-        } else if (route[0] == '/' && access(route, X_OK) == 0) {
-            return 1;
-        } else if (access(route, X_OK) == 0) {
-            return 1;
-        } else if (params->flag_envair == 1) {
-            return log_command(params, route, 1);
-        }
-    }
-    return 0;
+int	check_paths(char *route, t_tools *params)
+{
+	if (route[0] == '.' || route[0] == '/' || route)
+	{
+		if (route[0] == '.' && route[1] != '/')
+		{
+			return (log_command(params, route, 0));
+		}
+		else if (route[0] == '.' && access(route, X_OK) == 0)
+		{
+			return (1);
+		}
+		else if (route[0] == '/' && access(route, X_OK) == 0)
+		{
+			return (1);
+		}
+		else if (access(route, X_OK) == 0)
+		{
+			return (1);
+		}
+		else if (params->flag_envair == 1)
+		{
+			return (log_command(params, route, 1));
+		}
+	}
+	return (0);
 }
 
-int path_audit(char *route, t_tools *params) {
-    int result = check_dot_slash(route, params);
-    if (result != -1) return result;
+int	path_audit(char *route, t_tools *params)
+{
+	int	result;
 
-    result = check_double_dot(route, params);
-    if (result != -1) return result;
-
-    return check_paths(route, params);
+	result = check_dot_slash(route, params);
+	if (result != -1)
+		return (result);
+	result = check_double_dot(route, params);
+	if (result != -1)
+		return (result);
+	return (check_paths(route, params));
 }
 
 // int path_audit(char *path, t_tools *tools) {
@@ -179,10 +204,6 @@ int path_audit(char *route, t_tools *params) {
 
 //     return 0;
 // }
-
-
-
-
 
 // int	audit_comand_path(char *path, t_tools *sh)
 // {

@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:10:56 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/08 04:59:45 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/08 18:20:33 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,31 +78,46 @@ int	process_argument(t_tools *tools, char *arg)
 	return (0);
 }
 
+int	handle_argument(t_tools *tools, char **args, int index)
+{
+	if (validate_argument(args[index]))
+	{
+		tools->last_status = 1;
+		if (tools->flag_log)
+		{
+			printf("%s%s: `%s': %s\n", MINI, args[0], args[index], VAL);
+		}
+		return (1);
+	}
+	else if (args[index][0] == '-')
+	{
+		tools->last_status = 2;
+		return (0);
+	}
+	process_argument(tools, args[index]);
+	return (0);
+}
+
 int	unset(t_tools *tools, char *command, char **args)
 {
 	int	index;
 
 	index = 1;
 	if (args[1] == NULL)
+	{
 		return (0);
+	}
 	while (args[index] != NULL)
 	{
-		if (validate_argument(args[index]))
+		if (handle_argument(tools, args, index))
 		{
-			tools->last_status = 1;
-			if (tools->flag_log)
-			{
-				printf("%s%s: `%s': %s\n", MINI, args[0], args[index], VAL);
-			}
 			return (1);
 		}
-		else if (args[index][0] == '-')
+		if (args[index][0] == '-')
 		{
-			tools->last_status = 2;
 			index++;
 			continue ;
 		}
-		process_argument(tools, args[index]);
 		index++;
 	}
 	return (0);
