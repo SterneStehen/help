@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:06:03 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/07 03:42:25 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/08 04:08:25 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,13 @@
 
 int	count_words(char *input_str, char delimiter)
 {
-	int	in_word = 0, word_count = 0, index;
+	int	in_word;
+	int	word_count;
+	int	index;
 
-	in_word = 0, word_count = 0, index = 0;
+	in_word = 0;
+	word_count = 0;
+	index = 0;
 	while (input_str[index] != '\0')
 	{
 		if (input_str[index] == delimiter)
@@ -32,7 +36,6 @@ int	count_words(char *input_str, char delimiter)
 	}
 	return (word_count);
 }
-
 
 int	initialize_oldpwd(t_tools *shell)
 {
@@ -50,10 +53,10 @@ int	update_environment_vars(t_tools *shell, char *old_pwd)
 	char	*old_pwd_combined;
 
 	new_pwd = getcwd(NULL, PATH_MAX);
-	pwd_combined = smalloc(strlen("PWD=") + strlen(new_pwd) + 1);
-	old_pwd_combined = smalloc(strlen("OLDPWD=") + strlen(old_pwd) + 1);
-	sprintf(pwd_combined, "PWD=%s", new_pwd);
-	sprintf(old_pwd_combined, "OLDPWD=%s", old_pwd);
+	pwd_combined = smalloc(strlen("PWD=") + ft_strlen(new_pwd) + 1);
+	old_pwd_combined = smalloc(strlen("OLDPWD=") + ft_strlen(old_pwd) + 1);
+	printf(pwd_combined, "PWD=%s", new_pwd);
+	printf(old_pwd_combined, "OLDPWD=%s", old_pwd);
 	alter_var_content(shell, old_pwd_combined, "OLDPWD");
 	alter_var_content(shell, pwd_combined, "PWD");
 	shell->last_status = shell->last_status;
@@ -87,12 +90,12 @@ int	execute_cd_home(t_tools *shell)
 	return (0);
 }
 
-
 int	execute_cd_tilde(t_tools *shell, char *argument)
 {
 	t_environment	*home;
+	char			*path;
+	char			*tilde_trimmed;
 
-	char *path, *tilde_trimmed;
 	if (shell->flag_envair == 0)
 	{
 		home = ft_find(shell->envair, "HOME");
@@ -109,7 +112,7 @@ int	execute_cd_tilde(t_tools *shell, char *argument)
 	{
 		if (shell->flag_log)
 		{
-			return printf("%scd: %s: %s\n", SHELL, path, strerror(errno));
+			return (printf("%scd: %s: %s\n", SHELL, path, strerror(errno)));
 		}
 	}
 	free(tilde_trimmed);
@@ -125,7 +128,7 @@ int	execute_cd_oldpwd(t_tools *shell)
 	if (!old_pwd)
 	{
 		shell->last_status = 1;
-		return printf("%scd: %s: %s\n", SHELL, "OLDPWD", strerror(errno));
+		return (printf("%scd: %s: %s\n", SHELL, "OLDPWD", strerror(errno)));
 	}
 	else if (old_pwd->data == NULL)
 	{
@@ -133,7 +136,8 @@ int	execute_cd_oldpwd(t_tools *shell)
 	}
 	else if (chdir(old_pwd->data) == -1 && shell->flag_log)
 	{
-		return printf("%scd: %s: %s\n", SHELL, old_pwd->data, strerror(errno));
+		return (printf("%scd: %s: %s\n", SHELL, old_pwd->data,
+				strerror(errno)));
 	}
 	else if (shell->flag_log)
 	{
@@ -150,7 +154,7 @@ int	execute_cd_back(t_tools *shell, char **args)
 	}
 	else if (chdir(args[1]) == -1 && shell->flag_log)
 	{
-		return printf("%scd: %s: %s\n", SHELL, args[2], strerror(errno));
+		return (printf("%scd: %s: %s\n", SHELL, args[2], strerror(errno)));
 	}
 	return (0);
 }
@@ -175,10 +179,11 @@ int	update_directory_vars(t_tools *shell, char *old_pwd_content)
 
 int	change_directory(t_tools *shell, char *cmd, char **args)
 {
-	char *old_pwd_content;
-	t_environment *old_pwd = ft_find(shell->envair, "PWD");
-	old_pwd_content = old_pwd->data;
+	char			*old_pwd_content;
+	t_environment	*old_pwd;
 
+	old_pwd = ft_find(shell->envair, "PWD");
+	old_pwd_content = old_pwd->data;
 	if (args[1] == NULL)
 	{
 		execute_cd_home(shell);
@@ -198,7 +203,8 @@ int	change_directory(t_tools *shell, char *cmd, char **args)
 			shell->last_status = 1;
 			if (shell->flag_log)
 			{
-				return printf("%scd: %s: %s\n", SHELL, args[1], strerror(errno));
+				return (printf("%scd: %s: %s\n", SHELL, args[1],
+						strerror(errno)));
 			}
 		}
 	}
@@ -206,7 +212,6 @@ int	change_directory(t_tools *shell, char *cmd, char **args)
 	{
 		execute_cd_back(shell, args);
 	}
-
 	update_directory_vars(shell, old_pwd_content);
-	return 0;
+	return (0);
 }

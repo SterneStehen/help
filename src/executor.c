@@ -325,7 +325,7 @@ void error_exit(t_tools *shell, const char *msg, int exit_st) {
  * printing an error message and exiting with a specific status code. */
 void handle_directory_command(char *cmd, t_tools *shell) {
     if (shell->flag_log == 1) {
-        printf("%s%s: %s\n", SHELL, cmd, ISDIR, 2);
+        printf("%s%s: %s\n", MINI, cmd, ISDIR, 2);
         shell->flag_log = 0;
     }
     shell->last_status = 126;
@@ -406,7 +406,7 @@ int handle_exit_conditions(t_tools *shell, t_simple_cmds *cmd, char *cmd_path) {
 int handle_null_path(t_tools *shell, t_simple_cmds *cmd, char *cmd_path) {
     if (cmd_path == NULL && strlen(cmd->command) == 0) {
         if (shell->flag_log) {
-            printf("%s%s: %s\n", SHELL, cmd->command, CMD_NOT_FND);
+            printf("%s%s: %s\n", MINI, cmd->command, CMD_NOT_FND);
         }
         free(cmd_path);
         free_resources(shell);
@@ -430,7 +430,7 @@ int exit_if_null(t_tools *shell, char *cmd_path, t_simple_cmds *table) {
     }
 
     if (shell->flag_log) {
-        printf("%s%s: %s\n", SHELL, table->command, CMD_NOT_FND);
+        printf("%s%s: %s\n", MINI, table->command, CMD_NOT_FND);
     }
     free(cmd_path);
     free_resources(shell);
@@ -502,7 +502,7 @@ void run_command_execution(t_tools *tools, t_simple_cmds *commands) {
     int table_size;
     t_simple_cmds *temp_tbl;
 
-    global_flag = 0;
+    g_global_flag = 0;
     table_size = 0;
     temp_tbl = commands;
     while (temp_tbl != NULL) {

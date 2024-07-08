@@ -430,7 +430,7 @@ t_node	*plus_redire(char *input_str, int *current_index, int *previous_index,
   char *dubl;
 
   if (input_str[*current_index] == '\0' ||
-      find_char_in_str(REDIRECTIONS, input_str[*current_index]) == -1) {
+      find_char_in_str(REDIR, input_str[*current_index]) == -1) {
     return (token_list);
   }
   current_char = input_str[*current_index];
@@ -598,7 +598,7 @@ char **pipe_split(char *str, int start, int end, int index) {
 int	pass_quoted_sect(char *str, int index) {
   int quote;
 
-  if (str[index] != SQUOTE && str[index] != DQUOTE)
+  if (str[index] != 39 && str[index] != 34)
     return (index);
   quote = str[index++];
   while (str[index] != quote && calcul_escaped_charact(str, index)

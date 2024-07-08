@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 21:08:44 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/07 18:36:52 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/08 05:11:09 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,11 @@
 
 # include <termios.h>
 
-# define TRUE 1
-# define FALSE 0
-# define FAIL 999
 # define IS_DIGIT 1
 # define IS_ALPHA 2
 # define IS_ALNUM 4
+# define TRUE 1
+# define FALSE 0
 # define IS_PRINTABLE 8
 # define FLAG '-'
 # define SPACE ' '
@@ -48,11 +47,8 @@
 # define SHELL "minishell: "
 # define DQ '"'
 # define SQ '\''
-# define SQUOTE 39
-# define DQUOTE 34
 # define PIPE 124
-# define OPERATORS "|><"
-# define REDIRECTIONS "><"
+# define REDIR "><"
 # define SIMBOL " \t\n\v\r\f"
 # define GIVE_PERM_WTH_RW 0644
 # define SYNTAX_ERROR_NEWLINE "syntax error near unexpected token `newline'"
@@ -60,10 +56,12 @@
 # define NAR "numeric argument required"
 # define VAL "invalid identifier"
 # define PWNED "pwned"
+# define MINI "minishell: "
 # define HOMELESS "homeless"
 # define TMA "error arguments"
 # define ISDIR "is a directory"
 # define C_D "/usr/bin/cd"
+# define FAIL -1
 
 /* Enumeration for token types.
    This enumeration contains various token types used in the program. */
@@ -211,14 +209,13 @@ typedef struct s_tools {
   int flag_ready_to_execute;
   int flag_execution_completed;
   int flag_log;
-  int flag_exit;
   pid_t current_pid;
   struct termios terminal_setting;
   t_simple_cmds *commands;
   t_environment *envair;
 }				t_tools;
 
-extern int		global_flag;
+extern int		g_global_flag;
 
 // envair
 char			*get_current_directory(t_tools *tools);
@@ -261,7 +258,6 @@ int				find_error_sing_newline(void);
 int				is_character_symbol(char c);
 int				check_redir(const char *input);
 int				count_escaped_chars(const char *input, int pos);
-
 int				is_previous_char_redirection(const char *input, int index);
 int				has_invalid_pipe(const char *input);
 int				audit_simbol_bad(const char *input);
@@ -299,7 +295,7 @@ void			handle_command_table(t_simple_cmds *table, t_tools *tools);
 void			delit_quotes_command(t_simple_cmds *table, t_tools *tools);
 void			delite_quotes_tables(t_simple_cmds *tables, t_tools *tools);
 int				calculate_token_size(t_node *token);
-int				count_token_stack(t_node *token);
+//int				count_token_stack(t_node *token);
 int				is_special_ascii(char c);
 int				is_visible_char(char c);
 t_node			*create_token(char *content, t_class type);
@@ -337,8 +333,8 @@ char			*allocate_memory(size_t size);
 int				expand_variables(char **input, t_tools *context);
 int				run_process_command(char *command, t_tools *context);
 void			process_tokens(struct s_node *tokens, t_tools *context);
-int				multiple_tables_expand(struct s_simple_cmds *commands,
-					t_tools *context);
+//int				multiple_tables_expand(struct s_simple_cmds *commands,
+//					t_tools *context);
 char			*copy_variable(const char *var_val);
 char			*handle_parentheses(char *trimmed_input, t_tools *context);
 char			*run_dollar_expansion(char *trimmed_input, t_tools *context);

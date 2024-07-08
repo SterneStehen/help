@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:14:56 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/08 00:07:25 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/08 03:58:00 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ char	*find_command_path(t_tools *sh, const char *cmd)
 int log_command(t_tools *params, char *cmd, int err_flag) {
     if (params->flag_log == 1) {
         if (err_flag) {
-            printf("%s%s: %s\n", SHELL, cmd, strerror(ENOENT));
+            printf("%s%s: %s\n", MINI, cmd, strerror(ENOENT));
         } else {
-            printf("%s%s: %s\n", SHELL, cmd, "command not found");
+            printf("%s%s: %s\n", MINI, cmd, "command not found");
         }
     }
     params->last_status = 127;

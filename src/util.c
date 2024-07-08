@@ -6,31 +6,30 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 22:07:32 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/07 03:42:25 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/08 05:08:30 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../include/minishell.h"
 
-
-void err_exit(t_tools *tools, char *command, char *arg, int flag)
+void	err_exit(t_tools *tools, char *command, char *arg, int flag)
 {
-    if (flag == 0)
-    {
-        printf("%s%s: %s\n", SHELL, arg, NAR);
-        tools->last_status = 255;
-    }
-    else
-    {
-        printf("%s%s: %s\n", SHELL, command, TMA);
-        tools->last_status = 1;
-    }
+	if (flag == 0)
+	{
+		printf("%s%s: %s\n", SHELL, arg, NAR);
+		tools->last_status = 255;
+	}
+	else
+	{
+		printf("%s%s: %s\n", SHELL, command, TMA);
+		tools->last_status = 1;
+	}
 }
 
-
-/* Duplicates a substring from the source string from the given start to finish indices.
-   Returns the duplicated string or NULL if memory allocation fails or indices are invalid. */
+/* Duplicates a substring from the source string from the given 
+start to finish indices.
+   Returns the duplicated string or NULL if memory allocation fails or 
+   indices are invalid. */
 char	*duplicate_string_range(const char *source, int begin, int finish)
 {
 	int		length;
@@ -72,13 +71,15 @@ int	find_character_type(int c)
 	return (0);
 }
 
-/* Advances the index through the string as long as the current character is a digit,
+/* Advances the index through the string as long as the 
+current character is a digit,
 	alphabet letter, or printable character.
    Returns the updated index. */
 int	validate_and_advance(char *str, int *index)
 {
 	while (str[*index] != '\0'
-		&& (find_character_type(str[*index]) & (IS_DIGIT | IS_ALPHA | IS_PRINTABLE)))
+		&& (find_character_type(str[*index])
+			& (IS_DIGIT | IS_ALPHA | IS_PRINTABLE)))
 		(*index)++;
 	return (*index);
 }
@@ -103,8 +104,9 @@ int	are_strings_equal(const char *s1, const char *s2)
 	return (1);
 }
 
-/* Converts certain commands in the command table to lowercase if they match specific built-in commands.
-   This is used to standardize commands such as "echo", "pwd", and "env". */
+/* Converts certain commands in the command table to lowercase 
+if they match specific built-in commands.*/
+/* This is used to standardize commands such as "echo", "pwd", and "env". */
 void	optimize_commands(t_simple_cmds *tbl)
 {
 	char	*temp;
@@ -152,7 +154,8 @@ int	is_capital_letter(char ch)
 	return (ch >= 'A' && ch <= 'Z');
 }
 
-/* Converts all uppercase letters in the string to lowercase up to the given limit.
+/* Converts all uppercase letters in the string to 
+lowercase up to the given limit.
    Returns 1 on success. */
 int	convert_to_lowercase(char *s, int limit)
 {
@@ -170,7 +173,8 @@ int	convert_to_lowercase(char *s, int limit)
 	return (1);
 }
 
-/* Allocates memory for a pointer to a pointer and checks for allocation failure.
+/* Allocates memory for a pointer to a pointer and checks 
+for allocation failure.
    Returns 1 on success, and 0 if memory allocation fails. */
 int	safe_mall(char ***ptr, size_t size)
 {

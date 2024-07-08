@@ -6,12 +6,11 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 08:00:44 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/07 00:36:32 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/08 05:26:25 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
 
 /* Finds wrong redirections in the token list.
    Returns 1 if a wrong redirection is found, otherwise 0. */
@@ -29,7 +28,9 @@ int	find_invalid_redirection(t_node *start)
 			possible_wrong = possible_wrong->next;
 			continue ;
 		}
-		if (!(is_redirection_token(possible_wrong) && possible_wrong->next != NULL && !is_redirection_token(possible_wrong->next)))
+		if (!(is_redirection_token(possible_wrong)
+				&& possible_wrong->next != NULL
+				&& !is_redirection_token(possible_wrong->next)))
 		{
 			break ;
 		}
@@ -93,43 +94,53 @@ void	handle_redirection_error(t_tools *shell)
 
 /* Manages redirections for a command.
    Checks and processes redirections, returns 1 if successful, otherwise 0. */
+void	process_redirection_run(t_tools *shell, t_simple_cmds *table,
+		t_node *current_token)
+{
+	int	file_descriptor;
+
+	file_descriptor = -1;
+	if (current_token->class == LESS_LESS)
+	{
+		file_descriptor = create_heredoc_file(table, shell, current_token);
+	}
+	else if (current_token->class == GREAT
+		|| current_token->class == GREAT_GREAT || current_token->class == LESS)
+	{
+		file_descriptor = descriptor_open_file(current_token->class,
+				current_token->next->data, shell);
+	}
+	if (file_descriptor != -1 && redirect_io(current_token->class,
+			file_descriptor, shell) == FALSE)
+	{
+		printf("Error changing stdin/stdout\n");
+		exit(EXIT_FAILURE);
+	}
+}
+
 int	manage_redirections(t_tools *shell, t_simple_cmds *table)
 {
-	t_node	*current_token;
-	int		file_descriptor;
-	int		is_valid;
+	t_node	*token;
+	int		valid;
 
-	current_token = table->redirections;
-	while (current_token != NULL)
+	token = table->redirections;
+	while (token != NULL)
 	{
-		is_valid = check_valid_redirection(current_token);
-		if (!is_valid)
+		valid = check_valid_redirection(token);
+		if (!valid)
 		{
 			handle_redirection_error(shell);
 			return (0);
 		}
-		if (current_token->class == LESS_LESS)
+		process_redirection_run(shell, table, token);
+		if (token->next)
 		{
-			file_descriptor = create_heredoc_file(table, shell, current_token);
-		}
-		else if (current_token->class == GREAT
-			|| current_token->class == GREAT_GREAT
-			|| current_token->class == LESS)
-		{
-			file_descriptor = descriptor_open_file(current_token->class,
-					current_token->next->data, shell);
+			token = token->next->next;
 		}
 		else
 		{
-			file_descriptor = -1;
+			token = NULL;
 		}
-		if (file_descriptor != -1 && redirect_io(current_token->class,
-				file_descriptor, shell) == FALSE)
-		{
-			printf("Error changing stdin/stdout\n");
-			exit(EXIT_FAILURE);
-		}
-		current_token = current_token->next ? current_token->next->next : NULL;
 	}
 	return (1);
 }
@@ -145,15 +156,6 @@ int	duplicate_and_close(int oldfd, int newfd)
 	return (result);
 }
 
-/* Handles errors by setting the last status and printing an error message. */
-void	report_error(t_tools *shell)
-{
-	shell->last_status = errno;
-	printf("Error: %s\n", strerror(errno));
-	// Assuming free_at_child is defined elsewhere and frees necessary resources
-	// free_at_child(shell);
-}
-
 /* Processes a here document.
    Duplicates the file descriptor to STDIN and unlinks the temporary file. */
 int	process_heredoc_input(int fd)
@@ -166,37 +168,88 @@ int	process_heredoc_input(int fd)
 }
 
 /* Redirects stdin and stdout based on the redirection type.
-   Handles different redirection types and processes heredocs. */
+//    Handles different redirection types and processes heredocs. */
+
+int	process_input(int fd, t_tools *shell)
+{
+	if (fd == -1)
+	{
+		shell->last_status = errno;
+		printf("Error: %s\n", strerror(errno));
+		return (0);
+	}
+	return (duplicate_and_close(fd, STDIN_FILENO));
+}
+
+/* Redirects stdin and stdout based on the redirection type.
+//    Handles different redirection types and processes heredocs. */
+int	process_output(int fd)
+{
+	return (duplicate_and_close(fd, STDOUT_FILENO));
+}
+
 int	redirect_io(t_class type, int fd, t_tools *shell)
 {
 	int	result;
 
 	result = 0;
-	while (1)
+	if (type == LESS_LESS)
 	{
-		if (type == LESS_LESS)
-		{
-			result = process_heredoc_input(fd);
-			break ;
-		}
-		if (type == LESS)
-		{
-			if (fd == -1)
-				return (FALSE);
-			result = duplicate_and_close(fd, STDIN_FILENO);
-			break ;
-		}
-		if (type == GREAT || type == GREAT_GREAT)
-		{
-			result = duplicate_and_close(fd, STDOUT_FILENO);
-			break ;
-		}
-		break ;
+		result = process_heredoc_input(fd);
+	}
+	else if (type == LESS)
+	{
+		result = process_input(fd, shell);
+	}
+	else if (type == GREAT || type == GREAT_GREAT)
+	{
+		result = process_output(fd);
 	}
 	if (result == -1)
 	{
-		report_error(shell);
-		return (FALSE);
+		shell->last_status = errno;
+		printf("Error: %s\n", strerror(errno));
+		return (0);
 	}
-	return (TRUE);
+	return (1);
 }
+// int	redirect_io(t_class type, int fd, t_tools *shell)
+// {
+// 	int	result;
+
+// 	result = 0;
+// 	while (1)
+// 	{
+// 		if (type == LESS_LESS)
+// 		{
+// 			result = process_heredoc_input(fd);
+// 			break ;
+// 		}
+// 		if (type == LESS)
+// 		{
+// 			if (fd == -1)
+// 				return (0);
+// 			result = duplicate_and_close(fd, STDIN_FILENO);
+// 			break ;
+// 		}
+// 		if (type == GREAT || type == GREAT_GREAT)
+// 		{
+// 			result = duplicate_and_close(fd, STDOUT_FILENO);
+// 			break ;
+// 		}
+// 		break ;
+// 	}
+// 	if (result == -1)
+// 	{
+// 		report_error(shell);
+// 		return (0);
+// 	}
+// 	return (1);
+// }
+//
+/* Handles errors by setting the last status and printing an error message. */
+// void	report_error(t_tools *shell)
+// {
+// 	shell->last_status = errno;
+// 	printf("Error: %s\n", strerror(errno));
+// }

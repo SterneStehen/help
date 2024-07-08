@@ -6,13 +6,11 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:10:56 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/06 13:20:58 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/08 04:59:45 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../include/minishell.h"
-
 
 char	*search_char(const char *str, int ch)
 {
@@ -29,7 +27,6 @@ char	*search_char(const char *str, int ch)
 		return ((char *)(str + index));
 	return (NULL);
 }
-
 
 int	check_invalid_chars(char *string)
 {
@@ -60,61 +57,67 @@ int	check_invalid_chars(char *string)
 	return (0);
 }
 
-int validate_argument(char *arg) {
-    return (strlen(arg) == 0 || arg[0] == '?' || arg[0] == '$' ||
-            search_char(arg, '=') || search_char(arg, '\\') ||
-            check_invalid_chars(arg));
-}
-
-int process_argument(t_tools *tools, char *arg) {
-    t_environment *env = ft_find(tools->envair, arg);
-    if (env != NULL) {
-        tools->last_status = 0;
-        remove_env_var(tools->envair, env);
-        return 1;
-    }
-    return 0;
-}
-
-int unset(t_tools *tools, char *command, char **args) {
-    int index = 1;
-
-    if (args[1] == NULL)
-        return 0;
-
-    while (args[index] != NULL) {
-        if (validate_argument(args[index])) {
-            tools->last_status = 1;
-            if (tools->flag_log) {
-                printf("%s%s: `%s': %s\n", SHELL, args[0], args[index], VAL);
-            }
-            return 1;
-        } else if (args[index][0] == '-') {
-            tools->last_status = 2;
-            index++;
-            continue;
-        }
-
-        process_argument(tools, args[index]);
-        index++;
-    }
-    return 0;
-}
-
-t_environment *ft_find(t_environment *env, const char *name)
+int	validate_argument(char *arg)
 {
-    while (env != NULL)
-    {
-        if (strncmp(env->title, name, strlen(name)) == 0)
-            return env;
-        env = env->next;
-    }
-    return NULL;
+	return (strlen(arg) == 0 || arg[0] == '?' || arg[0] == '$'
+		|| search_char(arg, '=') || search_char(arg, '\\')
+		|| check_invalid_chars(arg));
 }
 
+int	process_argument(t_tools *tools, char *arg)
+{
+	t_environment	*env;
 
+	env = ft_find(tools->envair, arg);
+	if (env != NULL)
+	{
+		tools->last_status = 0;
+		remove_env_var(tools->envair, env);
+		return (1);
+	}
+	return (0);
+}
 
+int	unset(t_tools *tools, char *command, char **args)
+{
+	int	index;
 
+	index = 1;
+	if (args[1] == NULL)
+		return (0);
+	while (args[index] != NULL)
+	{
+		if (validate_argument(args[index]))
+		{
+			tools->last_status = 1;
+			if (tools->flag_log)
+			{
+				printf("%s%s: `%s': %s\n", MINI, args[0], args[index], VAL);
+			}
+			return (1);
+		}
+		else if (args[index][0] == '-')
+		{
+			tools->last_status = 2;
+			index++;
+			continue ;
+		}
+		process_argument(tools, args[index]);
+		index++;
+	}
+	return (0);
+}
+
+t_environment	*ft_find(t_environment *env, const char *name)
+{
+	while (env != NULL)
+	{
+		if (strncmp(env->title, name, strlen(name)) == 0)
+			return (env);
+		env = env->next;
+	}
+	return (NULL);
+}
 
 int	remove_env_var(t_environment *start, t_environment *target)
 {
@@ -137,4 +140,3 @@ int	remove_env_var(t_environment *start, t_environment *target)
 	}
 	return (0);
 }
-
