@@ -6,12 +6,11 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:13:43 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/07 17:24:40 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/08 15:56:48 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
 
 /* Finds the last heredoc token in the redirections list.
    Returns a pointer to the heredoc token if found, otherwise NULL. */
@@ -71,7 +70,8 @@ int	open_file_for_reading(char *file_name)
 	return (fd);
 }
 
-/* Opens a file for writing with the given flags and returns the file descriptor. */
+/* Opens a file for writing with the given flags and returns
+the file descriptor. */
 int	open_file_for_writing(char *file_name, int flags)
 {
 	int	fd;
@@ -113,17 +113,20 @@ char	*trim_quotes(char *str)
 {
 	size_t	len;
 	char	*new_str;
+	size_t	i;
 	size_t	j;
 
 	len = strlen(str);
 	new_str = smalloc(len + 1);
+	i = 0;
 	j = 0;
-	for (size_t i = 0; i < len; i++)
+	while (i < len)
 	{
 		if (str[i] != '\'' && str[i] != '\"')
 		{
 			new_str[j++] = str[i];
 		}
+		i++;
 	}
 	new_str[j] = '\0';
 	return (new_str);
@@ -210,8 +213,10 @@ char	*generate_temp_filename(t_simple_cmds *table)
 {
 	char	*base_path;
 	char	*extension;
+	char	*part1;
+	char	*part2;
+	char	*index_str;
 
-	char *part1, *part2, *index_str;
 	base_path = "/tmp/heredoc";
 	extension = ".XXXXXX";
 	if (table->hd_file_name != NULL)
@@ -251,7 +256,7 @@ int	write_to_file(int fd, char *stop_word, t_tools *shell)
 		write(fd, input, ft_strlen(input));
 		free(input);
 	}
-	return 0;
+	return (0);
 }
 
 /* Generates a heredoc file and writes input to it.

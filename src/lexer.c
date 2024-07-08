@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:23:50 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/08 15:48:19 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/08 15:54:02 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,7 +237,6 @@ int	audit_simbol_bad(const char *str)
 	int	i;
 	int	res;
 	int	len;
-	int	res;
 
 	i = 1;
 	if (has_invalid_pipe(str))
