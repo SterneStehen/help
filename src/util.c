@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 22:07:32 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/08 05:08:30 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/08 16:24:16 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ void	err_exit(t_tools *tools, char *command, char *arg, int flag)
 	}
 }
 
-/* Duplicates a substring from the source string from the given 
+/* Duplicates a substring from the source string from the given
 start to finish indices.
-   Returns the duplicated string or NULL if memory allocation fails or 
+   Returns the duplicated string or NULL if memory allocation fails or
    indices are invalid. */
 char	*duplicate_string_range(const char *source, int begin, int finish)
 {
@@ -71,7 +71,7 @@ int	find_character_type(int c)
 	return (0);
 }
 
-/* Advances the index through the string as long as the 
+/* Advances the index through the string as long as the
 current character is a digit,
 	alphabet letter, or printable character.
    Returns the updated index. */
@@ -104,7 +104,7 @@ int	are_strings_equal(const char *s1, const char *s2)
 	return (1);
 }
 
-/* Converts certain commands in the command table to lowercase 
+/* Converts certain commands in the command table to lowercase
 if they match specific built-in commands.*/
 /* This is used to standardize commands such as "echo", "pwd", and "env". */
 void	optimize_commands(t_simple_cmds *tbl)
@@ -154,7 +154,7 @@ int	is_capital_letter(char ch)
 	return (ch >= 'A' && ch <= 'Z');
 }
 
-/* Converts all uppercase letters in the string to 
+/* Converts all uppercase letters in the string to
 lowercase up to the given limit.
    Returns 1 on success. */
 int	convert_to_lowercase(char *s, int limit)
@@ -173,7 +173,7 @@ int	convert_to_lowercase(char *s, int limit)
 	return (1);
 }
 
-/* Allocates memory for a pointer to a pointer and checks 
+/* Allocates memory for a pointer to a pointer and checks
 for allocation failure.
    Returns 1 on success, and 0 if memory allocation fails. */
 int	safe_mall(char ***ptr, size_t size)
@@ -246,36 +246,44 @@ char	**arr_dabl(char **array)
 
 /* Trims characters from the set at the beginning and end of the string s1.
    Returns the trimmed string or NULL if memory allocation fails. */
-char	*del_string(char const *s1, char const *set)
+void	find_trim_positions(const char *s1, const char *set, size_t *begin,
+		size_t *finish)
 {
-	char	*result;
-	size_t	i;
-	size_t	begin;
-	size_t	finish;
 	size_t	j;
+
+	*begin = 0;
+	while (s1[*begin])
+	{
+		j = 0;
+		while (set[j] && set[j] != s1[*begin])
+			j++;
+		if (!set[j])
+			break ;
+		(*begin)++;
+	}
+	*finish = strlen(s1);
+	while (*finish > *begin)
+	{
+		j = 0;
+		while (set[j] && set[j] != s1[*finish - 1])
+			j++;
+		if (!set[j])
+			break ;
+		(*finish)--;
+	}
+}
+
+// Обрезка строки по найденным позициям и создание новой строки
+char	*del_string(const char *s1, const char *set)
+{
+	char		*result;
+	size_t		i;
+	size_t		begin;
+	size_t		finish;
 
 	if (!s1 || !set)
 		return (NULL);
-	begin = 0;
-	while (s1[begin])
-	{
-		j = 0;
-		while (set[j] && set[j] != s1[begin])
-			j++;
-		if (!set[j])
-			break ;
-		begin++;
-	}
-	finish = strlen(s1);
-	while (finish > begin)
-	{
-		j = 0;
-		while (set[j] && set[j] != s1[finish - 1])
-			j++;
-		if (!set[j])
-			break ;
-		finish--;
-	}
+	find_trim_positions(s1, set, &begin, &finish);
 	result = (char *)malloc(sizeof(*s1) * (finish - begin + 1));
 	if (!result)
 		return (NULL);
@@ -285,6 +293,46 @@ char	*del_string(char const *s1, char const *set)
 	result[i] = '\0';
 	return (result);
 }
+
+// char	*del_string(char const *s1, char const *set)
+// {
+// 	char	*result;
+// 	size_t	i;
+// 	size_t	begin;
+// 	size_t	finish;
+// 	size_t	j;
+
+// 	if (!s1 || !set)
+// 		return (NULL);
+// 	begin = 0;
+// 	while (s1[begin])
+// 	{
+// 		j = 0;
+// 		while (set[j] && set[j] != s1[begin])
+// 			j++;
+// 		if (!set[j])
+// 			break ;
+// 		begin++;
+// 	}
+// 	finish = strlen(s1);
+// 	while (finish > begin)
+// 	{
+// 		j = 0;
+// 		while (set[j] && set[j] != s1[finish - 1])
+// 			j++;
+// 		if (!set[j])
+// 			break ;
+// 		finish--;
+// 	}
+// 	result = (char *)malloc(sizeof(*s1) * (finish - begin + 1));
+// 	if (!result)
+// 		return (NULL);
+// 	i = 0;
+// 	while (begin < finish)
+// 		result[i++] = s1[begin++];
+// 	result[i] = '\0';
+// 	return (result);
+// }
 
 /* Checks if the given string contains only space characters.
    Returns 1 if the string contains only spaces, otherwise returns 0. */

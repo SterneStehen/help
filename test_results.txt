@@ -63,39 +63,39 @@ total 144
 -rw-r--r-- 1 sergii sergii     8 Jul  8 00:19 &2
 -rw-r--r-- 1 sergii sergii     8 Jul  8 00:21 &5
 -rw-r--r-- 1 sergii sergii  1323 Jul  6 16:08 Makefile
-drwxr-xr-x 2 sergii sergii  4096 Jul  8 15:57 build
+drwxr-xr-x 2 sergii sergii  4096 Jul  8 16:24 build
 drwxr-xr-x 3 sergii sergii  4096 Jul  6 16:08 include
 -rw-r--r-- 1 sergii sergii    58 Jul  8 00:22 input.txt
 -rw-r--r-- 1 sergii sergii    10 Jul  8 00:25 logfile.txt
--rwxr-xr-x 1 sergii sergii 92728 Jul  8 15:57 minishell
+-rwxr-xr-x 1 sergii sergii 92776 Jul  8 16:24 minishell
 drwxr-xr-x 6 sergii sergii  4096 Jul  7 15:51 minishell_tester
 -rw-r--r-- 1 sergii sergii    58 Jul  8 00:23 output.txt
 -rwxr-xr-x 1 sergii sergii  6382 Jul  7 01:37 run_comprehensive_tests copy.sh
 drwxr-xr-x 2 sergii sergii  4096 Jul  7 13:51 src
--rw-r--r-- 1 sergii sergii     0 Jul  8 15:57 test_result_count
--rw-r--r-- 1 sergii sergii   770 Jul  8 15:57 test_results.txt
+-rw-r--r-- 1 sergii sergii     0 Jul  8 16:24 test_result_count
+-rw-r--r-- 1 sergii sergii   770 Jul  8 16:24 test_results.txt
 Bash output:
 total 144
 -rw-r--r-- 1 sergii sergii     8 Jul  8 00:19 &2
 -rw-r--r-- 1 sergii sergii     8 Jul  8 00:21 &5
 -rw-r--r-- 1 sergii sergii  1323 Jul  6 16:08 Makefile
-drwxr-xr-x 2 sergii sergii  4096 Jul  8 15:57 build
+drwxr-xr-x 2 sergii sergii  4096 Jul  8 16:24 build
 drwxr-xr-x 3 sergii sergii  4096 Jul  6 16:08 include
 -rw-r--r-- 1 sergii sergii    58 Jul  8 00:22 input.txt
 -rw-r--r-- 1 sergii sergii    10 Jul  8 00:25 logfile.txt
--rwxr-xr-x 1 sergii sergii 92728 Jul  8 15:57 minishell
+-rwxr-xr-x 1 sergii sergii 92776 Jul  8 16:24 minishell
 drwxr-xr-x 6 sergii sergii  4096 Jul  7 15:51 minishell_tester
 -rw-r--r-- 1 sergii sergii    58 Jul  8 00:23 output.txt
 -rwxr-xr-x 1 sergii sergii  6382 Jul  7 01:37 run_comprehensive_tests copy.sh
 drwxr-xr-x 2 sergii sergii  4096 Jul  7 13:51 src
--rw-r--r-- 1 sergii sergii     0 Jul  8 15:57 test_result_count
--rw-r--r-- 1 sergii sergii  1602 Jul  8 15:57 test_results.txt
+-rw-r--r-- 1 sergii sergii     0 Jul  8 16:24 test_result_count
+-rw-r--r-- 1 sergii sergii  1602 Jul  8 16:24 test_results.txt
 Result: ❌ Mismatch
 Difference:
 15c15
-< -rw-r--r-- 1 sergii sergii   770 Jul  8 15:57 test_results.txt
+< -rw-r--r-- 1 sergii sergii   770 Jul  8 16:24 test_results.txt
 ---
-> -rw-r--r-- 1 sergii sergii  1602 Jul  8 15:57 test_results.txt
+> -rw-r--r-- 1 sergii sergii  1602 Jul  8 16:24 test_results.txt
 
 -----------------------
 

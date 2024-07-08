@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 21:08:44 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/08 05:11:09 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/08 16:20:04 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,6 +291,7 @@ void	clear_token_list(t_node *tkn);
 int				strings_equal(char *str1, char *str2);
 char			*remove_quotes(char *input);
 void			manage_process_tokens(t_node *tokens);
+
 void			handle_command_table(t_simple_cmds *table, t_tools *tools);
 void			delit_quotes_command(t_simple_cmds *table, t_tools *tools);
 void			delite_quotes_tables(t_simple_cmds *tables, t_tools *tools);

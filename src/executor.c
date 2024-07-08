@@ -325,7 +325,7 @@ void error_exit(t_tools *shell, const char *msg, int exit_st) {
  * printing an error message and exiting with a specific status code. */
 void handle_directory_command(char *cmd, t_tools *shell) {
     if (shell->flag_log == 1) {
-        printf("%s%s: %s\n", MINI, cmd, ISDIR, 2);
+        printf("%s%s: %s\n", MINI, cmd, ISDIR);
         shell->flag_log = 0;
     }
     shell->last_status = 126;
@@ -346,7 +346,7 @@ void execute_final_command(char *command_path, t_simple_cmds *table, t_tools *sh
     env_copy = arr_dabl(shell->envp);
     exec_result = execve(command_path, cmd_args_copy, env_copy);
     if (exec_result == -1) {
-        if(shell->commands == 1)
+        if(shell->commands)
             error_exit(shell, strerror(errno), 0);
         free(command_path);
         clear_token_list(cmd_args_copy);
