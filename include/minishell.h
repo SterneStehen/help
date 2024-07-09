@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 21:08:44 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/09 07:00:27 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 17:48:57 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,7 +277,7 @@ char						*duplicate_string_range(const char *source,
 								int begin, int finish);
 int							inside_double_quotes(const char *input, int index);
 int							contains_quote(const char *input);
-int							find_error_sint(char c);
+int							find_error_sint();
 int							find_error_sing_newline(void);
 int							is_character_symbol(char c);
 int							check_redir(const char *input);

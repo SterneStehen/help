@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:10:56 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/08 18:20:33 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 17:27:40 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ int	handle_argument(t_tools *tools, char **args, int index)
 int	unset(t_tools *tools, char *command, char **args)
 {
 	int	index;
+	(void)command;
 
 	index = 1;
 	if (args[1] == NULL)
