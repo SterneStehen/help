@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:08:56 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/09 17:16:59 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 18:05:31 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*allocate_full_content(int content_size)
 char	*extract_env_data(char *input_str, char *separator)
 {
 	char	*result_content;
-	int		sep_len;
+	size_t	sep_len;
 	int		len_diff;
 	int		content_size;
 
@@ -141,7 +141,7 @@ int	alter_var_content(t_tools *toolkit, char *input_str, char *variable)
 	return (0);
 }
 
-int	handle_error(t_tools *tools, const char *arg0, const char *arg)
+int	handle_error(const char *arg0, const char *arg)
 {
 	printf("%s%s: `%s': %s\n", MINI, arg0, arg, VAL);
 	return (1);
@@ -321,9 +321,10 @@ int	process_args_run(t_tools *tools, char **args)
 // Main export function
 int	export(t_tools *tools, char *command, char **args)
 {
+	(void) command;
 	if (args[1] == NULL)
 	{
-		return (print_env_vars(tools)); // Ensure this function is called
+		return (print_env_vars(tools));
 	}
 	else if (args[1] != NULL && tools->flag_pipe == FALSE)
 	{

@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 21:08:44 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/09 17:54:37 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 18:04:54 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -537,8 +537,7 @@ void						process_single_arg(char *arg,
 								int *current_is_space_filled);
 void						process_args(char **arguments, int startIndex);
 char						*extract_env_data(char *input_str, char *separator);
-int							handle_error(t_tools *tools, const char *arg0,
-								const char *arg);
+int							handle_error(const char *arg0, const char *arg);
 int							check_invalid_chars(char *string);
 int							validate_argument(char *arg);
 int							process_argument(t_tools *tools, char *arg);
