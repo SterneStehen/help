@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:08:56 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/08 18:31:03 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 17:16:59 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	copy_content(char *src, char *dest, int start_idx)
 	}
 	dest[idx] = '\0';
 }
-
 // Main function to get environment content
 char	*allocate_empty_content(void)
 {
@@ -193,11 +192,11 @@ int	print_env_vars(t_tools *tools)
 		fprintf(stderr, "No environment variables to display.\n");
 		return (-1);
 	}
+	iterate_variables(tools); // Add this line to iterate and print variables
 	return (0);
 }
 
 // Function to validate and process arguments
-
 int	check_errors(t_tools *tools, char **args, int idx)
 {
 	if (args[0][0] == '=' || ft_strlen(args[idx]) == 0)
@@ -322,9 +321,9 @@ int	process_args_run(t_tools *tools, char **args)
 // Main export function
 int	export(t_tools *tools, char *command, char **args)
 {
-	if (args[1] == NULL && tools->flag_log == TRUE)
+	if (args[1] == NULL)
 	{
-		return (print_env_vars(tools));
+		return (print_env_vars(tools)); // Ensure this function is called
 	}
 	else if (args[1] != NULL && tools->flag_pipe == FALSE)
 	{
