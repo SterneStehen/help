@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:43:01 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/09 06:02:22 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 16:30:19 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,11 @@ void	loop_minishell(t_tools *tools)
 	while (true)
 	{
 		read_and_process_input(tools);
+		if (tools->message == NULL)
+		{
+			printf("exit\n");
+			break ;
+		}
 		if (check_for_exit_and_spaces(tools))
 		{
 			break ;
