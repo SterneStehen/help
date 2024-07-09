@@ -16,8 +16,10 @@ logfile.txt
 minishell
 minishell_tester
 output.txt
-run_comprehensive_tests copy.sh
+run_comprehensive_tests copy 2.sh
 src
+test_path.sh
+test_path_results.txt
 test_result_count
 test_results.txt
 Bash output:
@@ -31,8 +33,10 @@ logfile.txt
 minishell
 minishell_tester
 output.txt
-run_comprehensive_tests copy.sh
+run_comprehensive_tests copy 2.sh
 src
+test_path.sh
+test_path_results.txt
 test_result_count
 test_results.txt
 Result: ✅ Match
@@ -59,43 +63,47 @@ Result: ✅ Match
 
 Running test 4: arguments_ls
 Minishell output:
-total 144
--rw-r--r-- 1 sergii sergii     8 Jul  8 00:19 &2
--rw-r--r-- 1 sergii sergii     8 Jul  8 00:21 &5
--rw-r--r-- 1 sergii sergii  1323 Jul  6 16:08 Makefile
-drwxr-xr-x 2 sergii sergii  4096 Jul  8 18:31 build
-drwxr-xr-x 3 sergii sergii  4096 Jul  6 16:08 include
--rw-r--r-- 1 sergii sergii    58 Jul  8 00:22 input.txt
--rw-r--r-- 1 sergii sergii    10 Jul  8 00:25 logfile.txt
--rwxr-xr-x 1 sergii sergii 93576 Jul  8 18:31 minishell
-drwxr-xr-x 6 sergii sergii  4096 Jul  7 15:51 minishell_tester
--rw-r--r-- 1 sergii sergii    58 Jul  8 00:23 output.txt
--rwxr-xr-x 1 sergii sergii  6382 Jul  7 01:37 run_comprehensive_tests copy.sh
-drwxr-xr-x 2 sergii sergii  4096 Jul  7 13:51 src
--rw-r--r-- 1 sergii sergii     0 Jul  8 18:31 test_result_count
--rw-r--r-- 1 sergii sergii   770 Jul  8 18:31 test_results.txt
+total 152
+-rw-r--r-- 1 sergii sergii     8 Jul  9 04:25 &2
+-rw-r--r-- 1 sergii sergii     8 Jul  9 04:25 &5
+-rw-r--r-- 1 sergii sergii  1322 Jul  9 05:21 Makefile
+drwxr-xr-x 2 sergii sergii  4096 Jul  9 07:10 build
+drwxr-xr-x 3 sergii sergii  4096 Jul  9 04:25 include
+-rw-r--r-- 1 sergii sergii    58 Jul  9 04:25 input.txt
+-rw-r--r-- 1 sergii sergii    10 Jul  9 04:25 logfile.txt
+-rwxr-xr-x 1 sergii sergii 93768 Jul  9 07:10 minishell
+drwxr-xr-x 2 sergii sergii  4096 Jul  9 04:25 minishell_tester
+-rw-r--r-- 1 sergii sergii    58 Jul  9 04:25 output.txt
+-rwxr-xr-x 1 sergii sergii  6736 Jul  9 04:28 run_comprehensive_tests copy 2.sh
+drwxr-xr-x 2 sergii sergii  4096 Jul  9 07:02 src
+-rwxr-xr-x 1 sergii sergii  1097 Jul  9 04:27 test_path.sh
+-rw-r--r-- 1 sergii sergii  1232 Jul  9 04:29 test_path_results.txt
+-rw-r--r-- 1 sergii sergii     0 Jul  9 07:13 test_result_count
+-rw-r--r-- 1 sergii sergii   844 Jul  9 07:13 test_results.txt
 Bash output:
-total 144
--rw-r--r-- 1 sergii sergii     8 Jul  8 00:19 &2
--rw-r--r-- 1 sergii sergii     8 Jul  8 00:21 &5
--rw-r--r-- 1 sergii sergii  1323 Jul  6 16:08 Makefile
-drwxr-xr-x 2 sergii sergii  4096 Jul  8 18:31 build
-drwxr-xr-x 3 sergii sergii  4096 Jul  6 16:08 include
--rw-r--r-- 1 sergii sergii    58 Jul  8 00:22 input.txt
--rw-r--r-- 1 sergii sergii    10 Jul  8 00:25 logfile.txt
--rwxr-xr-x 1 sergii sergii 93576 Jul  8 18:31 minishell
-drwxr-xr-x 6 sergii sergii  4096 Jul  7 15:51 minishell_tester
--rw-r--r-- 1 sergii sergii    58 Jul  8 00:23 output.txt
--rwxr-xr-x 1 sergii sergii  6382 Jul  7 01:37 run_comprehensive_tests copy.sh
-drwxr-xr-x 2 sergii sergii  4096 Jul  7 13:51 src
--rw-r--r-- 1 sergii sergii     0 Jul  8 18:31 test_result_count
--rw-r--r-- 1 sergii sergii  1602 Jul  8 18:31 test_results.txt
+total 152
+-rw-r--r-- 1 sergii sergii     8 Jul  9 04:25 &2
+-rw-r--r-- 1 sergii sergii     8 Jul  9 04:25 &5
+-rw-r--r-- 1 sergii sergii  1322 Jul  9 05:21 Makefile
+drwxr-xr-x 2 sergii sergii  4096 Jul  9 07:10 build
+drwxr-xr-x 3 sergii sergii  4096 Jul  9 04:25 include
+-rw-r--r-- 1 sergii sergii    58 Jul  9 04:25 input.txt
+-rw-r--r-- 1 sergii sergii    10 Jul  9 04:25 logfile.txt
+-rwxr-xr-x 1 sergii sergii 93768 Jul  9 07:10 minishell
+drwxr-xr-x 2 sergii sergii  4096 Jul  9 04:25 minishell_tester
+-rw-r--r-- 1 sergii sergii    58 Jul  9 04:25 output.txt
+-rwxr-xr-x 1 sergii sergii  6736 Jul  9 04:28 run_comprehensive_tests copy 2.sh
+drwxr-xr-x 2 sergii sergii  4096 Jul  9 07:02 src
+-rwxr-xr-x 1 sergii sergii  1097 Jul  9 04:27 test_path.sh
+-rw-r--r-- 1 sergii sergii  1232 Jul  9 04:29 test_path_results.txt
+-rw-r--r-- 1 sergii sergii     0 Jul  9 07:13 test_result_count
+-rw-r--r-- 1 sergii sergii  1805 Jul  9 07:13 test_results.txt
 Result: ❌ Mismatch
 Difference:
-15c15
-< -rw-r--r-- 1 sergii sergii   770 Jul  8 18:31 test_results.txt
+17c17
+< -rw-r--r-- 1 sergii sergii   844 Jul  9 07:13 test_results.txt
 ---
-> -rw-r--r-- 1 sergii sergii  1602 Jul  8 18:31 test_results.txt
+> -rw-r--r-- 1 sergii sergii  1805 Jul  9 07:13 test_results.txt
 
 -----------------------
 
@@ -190,8 +198,10 @@ logfile.txt
 minishell
 minishell_tester
 output.txt
-run_comprehensive_tests copy.sh
+run_comprehensive_tests copy 2.sh
 src
+test_path.sh
+test_path_results.txt
 test_result_count
 test_results.txt
 0
@@ -206,8 +216,10 @@ logfile.txt
 minishell
 minishell_tester
 output.txt
-run_comprehensive_tests copy.sh
+run_comprehensive_tests copy 2.sh
 src
+test_path.sh
+test_path_results.txt
 test_result_count
 test_results.txt
 0
@@ -299,12 +311,12 @@ WSL2_GUI_APPS_ENABLED=1
 TERM_PROGRAM_VERSION=1.91.0
 WSL_DISTRO_NAME=Ubuntu
 NAME=SamsungPC
-PWD=/home/sergii/workspace/mini/start4
+PWD=/home/sergii/workspace/mini/finish1
 LOGNAME=sergii
 VSCODE_GIT_ASKPASS_NODE=/home/sergii/.vscode-server/bin/ea1445cc7016315d0f5728f8e8b12a45dc0a7286/node
 HOME=/home/sergii
 LANG=C.UTF-8
-WSL_INTEROP=/run/WSL/400_interop
+WSL_INTEROP=/run/WSL/401_interop
 LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
 WAYLAND_DISPLAY=wayland-0
 GIT_ASKPASS=/home/sergii/.vscode-server/bin/ea1445cc7016315d0f5728f8e8b12a45dc0a7286/extensions/git/dist/askpass.sh
@@ -313,7 +325,7 @@ LESSCLOSE=/usr/bin/lesspipe %s %s
 TERM=xterm-256color
 LESSOPEN=| /usr/bin/lesspipe %s
 USER=sergii
-VSCODE_GIT_IPC_HANDLE=/run/user/1000/vscode-git-53295a84f6.sock
+VSCODE_GIT_IPC_HANDLE=/run/user/1000/vscode-git-427a26c4aa.sock
 DISPLAY=:0
 SHLVL=1
 XDG_RUNTIME_DIR=/run/user/1000/
@@ -324,9 +336,9 @@ PATH=/home/sergii/.vscode-server/bin/ea1445cc7016315d0f5728f8e8b12a45dc0a7286/bi
 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
 HOSTTYPE=x86_64
 PULSE_SERVER=unix:/mnt/wslg/PulseServer
-OLDPWD=/home/sergii/workspace/mini
+OLDPWD=/home/sergii/workspace/mini/finish1/include
 TERM_PROGRAM=vscode
-VSCODE_IPC_HOOK_CLI=/run/user/1000/vscode-ipc-7647e87d-4306-4f89-a6ca-090fa30134b4.sock
+VSCODE_IPC_HOOK_CLI=/run/user/1000/vscode-ipc-3ac7bba2-012c-41c0-91cf-cd5ff493d93c.sock
 _=./minishell
 Bash output:
 SHELL=/bin/bash
@@ -335,13 +347,13 @@ WSL2_GUI_APPS_ENABLED=1
 TERM_PROGRAM_VERSION=1.91.0
 WSL_DISTRO_NAME=Ubuntu
 NAME=SamsungPC
-PWD=/home/sergii/workspace/mini/start4
+PWD=/home/sergii/workspace/mini/finish1
 LOGNAME=sergii
 _=/usr/bin/env
 VSCODE_GIT_ASKPASS_NODE=/home/sergii/.vscode-server/bin/ea1445cc7016315d0f5728f8e8b12a45dc0a7286/node
 HOME=/home/sergii
 LANG=C.UTF-8
-WSL_INTEROP=/run/WSL/400_interop
+WSL_INTEROP=/run/WSL/401_interop
 LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
 WAYLAND_DISPLAY=wayland-0
 GIT_ASKPASS=/home/sergii/.vscode-server/bin/ea1445cc7016315d0f5728f8e8b12a45dc0a7286/extensions/git/dist/askpass.sh
@@ -350,7 +362,7 @@ LESSCLOSE=/usr/bin/lesspipe %s %s
 TERM=xterm-256color
 LESSOPEN=| /usr/bin/lesspipe %s
 USER=sergii
-VSCODE_GIT_IPC_HANDLE=/run/user/1000/vscode-git-53295a84f6.sock
+VSCODE_GIT_IPC_HANDLE=/run/user/1000/vscode-git-427a26c4aa.sock
 DISPLAY=:0
 SHLVL=2
 XDG_RUNTIME_DIR=/run/user/1000/
@@ -361,9 +373,9 @@ PATH=/home/sergii/.vscode-server/bin/ea1445cc7016315d0f5728f8e8b12a45dc0a7286/bi
 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
 HOSTTYPE=x86_64
 PULSE_SERVER=unix:/mnt/wslg/PulseServer
-OLDPWD=/home/sergii/workspace/mini
+OLDPWD=/home/sergii/workspace/mini/finish1/include
 TERM_PROGRAM=vscode
-VSCODE_IPC_HOOK_CLI=/run/user/1000/vscode-ipc-7647e87d-4306-4f89-a6ca-090fa30134b4.sock
+VSCODE_IPC_HOOK_CLI=/run/user/1000/vscode-ipc-3ac7bba2-012c-41c0-91cf-cd5ff493d93c.sock
 Result: ❌ Mismatch
 Difference:
 8a9
@@ -483,18 +495,18 @@ Result: ✅ Match
 
 Running test 34: pwd
 Minishell output:
-/home/sergii/workspace/mini/start4
+/home/sergii/workspace/mini/finish1
 Bash output:
-/home/sergii/workspace/mini/start4
+/home/sergii/workspace/mini/finish1
 Result: ✅ Match
 
 -----------------------
 
 Running test 35: pwd_with_argument
 Minishell output:
-/home/sergii/workspace/mini/start4
+/home/sergii/workspace/mini/finish1
 Bash output:
-/home/sergii/workspace/mini/start4
+/home/sergii/workspace/mini/finish1
 Result: ✅ Match
 
 -----------------------
@@ -510,25 +522,20 @@ Result: ✅ Match
 
 Running test 37: relative_path
 Minishell output:
-exit
+
 Bash output:
 
-Result: ❌ Mismatch
-Difference:
-1c1
-< exit
----
-> 
+Result: ✅ Match
 
 -----------------------
 
 Running test 38: relative_path_cd
 Minishell output:
 minishell: cd: ./minishell: Not a directory
-/home/sergii/workspace/mini/start4
+/home/sergii/workspace/mini/finish1
 Bash output:
 cd: ./minishell: Not a directory
-/home/sergii/workspace/mini/start4
+/home/sergii/workspace/mini/finish1
 Result: ❌ Mismatch
 Difference:
 1c1
@@ -564,8 +571,10 @@ logfile.txt
 minishell
 minishell_tester
 output.txt
-run_comprehensive_tests copy.sh
+run_comprehensive_tests copy 2.sh
 src
+test_path.sh
+test_path_results.txt
 test_result_count
 test_results.txt
 Bash output:
@@ -579,8 +588,10 @@ logfile.txt
 minishell
 minishell_tester
 output.txt
-run_comprehensive_tests copy.sh
+run_comprehensive_tests copy 2.sh
 src
+test_path.sh
+test_path_results.txt
 test_result_count
 test_results.txt
 Result: ✅ Match
@@ -599,15 +610,17 @@ logfile.txt
 minishell
 minishell_tester
 output.txt
-run_comprehensive_tests copy.sh
+run_comprehensive_tests copy 2.sh
 src
+test_path.sh
+test_path_results.txt
 test_result_count
 test_results.txt
 Bash output:
 ls: No such file or directory
 Result: ❌ Mismatch
 Difference:
-1,14c1
+1,16c1
 < &2
 < &5
 < Makefile
@@ -618,8 +631,10 @@ Difference:
 < minishell
 < minishell_tester
 < output.txt
-< run_comprehensive_tests copy.sh
+< run_comprehensive_tests copy 2.sh
 < src
+< test_path.sh
+< test_path_results.txt
 < test_result_count
 < test_results.txt
 ---
@@ -639,8 +654,10 @@ logfile.txt
 minishell
 minishell_tester
 output.txt
-run_comprehensive_tests copy.sh
+run_comprehensive_tests copy 2.sh
 src
+test_path.sh
+test_path_results.txt
 test_result_count
 test_results.txt
 Bash output:
@@ -654,8 +671,10 @@ logfile.txt
 minishell
 minishell_tester
 output.txt
-run_comprehensive_tests copy.sh
+run_comprehensive_tests copy 2.sh
 src
+test_path.sh
+test_path_results.txt
 test_result_count
 test_results.txt
 Result: ✅ Match
@@ -838,9 +857,59 @@ Result: ✅ Match
 
 -----------------------
 
+Running test 61: echo_mixed_quotes
+Minishell output:
+"hello world"
+Bash output:
+"hello world"
+Result: ✅ Match
+
+-----------------------
+
+Running test 62: echo_mixed_quotes_nested
+Minishell output:
+'hello world'
+Bash output:
+'hello world'
+Result: ✅ Match
+
+-----------------------
+
+Running test 63: echo_single_inside_double
+Minishell output:
+hello 'world'
+Bash output:
+hello 'world'
+Result: ✅ Match
+
+-----------------------
+
+Running test 64: echo_double_inside_single
+Minishell output:
+hello "world"
+Bash output:
+hello "world"
+Result: ✅ Match
+
+-----------------------
+
+Running test 65: echo_escaped_quotes
+Minishell output:
+hello world
+Bash output:
+"hello world"
+Result: ❌ Mismatch
+Difference:
+1c1
+< hello world
+---
+> "hello world"
+
+-----------------------
+
 
 -----------------------
 
 Final results:
-Correct results: 50
+Correct results: 55
 Incorrect results: 10

@@ -424,8 +424,8 @@ void	execute_final_command(char *command_path, t_simple_cmds *table,
 		if (shell->commands)
 			error_exit(shell, strerror(errno), 0);
 		free(command_path);
-		clear_token_list(cmd_args_copy);
-		clear_token_list(env_copy);
+		free_string_array(cmd_args_copy);
+		free_string_array(env_copy);
 		exit(exec_result);
 	}
 }
@@ -530,6 +530,7 @@ int	execute_command(t_simple_cmds *command, t_tools *tools)
 {
 	char	*command_path;
 
+	command_path = find_command_path(tools, command->command);
 	if (command->command == NULL)
 		exit_if_null(tools, command_path, command);
 	if (execute_builtin_commands(tools, command->command, command->arguments))

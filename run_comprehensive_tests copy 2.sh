@@ -152,6 +152,13 @@ run_test 58 "echo_hello_world" "echo hello world\nexit\n"
 run_test 59 "echo_hello_world_quotes" "echo \"hello world\"\nexit\n"
 run_test 60 "echo_hello_world_single_quotes" "echo 'hello world'\nexit\n"
 
+run_test 61 "echo_mixed_quotes" "echo '\"hello world\"'\nexit\n"
+run_test 62 "echo_mixed_quotes_nested" "echo \"'hello world'\"\nexit\n"
+run_test 63 "echo_single_inside_double" "echo \"hello 'world'\"\nexit\n"
+run_test 64 "echo_double_inside_single" "echo 'hello \"world\"'\nexit\n"
+run_test 65 "echo_escaped_quotes" "echo \\\"hello world\\\"\nexit\n"
+
+
 # Print final results
 echo -e "\n-----------------------\n" >> $OUTPUT_FILE
 echo "Final results:" >> $OUTPUT_FILE

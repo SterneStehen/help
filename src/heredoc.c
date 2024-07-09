@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:13:43 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/08 15:56:48 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 07:02:59 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,7 +238,7 @@ char	*generate_temp_filename(t_simple_cmds *table)
 int	write_to_file(int fd, char *stop_word, t_tools *shell)
 {
 	char	*input;
-	int		len;
+	size_t	len;
 
 	while (1)
 	{

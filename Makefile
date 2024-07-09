@@ -3,7 +3,7 @@ NAME = minishell
 # Компилятор и флаги компиляции
 CC = gcc
 CFLAGS = -Wall 
-#  -Wextra -Werror
+# -Wextra -Werror
 
 # Директории
 SRCDIR = src

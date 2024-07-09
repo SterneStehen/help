@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:06:03 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/08 04:08:25 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 07:02:25 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,7 @@ int	execute_cd_tilde(t_tools *shell, char *argument)
 	if (chdir(path) == -1)
 	{
 		if (shell->flag_log)
-		{
 			return (printf("%scd: %s: %s\n", SHELL, path, strerror(errno)));
-		}
 	}
 	free(tilde_trimmed);
 	free(path);
@@ -177,7 +175,7 @@ int	update_directory_vars(t_tools *shell, char *old_pwd_content)
 	return (0);
 }
 
-int	change_directory(t_tools *shell, char *cmd, char **args)
+int	change_directory(t_tools *shell, char **args)
 {
 	char			*old_pwd_content;
 	t_environment	*old_pwd;
@@ -185,33 +183,23 @@ int	change_directory(t_tools *shell, char *cmd, char **args)
 	old_pwd = ft_find(shell->envair, "PWD");
 	old_pwd_content = old_pwd->data;
 	if (args[1] == NULL)
-	{
 		execute_cd_home(shell);
-	}
 	else if (args[1][0] == '~')
-	{
 		execute_cd_tilde(shell, args[1]);
-	}
 	else if (are_strings_equal(args[1], "-"))
-	{
 		execute_cd_oldpwd(shell);
-	}
 	else if (args[1] != NULL && strcmp(args[1], "..") != 0 && args[1][0] != '-')
 	{
 		if (chdir(args[1]) == -1)
 		{
 			shell->last_status = 1;
 			if (shell->flag_log)
-			{
 				return (printf("%scd: %s: %s\n", SHELL, args[1],
 						strerror(errno)));
-			}
 		}
 	}
 	else if (strcmp(args[1], "..") == 0 || strncmp(args[1], "../", 3) == 0)
-	{
 		execute_cd_back(shell, args);
-	}
 	update_directory_vars(shell, old_pwd_content);
 	return (0);
 }

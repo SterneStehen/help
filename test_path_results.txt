@@ -1,0 +1,93 @@
+Running test: valid_path_ls
+Minishell output:
+&2
+&5
+Makefile
+build
+include
+input.txt
+logfile.txt
+minishell
+minishell_tester
+output.txt
+run_comprehensive_tests copy 2.sh
+src
+test_path.sh
+test_path_results.txt
+test_result_count
+test_results.txt
+
+-----------------------
+
+Running test: valid_path_wc
+Minishell output:
+27 /etc/passwd
+
+-----------------------
+
+Running test: invalid_path_ls
+Minishell output:
+&2
+&5
+Makefile
+build
+include
+input.txt
+logfile.txt
+minishell
+minishell_tester
+output.txt
+run_comprehensive_tests copy 2.sh
+src
+test_path.sh
+test_path_results.txt
+test_result_count
+test_results.txt
+
+-----------------------
+
+Running test: invalid_path_wc
+Minishell output:
+27 /etc/passwd
+
+-----------------------
+
+Running test: empty_path_ls
+Minishell output:
+&2
+&5
+Makefile
+build
+include
+input.txt
+logfile.txt
+minishell
+minishell_tester
+output.txt
+run_comprehensive_tests copy 2.sh
+src
+test_path.sh
+test_path_results.txt
+test_result_count
+test_results.txt
+
+-----------------------
+
+Running test: empty_path_wc
+Minishell output:
+27 /etc/passwd
+
+-----------------------
+
+Running test: relative_path_ls
+Minishell output:
+exit
+
+-----------------------
+
+Running test: relative_path_wc
+Minishell output:
+exit
+
+-----------------------
+

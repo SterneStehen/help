@@ -6,26 +6,26 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:55:21 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/08 17:51:56 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 05:06:43 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
 /* Free memory allocated for an array of strings. */
-void	free_string_array(char **array)
+void	free_string_array(char **str)
 {
 	int	i;
 
-	if (!array)
+	if (str == NULL)
 		return ;
 	i = 0;
-	while (array[i])
+	while (str[i])
 	{
-		free(array[i]);
+		free(str[i]);
 		i++;
 	}
-	free(array);
+	free(str);
 }
 
 /* Free memory allocated for the environment structure. */

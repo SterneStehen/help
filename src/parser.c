@@ -87,7 +87,7 @@ int	strings_equal(char *str1, char *str2)
    Returns the new string without quotes. */
 char	*remove_quotes(char *input)
 {
-	char		*result;
+	char	*result;
 
 	if (input[0] == '\'' || input[0] == '\"')
 	{
@@ -101,7 +101,7 @@ char	*remove_quotes(char *input)
    Skips processing for HERE_DOC tokens. */
 void	manage_process_tokens(t_node *tokens)
 {
-	char		*temp;
+	char	*temp;
 
 	while (tokens != NULL)
 	{
@@ -176,7 +176,7 @@ int	calculate_token_size(t_node *token)
    Returns the count of tokens. */
 int	calculate_token_length(t_node *token)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	if (token == NULL)
@@ -196,7 +196,7 @@ int	calculate_token_length(t_node *token)
  */
 int	is_special_ascii(char c)
 {
-	int		ascii;
+	int	ascii;
 
 	ascii = (int)c;
 	return ((ascii >= '!' && ascii <= '/') || (ascii >= ':' && ascii <= '@')
@@ -208,7 +208,7 @@ int	is_special_ascii(char c)
    Returns 1 if the character is visible, otherwise returns 0. */
 int	is_visible_char(char c)
 {
-	int		i;
+	int	i;
 
 	i = is_special_ascii(c);
 	if (i == 0)
@@ -221,7 +221,7 @@ int	is_visible_char(char c)
    Returns a pointer to the new token. */
 t_node	*create_token(char *content, t_class type)
 {
-	t_node		*new_token;
+	t_node	*new_token;
 
 	new_token = (t_node *)smalloc(sizeof(t_node));
 	if (new_token == NULL)
@@ -246,8 +246,8 @@ t_node	*create_new_token(char *str, t_class type)
    Returns the head of the token list. */
 t_node	*insert_token(t_node *head, char *str, t_class type)
 {
-	t_node		*tail;
-	t_node		*new_token;
+	t_node	*tail;
+	t_node	*new_token;
 
 	if (head == NULL)
 	{
@@ -338,8 +338,8 @@ void	init_commands(t_simple_cmds *tables)
    Returns the head of the token list. */
 t_node	*tokenize_slip_string(char *str, t_node *token)
 {
-	int		current_index;
-	int		previous_index;
+	int	current_index;
+	int	previous_index;
 
 	current_index = 0;
 	while (str[current_index] != '\0')
@@ -359,8 +359,8 @@ t_node	*tokenize_slip_string(char *str, t_node *token)
    string. Returns the count of escaped characters. */
 int	calcul_escaped_charact(const char *str, int last_index)
 {
-	int		index;
-	int		escape_count;
+	int	index;
+	int	escape_count;
 
 	index = last_index - 1;
 	escape_count = 0;
@@ -448,7 +448,7 @@ t_node	*add_string(char *str, int *current_index, int *previous_index,
    Returns the index of the character or -1 if not found. */
 int	find_char_in_str(const char *src, int character)
 {
-	int		index;
+	int	index;
 
 	index = 0;
 	while (src[index] != '\0')
@@ -471,7 +471,7 @@ int	find_char_in_str(const char *src, int character)
    redirection type. */
 t_class	determine_redirection_type(char *input, int begin, int finish)
 {
-	int		length;
+	int	length;
 
 	length = finish - begin;
 	if (length == 2)
@@ -498,9 +498,9 @@ t_class	determine_redirection_type(char *input, int begin, int finish)
 t_node	*plus_redire(char *input_str, int *current_index, int *previous_index,
 		t_node *token_list)
 {
-	char		current_char;
-	t_class		redirection_type;
-	char		*dubl;
+	char	current_char;
+	t_class	redirection_type;
+	char	*dubl;
 
 	if (input_str[*current_index] == '\0' || find_char_in_str(REDIR,
 			input_str[*current_index]) == -1)
@@ -537,8 +537,8 @@ t_node	*process_flag_token(char *str, int *idx, int *prev_idx,
 	start_idx = *idx;
 	while (str[*idx] != '\0' && str[*idx] != SPACE)
 	{
-		if ((find_character_type(str[*idx]) & (IS_ALPHA | IS_DIGIT
-					| IS_PRINTABLE)) == 0)
+		if ((find_character_type(str[*idx])
+				& (IS_ALPHA | IS_DIGIT | IS_PRINTABLE)) == 0)
 		{
 			break ;
 		}
@@ -558,8 +558,8 @@ t_node	*process_flag_token(char *str, int *idx, int *prev_idx,
 t_node	*plus_token_f(char *input_str, int *current_index, int *previous_index,
 		t_node *token_list)
 {
-	int		idx;
-	int		prev_idx;
+	int	idx;
+	int	prev_idx;
 
 	idx = *current_index;
 	prev_idx = *previous_index;
@@ -601,8 +601,8 @@ int	parse_shell_input(t_tools *shell)
    Returns TRUE if an error is found, otherwise returns FALSE. */
 int	audit_command(t_simple_cmds *commands)
 {
-	t_node		*token;
-	int			result;
+	t_node	*token;
+	int		result;
 
 	result = 0;
 	while (commands != NULL)
@@ -625,8 +625,8 @@ int	audit_command(t_simple_cmds *commands)
    spaces. Returns the processed substring. */
 char	*process_token_segment(char *str, int start, int end)
 {
-	char		*tmp;
-	char		*trimmed;
+	char	*tmp;
+	char	*trimmed;
 
 	tmp = duplicate_string_range(str, start, end);
 	trimmed = del_string(tmp, SIMBOL);
@@ -643,10 +643,15 @@ void	free_tokens(char **tokens, int index)
 	free(tokens);
 }
 
-int	process_and_store_token(char **tokens, const char *str, int start, int end, int *index)
+int	process_and_store_token(char **tokens, const char *str, int range[2],
+		int *index)
 {
 	char	*token;
+	int		start;
+	int		end;
 
+	start = range[0];
+	end = range[1];
 	token = process_token_segment(str, start, end);
 	if (token == NULL)
 	{
@@ -657,10 +662,8 @@ int	process_and_store_token(char **tokens, const char *str, int start, int end, 
 	return (1);
 }
 
-/* Splits a string by pipe characters, respecting quotes.
-//    Returns an array of substrings split by pipes. */
-char	**pipe_split(char *str, int start, int end, int index)
-	{
+char	**pipe_split(char *str, int index, int range[2])
+{
 	char	**tokens;
 	int		pipes_count;
 
@@ -670,69 +673,22 @@ char	**pipe_split(char *str, int start, int end, int index)
 	tokens = (char **)malloc(sizeof(char *) * (pipes_count + 2));
 	if (tokens == NULL)
 		return (NULL);
-	while (str[++end] != '\0')
+	while (str[++range[1]] != '\0')
 	{
-		end = pass_quoted_sect(str, end);
-		if (str[end] == '|' && str[end - 1] != '\''
-			&& calcul_escaped_charact(str, end) % 2 == 0)
+		range[1] = pass_quoted_sect(str, range[1]);
+		if (str[range[1]] == '|' && str[range[1] - 1] != '\''
+			&& calcul_escaped_charact(str, range[1]) % 2 == 0)
 		{
-			if (!process_and_store_token(tokens, str, start, end, &index))
+			if (!process_and_store_token(tokens, str, range, &index))
 				return (NULL);
-			start = end + 1;
+			range[0] = range[1] + 1;
 		}
 	}
-	if (!process_and_store_token(tokens, str, start, end, &index))
+	if (!process_and_store_token(tokens, str, range, &index))
 		return (NULL);
 	tokens[++index] = NULL;
 	return (tokens);
 }
-
-// char	**pipe_split(char *str, int start, int end, int index)
-// {
-// 	char **tokens;
-// 	char *token;
-// 	int pipes_count;
-
-// 	if (str == NULL)
-// 		return (NULL);
-// 	pipes_count = calc_pipe_segment(str);
-// 	tokens = malloc(sizeof(char *) * (pipes_count + 2));
-// 	if (tokens == NULL)
-// 		return (NULL);
-// 	while (str[++end] != '\0')
-// 	{
-// 		end = pass_quoted_sect(str, end);
-// 		if (str[end] == '|' && str[end - 1] != '\''
-// 			&& calcul_escaped_charact(str, end) % 2 == 0)
-// 		{
-// 			token = process_token_segment(str, start, end);
-// 			if (token == NULL)
-// 			{
-// 				while (index >= 0)
-// 				{
-// 					free(tokens[index--]);
-// 				}
-// 				free(tokens);
-// 				return (NULL);
-// 			}
-// 			tokens[++index] = token;
-// 			start = end + 1;
-// 		}
-// 	}
-// 	token = process_token_segment(str, start, end);
-// 	if (token == NULL)
-// 	{
-// 		while (index >= 0)
-// 		{
-// 			free(tokens[index--]);
-// 		}
-// 		free(tokens);
-// 		return (NULL);
-// 	}
-// 	tokens[++index] = token;
-// 	tokens[++index] = NULL;
-// 	return (tokens);
-// }
 
 /* Ignores characters inside quotes when parsing.
    Returns the updated index after the closing quote. */
@@ -756,8 +712,8 @@ int	pass_quoted_sect(char *str, int index)
    Returns the count of pipes. */
 int	calc_pipe_segment(char *str)
 {
-	int		i;
-	int		count;
+	int	i;
+	int	count;
 
 	count = 0;
 	i = -1;

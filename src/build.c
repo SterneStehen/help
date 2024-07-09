@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:11:47 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/08 17:52:36 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 04:54:51 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	cmd_check_cd(t_tools *shell, char *cmd, char **args)
 	if ((strcmp(cmd, "cd") == 0 || strcmp(cmd, C_D) == 0)
 		&& shell->flag_pipe == 0)
 	{
-		change_directory(shell, cmd, args);
+		change_directory(shell, args);
 		return (1);
 	}
 	return (0);

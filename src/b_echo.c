@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:07:20 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/08 04:11:01 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 07:13:33 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ int	is_space_filled(char *arg)
 	idx = 0;
 	while (arg[idx] != '\0')
 	{
-		if (arg[idx] == '"' || arg[idx] == '\'' || arg[idx] == ' ')
+		if (arg[idx] == 34 || arg[idx] == 39 || arg[idx] == 32)
 		{
 			idx++;
 		}
 		else
 		{
-			return (FALSE);
+			return (0);
 		}
 	}
-	return (TRUE);
+	return (1);
 }
 
 void	safe_write(int fd, const void *buf, size_t count)
@@ -40,6 +40,7 @@ void	safe_write(int fd, const void *buf, size_t count)
 	}
 }
 
+// Функция для обработки экранированных символов
 void	handle_escaped_chars(char *str, int *index)
 {
 	int	count;
@@ -48,7 +49,7 @@ void	handle_escaped_chars(char *str, int *index)
 
 	count = 0;
 	i = *index;
-	while (str[i] == '\\')
+	while (str[i] == 92)
 	{
 		count++;
 		i++;
@@ -66,19 +67,26 @@ void	handle_escaped_chars(char *str, int *index)
 	}
 }
 
-void	print_non_quote_chars(char *str, int quote_detected, int *index)
+// Функция для печати символов, не являющихся кавычками
+void	print_non_quote_chars2(char *str, int single_quote_detected,
+		int double_quote_detected, int *index)
 {
-	if (str[*index] != DQ && str[*index] != SQ)
+	if (str[*index] != 34 && str[*index] != 39)
 	{
 		safe_write(1, &str[*index], 1);
 	}
-	else if (str[*index] == SQ && quote_detected)
+	else if (str[*index] == 34 && single_quote_detected)
+	{
+		safe_write(1, &str[*index], 1);
+	}
+	else if (str[*index] == 39 && double_quote_detected)
 	{
 		safe_write(1, &str[*index], 1);
 	}
 	(*index)++;
 }
 
+// Функция для анализа наличия кавычек в строке
 int	analyze_quotes(char *str, int *quote_found)
 {
 	int	j;
@@ -86,7 +94,7 @@ int	analyze_quotes(char *str, int *quote_found)
 	j = 0;
 	while (str[j] != '\0')
 	{
-		if (str[j] == '\'' || str[j] == '"')
+		if (str[j] == 34 || str[j] == 39)
 		{
 			*quote_found = 1;
 			break ;
@@ -96,45 +104,110 @@ int	analyze_quotes(char *str, int *quote_found)
 	return (0);
 }
 
+void	analyze_and_handle_quotes(char *input, int *ctx)
+{
+	if (input[ctx[0]] == 34)
+	{
+		if (!(ctx[2]))
+			ctx[1] = !(ctx[1]);
+		else
+			safe_write(1, &input[ctx[0]], 1);
+		ctx[0]++;
+	}
+	else if (input[ctx[0]] == 39)
+	{
+		if (!(ctx[1]))
+			ctx[2] = !(ctx[2]);
+		else
+			safe_write(1, &input[ctx[0]], 1);
+		ctx[0]++;
+	}
+}
+
 int	print_without_quotes(char *input)
 {
-	int	idx;
-	int	detected_dq;
-	int	found_quote;
+	int	ctx[4];
 
-	idx = 0;
-	detected_dq = 0;
-	found_quote = 0;
-	analyze_quotes(input, &found_quote);
-	while (input[idx] != '\0')
+	ctx[0] = 0;
+	ctx[1] = 0;
+	ctx[2] = 0;
+	ctx[3] = 0;
+	analyze_quotes(input, &ctx[3]);
+	while (input[ctx[0]] != '\0')
 	{
-		if (input[idx] == '"')
-			detected_dq = 1;
-		while ((input[idx] == ' ' && input[idx + 1] == ' ' && !found_quote)
-			|| input[idx] == '\\')
-			idx++;
-		if (input[idx] == '\\')
-			handle_escaped_chars(input, &idx);
+		analyze_and_handle_quotes(input, ctx);
+		if (input[ctx[0]] == '\0')
+			break ;
+		while ((input[ctx[0]] == 32 && input[ctx[0] + 1] == 32 && !ctx[3])
+			|| input[ctx[0]] == 92)
+			ctx[0]++;
+		if (input[ctx[0]] == 92)
+			handle_escaped_chars(input, &ctx[0]);
 		else
-			print_non_quote_chars(input, detected_dq, &idx);
+			print_non_quote_chars2(input, ctx[2], ctx[1], &ctx[0]);
 	}
 	return (0);
 }
 
+// // Функция для печати строки без кавычек
+// int	print_without_quotes(char *input)
+// {
+// 	int	idx;
+// 	int	detected_dq;
+// 	int	detected_sq;
+// 	int	found_quote;
+
+// 	idx = 0;
+// 	detected_dq = 0;
+// 	detected_sq = 0;
+// 	found_quote = 0;
+// 	analyze_quotes(input, &found_quote);
+// 	while (input[idx] != '\0')
+// 	{
+// 		if (input[idx] == 34)
+// 		{
+// 			if (!detected_sq)
+// 				detected_dq = !detected_dq;
+// 			else
+// 				safe_write(1, &input[idx], 1);
+// 			idx++;
+// 			continue ;
+// 		}
+// 		if (input[idx] == 39)
+// 		{
+// 			if (!detected_dq)
+// 				detected_sq = !detected_sq;
+// 			else
+// 				safe_write(1, &input[idx], 1);
+// 			idx++;
+// 			continue ;
+// 		}
+// 		while ((input[idx] == 32 && input[idx + 1] == 32 && !found_quote)
+// 			|| input[idx] == 92)
+// 			idx++;
+// 		if (input[idx] == 92)
+// 			handle_escaped_chars(input, &idx);
+// 		else
+// 			print_non_quote_chars2(input, detected_sq, detected_dq, &idx);
+// 	}
+// 	return (0);
+// }
+
+// Функция для обработки одного аргумента
 void	process_single_arg(char *arg, int *current_is_space_filled)
 {
 	print_without_quotes(arg);
 	*current_is_space_filled = is_space_filled(arg);
 }
 
-// Вспомогательная функция для печати аргументов
+// Функция для обработки аргументов
 void	process_args(char **arguments, int startIndex)
 {
 	int	*p_current_space;
 	int	*p_next_space;
 
-	p_current_space = (int *)smalloc(sizeof(int));
-	p_next_space = (int *)smalloc(sizeof(int));
+	p_current_space = (int *)malloc(sizeof(int));
+	p_next_space = (int *)malloc(sizeof(int));
 	while (arguments[startIndex] != NULL)
 	{
 		process_single_arg(arguments[startIndex], p_current_space);
@@ -153,9 +226,10 @@ void	process_args(char **arguments, int startIndex)
 	free(p_next_space);
 }
 
+// Функция для обработки флага -n
 int	handle_flag_n(char **args, int start)
 {
-	if (ft_strncmp(args[start], "-n", 2) == 0)
+	if (strncmp(args[start], "-n", 2) == 0)
 	{
 		if (is_flag_valid(args[start]) == 1)
 		{
@@ -166,7 +240,7 @@ int	handle_flag_n(char **args, int start)
 	return (0);
 }
 
-// Вспомогательная функция для обработки аргументов
+// Функция для обработки аргументов
 void	handle_args(char **args)
 {
 	int	i;
@@ -186,7 +260,7 @@ void	handle_args(char **args)
 	}
 }
 
-// Вспомогательная функция для проверки флага -n
+// Функция для проверки флага -n
 int	check_n_flag(char *arg)
 {
 	int	i;
@@ -194,7 +268,7 @@ int	check_n_flag(char *arg)
 	i = 1;
 	while (arg[i] != '\0')
 	{
-		if (arg[i] != 'n')
+		if (arg[i] != 110)
 		{
 			return (0);
 		}
@@ -206,11 +280,11 @@ int	check_n_flag(char *arg)
 // Проверка флага
 int	is_flag_valid(char *arg)
 {
-	if (ft_strcmp(arg, "-n") == 1)
+	if (strcmp(arg, "-n") == 1)
 	{
 		return (1);
 	}
-	else if (ft_strncmp(arg, "-n", 2) == 0)
+	else if (strncmp(arg, "-n", 2) == 0)
 	{
 		return (check_n_flag(arg));
 	}
@@ -223,7 +297,7 @@ int	echo(t_tools *shell, char *cmd, char **args)
 	if (shell->flag_log == 1)
 	{
 		shell->last_status = 0;
-		if (ft_strcmp(cmd, "echo") == 1 && args[1] == NULL)
+		if (strcmp(cmd, "echo") == 1 && args[1] == NULL)
 		{
 			write(1, "\n", 1);
 		}
@@ -235,6 +309,7 @@ int	echo(t_tools *shell, char *cmd, char **args)
 	return (0);
 }
 
+// Функция вызова echo
 int	call_echo(t_tools *shell, char *cmd, char **args)
 {
 	echo(shell, cmd, args);

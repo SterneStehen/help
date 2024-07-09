@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:14:56 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/08 16:26:25 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 05:27:00 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*build_path(const char *base, const char *cmd)
 the directories in the PATH environment variable.
    Returns the full path if the command is found and executable,
 	otherwise logs an error and returns NULL. */
-char	*find_command_path(t_tools *sh, const char *cmd)
+char	*find_command_path(t_tools *tools, const char *cmd)
 {
 	int		idx;
 	char	*path;
@@ -42,11 +42,11 @@ char	*find_command_path(t_tools *sh, const char *cmd)
 	idx = 0;
 	if (strlen(cmd) == 0)
 		return (NULL);
-	if (sh->paths == NULL)
+	if (tools->paths == NULL)
 		exit(EXIT_FAILURE);
-	while (sh->paths[idx] != NULL)
+	while (tools->paths[idx] != NULL)
 	{
-		path = build_path(sh->paths[idx], cmd);
+		path = build_path(tools->paths[idx], cmd);
 		if (access(path, X_OK) == 0)
 			return (path);
 		free(path);

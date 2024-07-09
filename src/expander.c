@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 21:25:23 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/08 17:31:07 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 06:59:45 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,6 @@ int	check_conditions(int sq_count, int dq_count, int initial_position,
 /* Determines if expansion should be skipped based on the input string
    and position.
    Returns 1 if expansion should be skipped, 0 otherwise. */
-int		count_quotes(char *input_str, int position, char quote_char);
-int		check_conditions(int sq_count, int dq_count,
-							int	initial_position, char	*input_str);
-
 int	check_initial_conditions(char *input_str, int position)
 {
 	int	sq_count;
@@ -96,13 +92,11 @@ int	check_initial_conditions(char *input_str, int position)
 	return (-1);
 }
 
-int	bypass_expansion(char *input_str, int position)
+int	bypass_expansion(char *input_str, int position, int backtrack_needed)
 {
-	int	backtrack_needed;
 	int	temp_position;
 	int	initial_check_result;
 
-	backtrack_needed = 0;
 	initial_check_result = check_initial_conditions(input_str, position);
 	if (initial_check_result != -1)
 		return (initial_check_result);
@@ -116,8 +110,8 @@ int	bypass_expansion(char *input_str, int position)
 	if (!backtrack_needed)
 	{
 		if (check_conditions(count_quotes(input_str, position, '\''),
-					count_quotes(input_str, position, '"'), position,
-					input_str))
+				count_quotes(input_str, position, '"'), position,
+				input_str))
 			return (1);
 	}
 	return (0);
@@ -154,7 +148,7 @@ int	is_space_after_dollar(const char *str, int i)
 int	process_dollar_conditions(char *input, t_tools *context, int pos)
 {
 	if ((input[pos] == '$' && count_escaped_chars(input, pos) % 2 != 0)
-		|| (input[pos] == '$' && bypass_expansion(input, pos)))
+		|| (input[pos] == '$' && bypass_expansion(input, pos, 0)))
 	{
 		return (1);
 	}
@@ -332,42 +326,90 @@ char	*join_strings(const char *a, const char *b)
    Expands the dollar sign segment and updates `s`
    to reflect the expanded result. */
 
-int	process_dollar_sign(char **str, t_tools *tools, char **before_dollar,
-		char **remaining, int idx)
+// int	process_dollar_sign(char **str, t_tools *tools, char **before_dollar,
+// 		char **remaining, int idx)
+// {
+// 	char	**dollar_seg;
+// 	char	*expanded_val;
+
+// 	dollar_seg = smalloc(sizeof(char *));
+// 	if (!dollar_seg)
+// 		return (-1);
+// 	before_dollar[0] = duplicate_string_range(str[0], 0, idx);
+// 	copy_doll_usa(dollar_seg, str, idx);
+// 	expanded_val = expand_dollar_signs(dollar_seg[0], tools);
+// 	remaining[0] = duplicate_string_range(str[0], idx + strlen(*dollar_seg),
+// 			strlen(str[0]));
+// 	free(dollar_seg[0]);
+// 	*dollar_seg = ft_strjoin(before_dollar[0], expanded_val);
+// 	before_dollar[0] = join_strings(dollar_seg[0], remaining[0]);
+// 	free(dollar_seg);
+// 	free(str[0]);
+// 	*str = *before_dollar;
+// 	return (0);
+// }
+
+// int	extract_dollar_part(char **str, t_tools *tools, char **before_dollar,
+// 		char **remaining)
+// {
+// 	int	idx;
+
+// 	idx = 0;
+// 	while (str[0][idx] != '\0')
+// 	{
+// 		if (str[0][idx] == '$' && calcul_escaped_charact(str[0], idx) % 2 == 0
+// 			&& bypass_expansion(str[0], idx, 0) != TRUE)
+// 		{
+// 			return (process_dollar_sign(str, tools, before_dollar, remaining,
+// 					idx));
+// 		}
+// 		idx++;
+// 	}
+// 	return (0);
+// }
+
+int	process_dollar_sign(t_dollar_params *params)
 {
 	char	**dollar_seg;
 	char	*expanded_val;
 
-	dollar_seg = smalloc(sizeof(char *));
+	dollar_seg = malloc(sizeof(char *));
 	if (!dollar_seg)
 		return (-1);
-	before_dollar[0] = duplicate_string_range(str[0], 0, idx);
-	copy_doll_usa(dollar_seg, str, idx);
-	expanded_val = expand_dollar_signs(dollar_seg[0], tools);
-	remaining[0] = duplicate_string_range(str[0], idx + strlen(*dollar_seg),
-			strlen(str[0]));
+	params->before_dollar[0] = duplicate_string_range(params->str[0], 0,
+			params->idx);
+	copy_doll_usa(dollar_seg, params->str, params->idx);
+	expanded_val = expand_dollar_signs(dollar_seg[0], params->tools);
+	params->remaining[0] = duplicate_string_range(params->str[0], params->idx
+			+ strlen(*dollar_seg), strlen(params->str[0]));
 	free(dollar_seg[0]);
-	*dollar_seg = ft_strjoin(before_dollar[0], expanded_val);
-	before_dollar[0] = join_strings(dollar_seg[0], remaining[0]);
+	*dollar_seg = ft_strjoin(params->before_dollar[0], expanded_val);
+	params->before_dollar[0] = join_strings(dollar_seg[0],
+			params->remaining[0]);
 	free(dollar_seg);
-	free(str[0]);
-	*str = *before_dollar;
+	free(params->str[0]);
+	*params->str = *params->before_dollar;
 	return (0);
 }
 
 int	extract_dollar_part(char **str, t_tools *tools, char **before_dollar,
 		char **remaining)
 {
-	int	idx;
+	int				idx;
+	t_dollar_params	params;
 
+	params.str = str;
+	params.tools = tools;
+	params.before_dollar = before_dollar;
+	params.remaining = remaining;
 	idx = 0;
 	while (str[0][idx] != '\0')
 	{
 		if (str[0][idx] == '$' && calcul_escaped_charact(str[0], idx) % 2 == 0
-			&& bypass_expansion(str[0], idx) != TRUE)
+			&& bypass_expansion(str[0], idx, 0) != TRUE)
 		{
-			return (process_dollar_sign(str, tools, before_dollar, remaining,
-					idx));
+			params.idx = idx;
+			return (process_dollar_sign(&params));
 		}
 		idx++;
 	}

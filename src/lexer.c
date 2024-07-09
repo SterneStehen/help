@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:23:50 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/08 15:54:02 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 07:01:10 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,40 +311,6 @@ int	check_unclosed_quotes(char *str)
 	return (0);
 }
 
-// int	check_unclosed_quotes(char *str)
-// {
-// 	int	single_quote_count;
-// 	int	double_quote_count;
-// 	int	i;
-
-// 	single_quote_count = 0;
-// 	double_quote_count = 0;
-// 	i = 0;
-// 	while (str[i] != '\0')
-// 	{
-// 		if (str[i] == '\'' || (str[i] == '\\' && str[i + 1] == '\''
-// 			&& count_escaped_chars(str, i) % 2 == 0))
-// 		{
-// 			if (inside_double_quotes(str, i) == 0)
-// 			{
-// 				single_quote_count++;
-// 			}
-// 		}
-// 		else if (str[i] == '\"' || (str[i] == '\\' && str[i + 1] == '\"'
-// 				&& count_escaped_chars(str, i) % 2 == 0))
-// 		{
-// 			double_quote_count++;
-// 		}
-// 		i++;
-// 	}
-// 	if (single_quote_count % 2 != 0 || double_quote_count % 2 != 0)
-// 	{
-// 		printf("Syntax error\n");
-// 		return (1);
-// 	}
-// 	return (0);
-// }
-
 int	check_bad_pipes(char *str)
 {
 	int	len;
@@ -372,9 +338,10 @@ int	run_lexer(t_tools *tools)
 	int	start;
 	int	end;
 	int	index;
+	int	range[2];
 
-	start = 0;
-	end = -1;
+	range[0] = 0;
+	range[1] = -1;
 	index = -1;
 	if (check_empty_prompt(tools->shell_string))
 		return (0);
@@ -389,6 +356,6 @@ int	run_lexer(t_tools *tools)
 			&(tools->flag_execution_completed)))
 		return (1);
 	tools->flag_execution_completed = 1;
-	tools->pipes = pipe_split(tools->shell_string, start, end, index);
+	tools->pipes = pipe_split(tools->shell_string, index, range);
 	return (0);
 }
