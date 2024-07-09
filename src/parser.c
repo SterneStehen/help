@@ -141,6 +141,7 @@ void	handle_command_table(t_simple_cmds *table, t_tools *tools)
 /* Removes quotes from the command and arguments in a command table. */
 void	delit_quotes_command(t_simple_cmds *table, t_tools *shell)
 {
+	(void)shell;
 	manage_process_tokens(table->token_arg);
 	manage_process_tokens(table->redirections);
 }
@@ -643,7 +644,7 @@ void	free_tokens(char **tokens, int index)
 	free(tokens);
 }
 
-int	process_and_store_token(char **tokens, const char *str, int range[2],
+int	process_and_store_token(char **tokens, char *str, int range[2],
 		int *index)
 {
 	char	*token;

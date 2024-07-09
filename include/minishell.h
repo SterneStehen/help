@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 21:08:44 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/09 17:48:57 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 17:54:37 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -325,6 +325,7 @@ void						delit_quotes_command(t_simple_cmds *table,
 void						delite_quotes_tables(t_simple_cmds *tables,
 								t_tools *tools);
 int							calculate_token_size(t_node *token);
+int	multiple_tables_expand(t_simple_cmds *commands, t_tools *context);
 // int				count_token_stack(t_node *token);
 int							is_special_ascii(char c);
 int							is_visible_char(char c);

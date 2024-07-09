@@ -66,44 +66,44 @@ Minishell output:
 total 152
 -rw-r--r-- 1 sergii sergii     8 Jul  9 17:23 &2
 -rw-r--r-- 1 sergii sergii     8 Jul  9 17:23 &5
--rw-r--r-- 1 sergii sergii  1324 Jul  9 17:40 Makefile
-drwxr-xr-x 2 sergii sergii  4096 Jul  9 17:48 build
+-rw-r--r-- 1 sergii sergii  1324 Jul  9 17:56 Makefile
+drwxr-xr-x 2 sergii sergii  4096 Jul  9 17:56 build
 drwxr-xr-x 3 sergii sergii  4096 Jul  9 17:23 include
 -rw-r--r-- 1 sergii sergii    58 Jul  9 17:23 input.txt
 -rw-r--r-- 1 sergii sergii    10 Jul  9 17:23 logfile.txt
--rwxr-xr-x 1 sergii sergii 93768 Jul  9 17:48 minishell
+-rwxr-xr-x 1 sergii sergii 93768 Jul  9 17:56 minishell
 drwxr-xr-x 2 sergii sergii  4096 Jul  9 17:23 minishell_tester
 -rw-r--r-- 1 sergii sergii    58 Jul  9 17:23 output.txt
 -rwxr-xr-x 1 sergii sergii  6736 Jul  9 17:23 run_comprehensive_tests copy 2.sh
 drwxr-xr-x 2 sergii sergii  4096 Jul  9 17:23 src
 -rwxr-xr-x 1 sergii sergii  1097 Jul  9 17:23 test_path.sh
 -rw-r--r-- 1 sergii sergii  1232 Jul  9 17:23 test_path_results.txt
--rw-r--r-- 1 sergii sergii     0 Jul  9 17:49 test_result_count
--rw-r--r-- 1 sergii sergii   844 Jul  9 17:49 test_results.txt
+-rw-r--r-- 1 sergii sergii     0 Jul  9 17:56 test_result_count
+-rw-r--r-- 1 sergii sergii   844 Jul  9 17:56 test_results.txt
 Bash output:
 total 152
 -rw-r--r-- 1 sergii sergii     8 Jul  9 17:23 &2
 -rw-r--r-- 1 sergii sergii     8 Jul  9 17:23 &5
--rw-r--r-- 1 sergii sergii  1324 Jul  9 17:40 Makefile
-drwxr-xr-x 2 sergii sergii  4096 Jul  9 17:48 build
+-rw-r--r-- 1 sergii sergii  1324 Jul  9 17:56 Makefile
+drwxr-xr-x 2 sergii sergii  4096 Jul  9 17:56 build
 drwxr-xr-x 3 sergii sergii  4096 Jul  9 17:23 include
 -rw-r--r-- 1 sergii sergii    58 Jul  9 17:23 input.txt
 -rw-r--r-- 1 sergii sergii    10 Jul  9 17:23 logfile.txt
--rwxr-xr-x 1 sergii sergii 93768 Jul  9 17:48 minishell
+-rwxr-xr-x 1 sergii sergii 93768 Jul  9 17:56 minishell
 drwxr-xr-x 2 sergii sergii  4096 Jul  9 17:23 minishell_tester
 -rw-r--r-- 1 sergii sergii    58 Jul  9 17:23 output.txt
 -rwxr-xr-x 1 sergii sergii  6736 Jul  9 17:23 run_comprehensive_tests copy 2.sh
 drwxr-xr-x 2 sergii sergii  4096 Jul  9 17:23 src
 -rwxr-xr-x 1 sergii sergii  1097 Jul  9 17:23 test_path.sh
 -rw-r--r-- 1 sergii sergii  1232 Jul  9 17:23 test_path_results.txt
--rw-r--r-- 1 sergii sergii     0 Jul  9 17:49 test_result_count
--rw-r--r-- 1 sergii sergii  1805 Jul  9 17:49 test_results.txt
+-rw-r--r-- 1 sergii sergii     0 Jul  9 17:56 test_result_count
+-rw-r--r-- 1 sergii sergii  1805 Jul  9 17:56 test_results.txt
 Result: ❌ Mismatch
 Difference:
 17c17
-< -rw-r--r-- 1 sergii sergii   844 Jul  9 17:49 test_results.txt
+< -rw-r--r-- 1 sergii sergii   844 Jul  9 17:56 test_results.txt
 ---
-> -rw-r--r-- 1 sergii sergii  1805 Jul  9 17:49 test_results.txt
+> -rw-r--r-- 1 sergii sergii  1805 Jul  9 17:56 test_results.txt
 
 -----------------------
 
