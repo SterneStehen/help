@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 21:25:23 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/09 06:59:45 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 18:00:39 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -574,6 +574,7 @@ char	*process_parentheses(char *trimmed_input, t_tools *context, int index)
 	t_environment	*env_var;
 	char			*empty_str;
 
+	(void)			index;
 	trimmed_var = del_string(trimmed_input, "( )");
 	env_var = ft_find(context->envair, trimmed_var);
 	free(trimmed_var);
@@ -646,6 +647,7 @@ char	*handle_special_var(char *input, t_tools *context)
 	char	*status_str;
 	char	*result;
 
+	(void) input;
 	status = context->last_status;
 	status_str = ft_itoa(status);
 	result = status_str;
