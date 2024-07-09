@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 21:17:37 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/09 05:34:42 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 18:14:53 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /* Retrieves the current directory from the PWD environment variable.
    If the PWD is root, returns "/",
-		otherwise returns the last directory in the path. */
+				otherwise returns the last directory in the path. */
 char	*get_current_directory(t_tools *shell)
 {
 	int				i;
@@ -237,7 +237,7 @@ char	*create_env_string(t_environment *node)
 /* Converts the linked list of environment variables to an array of strings.
 //    Each string is formatted as "name=value". */
 
-char	**convert_env_list_to_array(t_environment *env)
+char	**convert_env_l_to_arr(t_environment *env)
 {
 	char			**env_array;
 	int				list_size;
@@ -308,5 +308,5 @@ void	refresh_environment(t_tools *shell)
 {
 	if (shell->envp != NULL)
 		free_string_array(shell->envp);
-	shell->envp = convert_env_list_to_array(shell->envair);
+	shell->envp = convert_env_l_to_arr(shell->envair);
 }

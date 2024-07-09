@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 22:50:00 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/08 05:12:00 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 18:17:37 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	configure_termios(struct termios *term_settings)
 
 	* This ensures that the child process behaves correctly
 	with respect to terminal signals. */
-void	configure_signals_child(struct termios *term_settings)
+void	config_signals_child(struct termios *term_settings)
 {
 	tcsetattr(1, TCSAFLUSH, term_settings);
 	ignore_signal(SIGQUIT);

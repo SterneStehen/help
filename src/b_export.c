@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 07:08:56 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/09 18:05:31 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 18:07:05 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	copy_content(char *src, char *dest, int start_idx)
 	}
 	dest[idx] = '\0';
 }
+
 // Main function to get environment content
 char	*allocate_empty_content(void)
 {
@@ -192,7 +193,7 @@ int	print_env_vars(t_tools *tools)
 		fprintf(stderr, "No environment variables to display.\n");
 		return (-1);
 	}
-	iterate_variables(tools); // Add this line to iterate and print variables
+	iterate_variables(tools);
 	return (0);
 }
 

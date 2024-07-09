@@ -81,7 +81,7 @@ void	run_heredoc_commands(t_simple_cmds *start, t_simple_cmds *last,
  * This function checks each command in the list for invalid redirections.
  * If an invalid redirection is found,
 	it processes heredoc commands and returns 1. */
-int	check_commands_for_invalid_redir(t_simple_cmds *tbl, t_tools *sh)
+int	check_c__invalid_redir(t_simple_cmds *tbl, t_tools *sh)
 {
 	t_simple_cmds	*st;
 	t_simple_cmds	*lst;
@@ -154,7 +154,7 @@ int	create_child_process(t_tools *shell, int *fd)
 	}
 	else if (pid == 0)
 	{
-		configure_signals_child(&shell->terminal_setting);
+		config_signals_child(&shell->terminal_setting);
 		shell->flag_log = 1;
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
@@ -243,7 +243,7 @@ void	spawn_and_execute(t_simple_cmds *table, t_tools *shell, int *has_redir)
 	}
 	else if (pid == 0)
 	{
-		configure_signals_child(&shell->terminal_setting);
+		config_signals_child(&shell->terminal_setting);
 		shell->flag_log = 1;
 		*has_redir = validate_redirections(table);
 		if (*has_redir == 0)
@@ -325,7 +325,7 @@ int	handle_execution(t_simple_cmds *cmd_table, t_tools *sh)
 	char	**env_copy;
 	int		exit_status;
 
-	configure_signals_child(&sh->terminal_setting);
+	config_signals_child(&sh->terminal_setting);
 	if (!invalid_redirection(sh, cmd_table->redirections, cmd_table))
 	{
 		sh->flag_log = 1;
@@ -553,7 +553,7 @@ int	execute_command(t_simple_cmds *command, t_tools *tools)
  * ensuring that invalid redirections are properly managed. */
 void	handle_redirect(t_tools *sh, t_simple_cmds *tbl)
 {
-	if (check_commands_for_invalid_redir(tbl, sh))
+	if (check_c__invalid_redir(tbl, sh))
 	{
 		check_redir(sh->shell_string);
 		sh->last_status = 258;

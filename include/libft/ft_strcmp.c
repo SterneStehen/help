@@ -6,12 +6,11 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:10:33 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/06 13:51:40 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 18:12:42 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
 
 int	ft_strcmp(char *s1, char *s2)
 {

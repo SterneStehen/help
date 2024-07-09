@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 21:08:44 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/09 18:04:54 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 18:17:37 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,7 +239,7 @@ void						append_env_node(t_environment *head,
 int							setup_environment(t_tools *tools,
 								char **environment);
 void						display_env(t_tools *tools, char **arg_list);
-char						**convert_env_list_to_array(t_environment *environment);
+char						**convert_env_l_to_arr(t_environment *environment);
 void						refresh_environment(t_tools *tools);
 
 // init
@@ -277,7 +277,7 @@ char						*duplicate_string_range(const char *source,
 								int begin, int finish);
 int							inside_double_quotes(const char *input, int index);
 int							contains_quote(const char *input);
-int							find_error_sint();
+int							find_error_sint(void);
 int							find_error_sing_newline(void);
 int							is_character_symbol(char c);
 int							check_redir(const char *input);
@@ -325,7 +325,8 @@ void						delit_quotes_command(t_simple_cmds *table,
 void						delite_quotes_tables(t_simple_cmds *tables,
 								t_tools *tools);
 int							calculate_token_size(t_node *token);
-int	multiple_tables_expand(t_simple_cmds *commands, t_tools *context);
+int							multiple_tables_expand(t_simple_cmds *commands,
+								t_tools *context);
 // int				count_token_stack(t_node *token);
 int							is_special_ascii(char c);
 int							is_visible_char(char c);
@@ -407,7 +408,7 @@ char						*copy_data(char *content);
 int							check_invalid_redirection(t_simple_cmds *command);
 void						run_heredoc_commands(t_simple_cmds *first,
 								t_simple_cmds *last, t_tools *tools);
-int							check_commands_for_invalid_redir(t_simple_cmds *commands,
+int							check_c__invalid_redir(t_simple_cmds *commands,
 								t_tools *tools);
 void						execute_pipeline_commands(t_simple_cmds *commands,
 								t_tools *tools);
@@ -568,7 +569,7 @@ void						sigint_handler_parent(int sig_num);
 void						sigint_handler_child(int sig_num);
 void						setup_sigint_handler(void (*handler)(int));
 void						configure_termios(struct termios *term_settings);
-void						configure_signals_child(struct termios *term_settings);
+void						config_signals_child(struct termios *term_settings);
 void						configure_signals_parent(void);
 void						configure_signals(struct termios *term_settings);
 #endif

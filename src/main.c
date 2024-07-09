@@ -18,8 +18,8 @@
 int	main(int argc, char **argv, char **envp)
 {
 	t_tools	tools;
-	(void)argv;
 
+	(void)argv;
 	if (argc < 1)
 		return (0);
 	setup_environment(&tools, envp);

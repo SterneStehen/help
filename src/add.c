@@ -6,9 +6,8 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 20:10:20 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/06 23:27:36 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 18:13:45 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-

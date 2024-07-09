@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 18:23:50 by smoreron          #+#    #+#             */
-/*   Updated: 2024/07/09 17:34:10 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 18:14:16 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	contains_quote(const char *input)
 }
 
 /* Prints a syntax error message and returns 1. */
-int	find_error_sint()
+int	find_error_sint(void)
 {
 	printf("Syntax error");
 	return (1);
@@ -335,9 +335,9 @@ int	check_empty_prompt(char *str)
 
 int	run_lexer(t_tools *tools)
 {
-	int index;
-	int	range[2];
-	
+	int		index;
+	int		range[2];
+
 	index = -1;
 	range[0] = 0;
 	range[1] = -1;

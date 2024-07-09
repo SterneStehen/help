@@ -6,7 +6,7 @@
 /*   By: smoreron <smoreron@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 03:14:10 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/07/03 22:20:04 by smoreron         ###   ########.fr       */
+/*   Updated: 2024/07/09 18:11:13 by smoreron         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ char	*fn_free(char **variable)
 
 char	*process_carry_over(char *carry_over)
 {
-	size_t		i;
 	char	*line;
+	size_t	i;
 
 	if (carry_over == NULL || carry_over[0] == '\0')
 		return (NULL);
